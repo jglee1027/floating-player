@@ -1,0 +1,98 @@
+{
+    "description": {
+        "message": "Mira videos mientras navegas por Internet. Funciona con: YouTube, Netflix, Twitch.tv, Vimeo, Dailymotion, Instagram, TED."
+    },
+    "open_in_popup": {
+        "message": "Abrir enlace en un popup"
+    },
+    "options": {
+        "message": "Opciones"
+    },
+    "align": {
+        "message": "Alineación"
+    },
+    "top_left": {
+        "message": "Arriba a la izquierda"
+    },
+    "top_right": {
+        "message": "Arriba a la derecha"
+    },
+    "bottom_left": {
+        "message": "Abajo a la izquierda"
+    },
+    "bottom_right": {
+        "message": "Abajo a la derecha"
+    },
+    "default_size": {
+        "message": "Tamaño por defecto"
+    },
+    "size_4x3": {
+        "message": "Tamaño 4:3"
+    },
+    "recommended": {
+        "message": "Recomendado"
+    },
+    "horizontal_margin": {
+        "message": "Margen horizontal"
+    },
+    "vertical_margin": {
+        "message": "Margen vertical"
+    },
+    "embed": {
+        "message": "Incrustar video si es posible"
+    },
+    "autoplay": {
+        "message": "Reproducción automática de video incrustado"
+    },
+    "captions": {
+        "message": "Mostrar subtítulos en videos de YouTube"
+    },
+    "annotations": {
+        "message": "Mostrar anotaciones en videos de YouTube"
+    },
+    "related": {
+        "message": "Mostrar videos relacionados en YouTube"
+    },
+    "color": {
+        "message": "Color de la barra de progreso del reproductor de YouTube"
+    },
+    "red": {
+        "message": "Rojo"
+    },
+    "white": {
+        "message": "Blanco"
+    },
+    "proportion": {
+        "message": "Abrir video de YouTube con la relación de aspecto correcta"
+    },
+    "api": {
+        "message": "Usar la API de YouTube para corregir el título de la lista de reproducción<br>y averiguar cuándo no se puede incrustar video"
+    },
+    "pause": {
+        "message": "Pausar video y continuar donde lo dejó"
+    },
+    "youtube_tv_on_error": {
+        "message": "Abrir video en YouTube TV si no se puede incrustar video"
+    },
+    "fix": {
+        "message": "Corregir la anchura y la altura del popup en Windows"
+    },
+    "keep_popup": {
+        "message": "Mantener el popup actual en lugar de abrir un nuevo"
+    },
+    "use_context": {
+        "message": "Usar el menú contextual"
+    },
+    "default": {
+        "message": "Restaurar la configuración predeterminada"
+    },
+    "u_sure": {
+        "message": "¿Estás seguro?"
+    },
+    "instructions": {
+        "message": "Instrucciones"
+    },
+    "cannot_play": {
+        "message": "No se puede incrustar video. ¿Reproducir en YouTube?"
+    }
+}

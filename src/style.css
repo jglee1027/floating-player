@@ -1,0 +1,90 @@
+body, h1, form, label, input, select, button {
+    padding: 0;
+    margin: 0;
+    font: inherit
+}
+
+* {
+    box-sizing: border-box
+}
+
+body, html {
+    height: 100%
+}
+
+body {
+    padding: 20px;
+    font: 13px droid sans, segoe ui, ubuntu, sans-serif
+}
+
+h1 {
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 23px;
+    color: #E52D27
+}
+
+button, select, input[type="number"] {
+    padding: 2px 8px
+}
+
+button {
+    margin-bottom: 60px
+}
+
+.form-block {
+    width: 620px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #EEE
+}
+
+[type="number"] {
+    padding: 4px;
+    width: 60px;
+    text-align: center;
+    border: 1px solid #999;
+    border-radius: 4px;
+    box-shadow: inset 1px 1px 3px #EEE
+}
+
+[type="checkbox"] {
+    position: relative;
+    top: 2px
+}
+
+#instructions {
+    margin-left: 15px
+}
+
+label {
+    margin-right: 5px
+}
+
+label:hover {
+    color: #E52D27;
+    cursor: pointer
+}
+
+label[for="vertical-margin"] {
+    margin-left: 20px
+}
+
+.recommended-resolutions {
+    margin-top: 10px;
+    color: #999
+}
+
+.recommended-resolutions a {
+    color: #999;
+    text-decoration: none
+}
+
+.recommended-resolutions a:hover {
+    color: #651FFF;
+    text-decoration: underline
+}
+
+br {
+    line-height: 20px
+}

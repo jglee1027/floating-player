@@ -1,0 +1,2 @@
+1.9.5 - 2017/06/28 - Added option "Keep current popup instead of opening a new one"
+1.9.6 - 2017/07/07 - Floating Player is open source now

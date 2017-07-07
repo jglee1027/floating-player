@@ -1,0 +1,98 @@
+{
+    "description": {
+        "message": "Assista a vídeos enquanto navega na internet. Funciona com: YouTube, Netflix, Twitch.tv, Vimeo, Dailymotion, Instagram."
+    },
+    "open_in_popup": {
+        "message": "Abrir link em popup"
+    },
+    "options": {
+        "message": "Opções"
+    },
+    "align": {
+        "message": "Alinhamento"
+    },
+    "top_left": {
+        "message": "Superior esquerdo"
+    },
+    "top_right": {
+        "message": "Superior direito"
+    },
+    "bottom_left": {
+        "message": "Inferior esquerdo"
+    },
+    "bottom_right": {
+        "message": "Inferior direito"
+    },
+    "default_size": {
+        "message": "Tamanho padrão"
+    },
+    "size_4x3": {
+        "message": "Tamanho 4:3"
+    },
+    "recommended": {
+        "message": "Recomendado"
+    },
+    "horizontal_margin": {
+        "message": "Margem horizontal"
+    },
+    "vertical_margin": {
+        "message": "Margem vertical"
+    },
+    "embed": {
+        "message": "Incorporar vídeo se possível"
+    },
+    "autoplay": {
+        "message": "Iniciar automaticamente vídeo incorporado"
+    },
+    "captions": {
+        "message": "Exibir legendas nos vídeos do YouTube"
+    },
+    "annotations": {
+        "message": "Exibir anotações nos vídeos do YouTube"
+    },
+    "related": {
+        "message": "Exibir vídeos relacionados no YouTube"
+    },
+    "color": {
+        "message": "Cor da barra de progresso do player do YouTube"
+    },
+    "red": {
+        "message": "Vermelho"
+    },
+    "white": {
+        "message": "Branco"
+    },
+    "proportion": {
+        "message": "Abrir vídeo do YouTube com a proporção correta"
+    },
+    "api": {
+        "message": "Usar a API do YouTube para corrigir o título da playlist<br>e descobrir quando o vídeo não puder ser incorporado"
+    },
+    "pause": {
+        "message": "Pausar vídeo e continuar de onde parou"
+    },
+    "youtube_tv_on_error": {
+        "message": "Abrir vídeo no YouTube TV se não puder ser incorporado"
+    },
+    "fix": {
+        "message": "Corrigir a largura e a altura da popup no Windows"
+    },
+    "keep_popup": {
+        "message": "Manter a popup atual em vez de abrir uma nova"
+    },
+    "use_context": {
+        "message": "Usar menu de contexto"
+    },
+    "default": {
+        "message": "Restaurar configurações originais"
+    },
+    "u_sure": {
+        "message": "Tem certeza?"
+    },
+    "instructions": {
+        "message": "Instruções"
+    },
+    "cannot_play": {
+        "message": "Não é possível incorporar vídeo. Reproduzir no YouTube?"
+    }
+}
