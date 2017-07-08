@@ -68,11 +68,14 @@
     "api": {
         "message": "Usar a API do YouTube para corrigir o título da playlist<br>e descobrir quando o vídeo não puder ser incorporado"
     },
+    "playlist_counter": {
+        "message": "Mostrar contador da playlist do YouTube no título da popup (requer API)"
+    },
     "pause": {
         "message": "Pausar vídeo e continuar de onde parou"
     },
     "youtube_tv_on_error": {
-        "message": "Abrir vídeo no YouTube TV se não puder ser incorporado"
+        "message": "Abrir vídeo no YouTube TV se não puder ser incorporado (requer API)"
     },
     "fix": {
         "message": "Corrigir a largura e a altura da popup no Windows"

@@ -68,11 +68,14 @@
     "api": {
         "message": "Use YouTube API to fix playlist title<br>and figure out when video cannot be embedded"
     },
+    "playlist_counter": {
+        "message": "Show YouTube playlist counter in popup title (requires API)"
+    },
     "pause": {
         "message": "Pause video and continue where you left off"
     },
     "youtube_tv_on_error": {
-        "message": "Play video on YouTube TV if it cannot be embedded"
+        "message": "Play video on YouTube TV if it cannot be embedded (requires API)"
     },
     "fix": {
         "message": "Fix popup width and height on Windows"

@@ -68,11 +68,14 @@
     "api": {
         "message": "Usar la API de YouTube para corregir el título de la lista de reproducción<br>y averiguar cuándo no se puede incrustar video"
     },
+    "playlist_counter": {
+        "message": "Mostrar el contador de la lista de reproducción de YouTube<br>en el título del popup (requiere API)"
+    },
     "pause": {
         "message": "Pausar video y continuar donde lo dejó"
     },
     "youtube_tv_on_error": {
-        "message": "Abrir video en YouTube TV si no se puede incrustar video"
+        "message": "Abrir video en YouTube TV si no se puede incrustar video (requiere API)"
     },
     "fix": {
         "message": "Corregir la anchura y la altura del popup en Windows"

@@ -30,6 +30,7 @@ var defaultOptions = {
     related: false,
     proportion: true,
     api: true,
+    playlistCounter: true,
     pause: true,
     youtubeTvOnError: true,
     fix: true,
@@ -701,6 +702,7 @@ else if (where === 'options') {
 
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="api"]'), '@api');
+    setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
     setHtml($$('label[for="pause"]'), '@pause');
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="fix"]'), '@fix');
@@ -805,6 +807,12 @@ else if (where === 'options') {
     $api.checked = options.api;
     onChange($api, function() {
         setOption('api', this.checked);
+    });
+
+    var $playlistCounter = $('playlist-counter');
+    $playlistCounter.checked = options.playlistCounter;
+    onChange($playlistCounter, function() {
+        setOption('playlistCounter', this.checked);
     });
 
     var $pause = $('pause');
@@ -962,8 +970,6 @@ else if (where === 'youtube') {
     }
 
     function onPlayerReady(event) {
-        videoData = player.getVideoData();
-        setVideoTitle();
 
         // To force the event onerror when the video cannot be played
         if (options.autoplay) {
@@ -972,8 +978,9 @@ else if (where === 'youtube') {
     }
 
     function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.BUFFERING) {
+        if (event.data === YT.PlayerState.PLAYING) {
 
+            // Set video title
             videoData = player.getVideoData();
             setVideoTitle();
 
@@ -1002,9 +1009,21 @@ else if (where === 'youtube') {
     }
 
     function setVideoTitle() {
+        var playlistTitle = '';
+
+        if (options.playlistCounter) {
+            var playlistIndex = player.getPlaylistIndex() + 1;
+            var playlistSize;
+
+            if (playlistIndex > 0) {
+                playlistSize = player.getPlaylist().length;
+                playlistTitle = '(' + playlistIndex + '/' + playlistSize + ') ';
+            }
+        }
+
         var title;
         if (videoData.title) {
-            title = videoData.title + ' - YouTube';
+            title = playlistTitle + videoData.title + ' - YouTube';
         }
         else {
             title = 'YouTube';
