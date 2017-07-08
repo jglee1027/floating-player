@@ -252,6 +252,10 @@ function showInstructions() {
         + suffix + '.html');
 }
 
+function showSourceCode() {
+    window.open('https://github.com/gabrielbarros/floating-player');
+}
+
 function addContextMenu() {
     var menu = chrome.contextMenus;
 
@@ -712,6 +716,9 @@ else if (where === 'options') {
     var $defaultConfig = $('default-config');
     setHtml($defaultConfig, '@default');
 
+    var $sourceCode = $('source-code');
+    setHtml($sourceCode, '@source_code');
+
     var $instructions = $('instructions');
     setHtml($instructions, '@instructions');
     // End Translation strings
@@ -868,6 +875,11 @@ else if (where === 'options') {
             }
             location.reload();
         }
+    });
+
+    onClick($sourceCode, function(e) {
+        e.preventDefault();
+        showSourceCode();
     });
 
     onClick($instructions, function(e) {

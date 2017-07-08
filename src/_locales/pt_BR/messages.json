@@ -89,6 +89,9 @@
     "default": {
         "message": "Restaurar configurações originais"
     },
+    "source_code": {
+        "message": "Código fonte"
+    },
     "u_sure": {
         "message": "Tem certeza?"
     },

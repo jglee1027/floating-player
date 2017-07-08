@@ -89,6 +89,9 @@
     "default": {
         "message": "Restore default settings"
     },
+    "source_code": {
+        "message": "Source code"
+    },
     "u_sure": {
         "message": "Are you sure?"
     },

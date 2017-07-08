@@ -29,7 +29,7 @@ button, select, input[type="number"] {
 }
 
 button {
-    margin-bottom: 60px
+    margin: 0 10px 60px 0
 }
 
 .form-block {
@@ -51,10 +51,6 @@ button {
 [type="checkbox"] {
     position: relative;
     top: 2px
-}
-
-#instructions {
-    margin-left: 15px
 }
 
 label {
