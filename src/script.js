@@ -25,6 +25,7 @@ var defaultOptions = {
     color: COLOR_RED,
     embed: true,
     autoplay: true,
+    noCookie: false,
     captions: true,
     annotations: true,
     related: false,
@@ -404,6 +405,14 @@ function parseYouTube(url, videoTime) {
     var popupUrl;
     var videoId;
     var matches;
+    var youtubeDomain;
+
+    if (options.noCookie) {
+        youtubeDomain = 'https://www.youtube-nocookie.com';
+    }
+    else {
+        youtubeDomain = 'https://www.youtube.com';
+    }
 
     function ytCommonParams() {
         if (!options.related) {
@@ -441,7 +450,7 @@ function parseYouTube(url, videoTime) {
     if (url.path === '/watch') {
         videoId = url.query.v;
 
-        popupUrl = 'https://www.youtube.com/embed/' + videoId + '?';
+        popupUrl = youtubeDomain + '/embed/' + videoId + '?';
 
         if (options.autoplay) {
             popupUrl += '&autoplay=1';
@@ -463,7 +472,7 @@ function parseYouTube(url, videoTime) {
     else if (matches = url.path.match(/\/user\/([a-zA-Z0-9_-]+)\/?/)) {
         var channel = matches[1];
 
-        popupUrl = 'https://www.youtube.com/embed?listType=user_uploads&list=' +
+        popupUrl = youtubeDomain + '/embed?listType=user_uploads&list=' +
             encodeURL(channel) + '&';
 
         ytCommonParams();
@@ -472,6 +481,8 @@ function parseYouTube(url, videoTime) {
     // YouTube search
     else if (url.path === '/results') {
         var search = url.query.search_query || url.query.q;
+
+        // [BUG] YouTube search doesn't work with youtube-nocookie.com
 
         popupUrl = 'https://www.youtube.com/embed?listType=search&list=' +
             encodeURL(search);
@@ -735,6 +746,7 @@ else if (where === 'options') {
     setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
     setHtml($$('label[for="embed"]'), '@embed');
     setHtml($$('label[for="autoplay"]'), '@autoplay');
+    setHtml($$('label[for="no-cookie"]'), '@no_cookie');
     setHtml($$('label[for="captions"]'), '@captions');
     setHtml($$('label[for="annotations"]'), '@annotations');
     setHtml($$('label[for="related"]'), '@related');
@@ -818,6 +830,12 @@ else if (where === 'options') {
     $autoplay.checked = options.autoplay;
     onChange($autoplay, function() {
         setOption('autoplay', this.checked);
+    });
+
+    var $noCookie = $('no-cookie');
+    $noCookie.checked = options.noCookie;
+    onChange($noCookie, function() {
+        setOption('noCookie', this.checked);
     });
 
     var $captions = $('captions');

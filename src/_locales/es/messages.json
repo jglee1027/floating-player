@@ -44,6 +44,9 @@
     "autoplay": {
         "message": "Reproducción automática de video incrustado"
     },
+    "no_cookie": {
+        "message": "Activar el modo de mejora de la privacidad mediante youtube-nocookie.com"
+    },
     "captions": {
         "message": "Mostrar subtítulos en videos de YouTube"
     },

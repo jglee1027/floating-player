@@ -44,6 +44,9 @@
     "autoplay": {
         "message": "Iniciar automaticamente vídeo incorporado"
     },
+    "no_cookie": {
+        "message": "Ativar modo de privacidade aprimorada usando youtube-nocookie.com"
+    },
     "captions": {
         "message": "Exibir legendas nos vídeos do YouTube"
     },

@@ -44,6 +44,9 @@
     "autoplay": {
         "message": "Autoplay embedded video"
     },
+    "no_cookie": {
+        "message": "Enable privacy-enhanced mode using youtube-nocookie.com"
+    },
     "captions": {
         "message": "Show captions on YouTube videos"
     },
