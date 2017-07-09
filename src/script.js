@@ -401,23 +401,11 @@ function showPopup(url, fromContextMenu, videoTime) {
 function parseYouTube(url, videoTime) {
     var popupUrl;
     var videoId;
+    var matches;
 
-    if (url.path === '/watch') {
-        videoId = url.query.v;
-
-        popupUrl = 'https://www.youtube.com/embed/' + videoId + '?';
-
+    function ytCommonParams() {
         if (!options.related) {
             popupUrl += '&rel=0';
-        }
-
-        var playlist = url.query.list;
-        if (playlist) {
-            popupUrl += '&listType=playlist&list=' + encodeURL(playlist);
-        }
-
-        if (options.autoplay) {
-            popupUrl += '&autoplay=1';
         }
 
         if (options.captions) {
@@ -431,14 +419,54 @@ function parseYouTube(url, videoTime) {
             popupUrl += '&color=white';
         }
 
+        if (options.api) {
+            popupUrl += '&enablejsapi=1&origin=' + encodeURL(getURL('').
+                slice(0, -1));
+
+            popupUrl = getURL('youtube.html?' + encodeURL(popupUrl));
+        }
+    }
+
+    // YouTube video
+    if (url.path === '/watch') {
+        videoId = url.query.v;
+
+        popupUrl = 'https://www.youtube.com/embed/' + videoId + '?';
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=1';
+        }
+
+        var playlist = url.query.list;
+        if (playlist) {
+            popupUrl += '&listType=playlist&list=' + encodeURL(playlist);
+        }
+
         if (videoTime) {
             popupUrl += '&start=' + videoTime;
         }
 
-        if (options.api) {
-            popupUrl += '&enablejsapi=1&origin=' + encodeURL(getURL('').slice(0, -1));
-            popupUrl = getURL('youtube.html?' + encodeURL(popupUrl));
-        }
+        ytCommonParams();
+    }
+
+    // YouTube channel
+    else if (matches = url.path.match(/\/user\/([a-zA-Z0-9_-]+)\/?/)) {
+        var channel = matches[1];
+
+        popupUrl = 'https://www.youtube.com/embed?listType=user_uploads&list=' +
+            encodeURL(channel) + '&';
+
+        ytCommonParams();
+    }
+
+    // YouTube search
+    else if (url.path === '/results') {
+        var search = url.query.search_query || url.query.q;
+
+        popupUrl = 'https://www.youtube.com/embed?listType=search&list=' +
+            encodeURL(search);
+
+        ytCommonParams();
     }
 
     return {
