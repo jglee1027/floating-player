@@ -28,6 +28,8 @@ var defaultOptions = {
     captions: true,
     annotations: true,
     related: false,
+    controls: true,
+    showInfo: true,
     proportion: true,
     api: true,
     playlistCounter: true,
@@ -415,6 +417,14 @@ function parseYouTube(url, videoTime) {
         var annotations = options.annotations ? '1' : '3';
         popupUrl += '&iv_load_policy=' + annotations;
 
+        if (!options.controls) {
+            popupUrl += '&controls=0';
+        }
+
+        if (!options.showInfo) {
+            popupUrl += '&showinfo=0';
+        }
+
         if (options.color === COLOR_WHITE) {
             popupUrl += '&color=white';
         }
@@ -728,6 +738,8 @@ else if (where === 'options') {
     setHtml($$('label[for="captions"]'), '@captions');
     setHtml($$('label[for="annotations"]'), '@annotations');
     setHtml($$('label[for="related"]'), '@related');
+    setHtml($$('label[for="controls"]'), '@controls');
+    setHtml($$('label[for="show-info"]'), '@show_info');
     setHtml($$('label[for="color"]'), '@color');
     setHtml($option[4], '@red');
     setHtml($option[5], '@white');
@@ -824,6 +836,18 @@ else if (where === 'options') {
     $related.checked = options.related;
     onChange($related, function() {
         setOption('related', this.checked);
+    });
+
+    var $controls = $('controls');
+    $controls.checked = options.controls;
+    onChange($controls, function() {
+        setOption('controls', this.checked);
+    });
+
+    var $showInfo = $('show-info');
+    $showInfo.checked = options.showInfo;
+    onChange($showInfo, function() {
+        setOption('showInfo', this.checked);
     });
 
     var $color = $('color');

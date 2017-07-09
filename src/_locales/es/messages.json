@@ -53,6 +53,12 @@
     "related": {
         "message": "Mostrar videos relacionados en YouTube"
     },
+    "controls": {
+        "message": "Mostrar los controles del reproductor de video en YouTube"
+    },
+    "show_info": {
+        "message": "Mostrar el título del video en YouTube"
+    },
     "color": {
         "message": "Color de la barra de progreso del reproductor de YouTube"
     },

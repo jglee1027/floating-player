@@ -53,6 +53,12 @@
     "related": {
         "message": "Show related videos on YouTube"
     },
+    "controls": {
+        "message": "Show video player controls on YouTube"
+    },
+    "show_info": {
+        "message": "Show video title on YouTube"
+    },
     "color": {
         "message": "Color in the player's video progress bar for YouTube"
     },
