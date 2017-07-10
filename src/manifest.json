@@ -22,7 +22,7 @@
     },
 
     "options_page": "options.html",
-    "permissions": ["contextMenus", "tabs"],
+    "permissions": ["contextMenus", "activeTab"],
 
     "content_scripts": [{
         "matches":    [
