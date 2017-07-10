@@ -446,9 +446,9 @@ function parseYouTube(url, videoTime) {
         }
     }
 
-    // YouTube video
-    if (url.path === '/watch') {
-        videoId = url.query.v;
+    // YouTube video or playlist
+    if (url.path === '/watch' || url.path === '/playlist') {
+        videoId = url.query.v || '';
 
         popupUrl = youtubeDomain + '/embed/' + videoId + '?';
 
