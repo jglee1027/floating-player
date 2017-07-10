@@ -1,17 +1,18 @@
 1.9.8 - 2017/07/10
-Added YouTube Gaming
+- Added YouTube Gaming
+- Added option "Use YouTube TV for all YouTube videos"
 
 1.9.7 - 2017/07/09
-Added option "Show YouTube playlist counter in popup title"
-Added button "Source code"
-Added support to YouTube channel and search
-Added option "Show video player controls on YouTube"
-Added option "Show video title on YouTube"
-Added option "Enable privacy-enhanced mode using youtube-nocookie.com"
-Removed permission to read the browsing history
+- Added option "Show YouTube playlist counter in popup title"
+- Added button "Source code"
+- Added support to YouTube channel and search
+- Added option "Show video player controls on YouTube"
+- Added option "Show video title on YouTube"
+- Added option "Enable privacy-enhanced mode using youtube-nocookie.com"
+- Removed permission to read the browsing history
 
 1.9.6 - 2017/07/07
-Floating Player is open source now
+- Floating Player is open source now
 
 1.9.5 - 2017/06/28
-Added option "Keep current popup instead of opening a new one"
+- Added option "Keep current popup instead of opening a new one"

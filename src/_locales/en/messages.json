@@ -86,6 +86,9 @@
     "youtube_tv_on_error": {
         "message": "Play video on YouTube TV if it cannot be embedded (requires API)"
     },
+    "force_youtube_tv": {
+        "message": "Use YouTube TV for all YouTube videos (not recommended)"
+    },
     "fix": {
         "message": "Fix popup width and height on Windows"
     },

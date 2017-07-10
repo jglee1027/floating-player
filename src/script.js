@@ -36,6 +36,7 @@ var defaultOptions = {
     playlistCounter: true,
     pause: true,
     youtubeTvOnError: true,
+    forceYoutubeTv: false,
     fix: true,
     keepPopup: true,
     context: true
@@ -53,9 +54,8 @@ var WINDOWS_8 = 6.2;
 var WINDOWS_8_1 = 6.3;
 var WINDOWS_10 = 10;
 
-var windowsVersion = parseFloat(
-    (navigator.userAgent.match(/Windows NT ([0-9.]+)/i) || [])[1]
-);
+var UA = navigator.userAgent;
+var windowsVersion = parseFloat((UA.match(/Windows NT ([0-9.]+)/i) || [])[1]);
 
 // Fix popup width and height on Windows
 switch (windowsVersion) {
@@ -307,7 +307,12 @@ function showPopup(url, fromContextMenu, videoTime) {
         switch (url.host) {
             case 'www.youtube.com':
             case 'gaming.youtube.com':
-                parseResult = parseYouTube(url, videoTime);
+                if (options.forceYoutubeTv) {
+                    parseResult = parseYouTubeAsTv(url, videoTime);
+                }
+                else {
+                    parseResult = parseYouTube(url, videoTime);
+                }
                 break;
 
             case 'www.twitch.tv':
@@ -489,6 +494,32 @@ function parseYouTube(url, videoTime) {
             encodeURL(search);
 
         ytCommonParams();
+    }
+
+    return {
+        youtubeVideoId: videoId,
+        popupUrl: popupUrl
+    };
+}
+
+
+function parseYouTubeAsTv(url, videoTime) {
+    var popupUrl = 'https://www.youtube.com/tv#/watch?';
+
+    var videoId = url.query.v;
+    if (videoId) {
+        popupUrl += '&v=' + encodeURL(videoId);
+    }
+
+    var playlist = url.query.list;
+    if (playlist) {
+        popupUrl += '&list=' + encodeURL(playlist);
+    }
+
+    // [BUG] Video time doesn't work with list on YouTube TV
+    var time = videoTime || url.query.t;
+    if (time) {
+        popupUrl += '&t=' + time;
     }
 
     return {
@@ -763,6 +794,7 @@ else if (where === 'options') {
     setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
     setHtml($$('label[for="pause"]'), '@pause');
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
+    setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
@@ -904,6 +936,12 @@ else if (where === 'options') {
     $youtubeTvOnError.checked = options.youtubeTvOnError;
     onChange($youtubeTvOnError, function() {
         setOption('youtubeTvOnError', this.checked);
+    });
+
+    var $forceYoutubeTv = $('force-youtube-tv');
+    $forceYoutubeTv.checked = options.forceYoutubeTv;
+    onChange($forceYoutubeTv, function() {
+        setOption('forceYoutubeTv', this.checked);
     });
 
     var $fix = $('fix');
@@ -1123,19 +1161,10 @@ else if (where === 'youtube') {
         if (event.data === BLOCKED_BY_OWNER ||
             event.data === BLOCKED_BY_OWNER_IN_DISGUISE) {
 
-            var videoUrl = player.getVideoUrl();
+            var videoUrl = parseUrl(player.getVideoUrl());
 
             if (options.youtubeTvOnError) {
-                var youtubeTvUrl = 'https://www.youtube.com/tv#/watch/video/control?';
-                var query = parseUrl(videoUrl).query;
-
-                youtubeTvUrl += 'v=' + query.v;
-
-                if (query.t) {
-                    youtubeTvUrl += '&t=' + query.t;
-                }
-
-                location.href = youtubeTvUrl;
+                location.href = parseYouTubeAsTv(videoUrl).popupUrl;
             }
             else if (confirm(getText('cannot_play'))) {
                 location.href = videoUrl;

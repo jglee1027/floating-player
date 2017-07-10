@@ -86,6 +86,9 @@
     "youtube_tv_on_error": {
         "message": "Abrir video en YouTube TV si no se puede incrustar video (requiere API)"
     },
+    "force_youtube_tv": {
+        "message": "Usar YouTube TV para todos los videos de YouTube (no recomendado)"
+    },
     "fix": {
         "message": "Corregir la anchura y la altura del popup en Windows"
     },

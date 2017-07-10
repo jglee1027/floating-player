@@ -86,6 +86,9 @@
     "youtube_tv_on_error": {
         "message": "Abrir vídeo no YouTube TV se não puder ser incorporado (requer API)"
     },
+    "force_youtube_tv": {
+        "message": "Usar o YouTube TV para todos os vídeos do YouTube (não recomendado)"
+    },
     "fix": {
         "message": "Corrigir a largura e a altura da popup no Windows"
     },
