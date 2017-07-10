@@ -1,3 +1,6 @@
+1.9.8 - 2017/07/10
+Added YouTube Gaming
+
 1.9.7 - 2017/07/09
 Added option "Show YouTube playlist counter in popup title"
 Added button "Source code"

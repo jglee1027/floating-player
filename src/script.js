@@ -306,6 +306,7 @@ function showPopup(url, fromContextMenu, videoTime) {
 
         switch (url.host) {
             case 'www.youtube.com':
+            case 'gaming.youtube.com':
                 parseResult = parseYouTube(url, videoTime);
                 break;
 
