@@ -273,7 +273,8 @@ function addContextMenu() {
     });
 
     menu.onClicked.addListener(function(info) {
-        preparePopup(info.linkUrl, true);
+        var contextMenu = true;
+        preparePopup(info.linkUrl, contextMenu);
     });
 }
 
@@ -281,14 +282,13 @@ function removeContextMenu() {
     chrome.contextMenus.removeAll();
 }
 
-function preparePopup(url, fromContextMenu) {
+function preparePopup(url, fromContextMenu, tabId) {
     options = getAllOptions();
 
     if (!fromContextMenu && options.pause) {
-        getTab(function(tabUrl, tabId) {
-            chrome.tabs.sendMessage(tabId, '', function(response) {
-                showPopup(url, fromContextMenu, response);
-            });
+        // Get video time (see content.js)
+        chrome.tabs.sendMessage(tabId, '', function(videoTime) {
+            showPopup(url, fromContextMenu, videoTime);
         });
     }
     else {
@@ -683,7 +683,8 @@ if (where === 'background') {
 
 else if (where === 'popup') {
     getTab(function(tabUrl, tabId) {
-        preparePopup(tabUrl, false);
+        var contextMenu = false;
+        preparePopup(tabUrl, contextMenu, tabId);
     });
 }
 
