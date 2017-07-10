@@ -469,7 +469,7 @@ function parseYouTube(url, videoTime) {
     }
 
     // YouTube channel
-    else if (matches = url.path.match(/\/user\/([a-zA-Z0-9_-]+)\/?/)) {
+    else if (matches = url.path.match(/^\/user\/([a-zA-Z0-9_-]+).*$/)) {
         var channel = matches[1];
 
         popupUrl = youtubeDomain + '/embed?listType=user_uploads&list=' +
