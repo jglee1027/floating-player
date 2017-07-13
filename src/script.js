@@ -551,12 +551,20 @@ function parseTwitch(url, videoTime) {
     if (matches = url.path.match(/^\/([a-z0-9_]{1,25})$/i)) {
         var channel = matches[1];
         popupUrl = 'https://player.twitch.tv/?volume=0.5&channel=' + channel;
+
+        if (!options.autoplay) {
+            popupUrl += '&autoplay=false';
+        }
     }
 
     else if ((matches = url.path.match(/^\/(?:[a-z0-9_]{1,25})\/p\/([0-9]+)$/i))
           || (matches = url.path.match(/^\/videos\/([0-9]+)$/i))) {
         var videoId = matches[1];
         popupUrl = 'https://player.twitch.tv/?volume=0.5&video=v' + videoId;
+
+        if (!options.autoplay) {
+            popupUrl += '&autoplay=false';
+        }
 
         if (videoTime) {
             popupUrl += '&time=' + videoTime + 's';
