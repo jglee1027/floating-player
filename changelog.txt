@@ -2,6 +2,7 @@
 - Added option "Show fullscreen button on YouTube"
 - Added option "Show YouTube logo that lets you open the video in a new tab"
 - Added option "Allow control of the YouTube player by keyboard"
+- Added autoplay for Vimeo, Smashcast and Vevo
 
 1.9.8 - 2017/07/10
 - Added YouTube Gaming
