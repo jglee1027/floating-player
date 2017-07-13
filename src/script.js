@@ -720,7 +720,11 @@ function parseVevo(url) {
     var matches;
 
     if (matches = url.path.match(/[A-Z0-9]+/g)) {
-        popupUrl = 'http://cache.vevo.com/assets/html/embed.html?video=' + matches[0];
+        popupUrl = 'https://embed.vevo.com/?video=' + matches[0];
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=1';
+        }
     }
 
     return {
