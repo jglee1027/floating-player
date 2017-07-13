@@ -601,7 +601,15 @@ function parseDailymotion(url, videoTime) {
         popupUrl = 'http://www.dailymotion.com/embed/video/' + videoId + '?';
 
         if (options.autoplay) {
-            popupUrl += '&autoPlay=1';
+            popupUrl += '&autoplay=1';
+        }
+
+        if (!options.controls) {
+            popupUrl += '&controls=0';
+        }
+
+        if (!options.related) {
+            popupUrl += '&endscreen-enable=0';
         }
 
         if (videoTime) {
