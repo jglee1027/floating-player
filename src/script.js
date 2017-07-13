@@ -575,7 +575,11 @@ function parseVimeo(url, videoTime) {
 
     if (matches = url.path.match(/^\/([0-9]+)$/)) {
         var videoId = matches[1];
-        popupUrl = 'https://player.vimeo.com/video/' + videoId;
+        popupUrl = 'https://player.vimeo.com/video/' + videoId + '?';
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=1';
+        }
 
         if (videoTime) {
             popupUrl += '#t=' + videoTime + 's';
