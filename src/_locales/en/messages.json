@@ -62,6 +62,15 @@
     "show_info": {
         "message": "Show video title on YouTube"
     },
+    "fullscreen": {
+        "message": "Show fullscreen button on YouTube"
+    },
+    "yt_logo": {
+        "message": "Show YouTube logo that lets you open the video in a new tab"
+    },
+    "keyboard": {
+        "message": "Allow control of the YouTube player by keyboard"
+    },
     "color": {
         "message": "Color in the player's video progress bar for YouTube"
     },

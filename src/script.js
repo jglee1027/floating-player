@@ -31,6 +31,9 @@ var defaultOptions = {
     related: false,
     controls: true,
     showInfo: true,
+    fullscreen: true,
+    ytLogo: true,
+    keyboard: true,
     proportion: true,
     api: true,
     playlistCounter: true,
@@ -440,6 +443,18 @@ function parseYouTube(url, videoTime) {
             popupUrl += '&showinfo=0';
         }
 
+        if (!options.fullscreen) {
+            popupUrl += '&fs=0';
+        }
+
+        if (!options.ytLogo) {
+            popupUrl += '&modestbranding=1';
+        }
+
+        if (!options.keyboard) {
+            popupUrl += '&disablekb=1';
+        }
+
         if (options.color === COLOR_WHITE) {
             popupUrl += '&color=white';
         }
@@ -785,11 +800,14 @@ else if (where === 'options') {
     setHtml($$('label[for="related"]'), '@related');
     setHtml($$('label[for="controls"]'), '@controls');
     setHtml($$('label[for="show-info"]'), '@show_info');
+    setHtml($$('label[for="fullscreen"]'), '@fullscreen');
+    setHtml($$('label[for="yt-logo"]'), '@yt_logo');
     setHtml($$('label[for="color"]'), '@color');
     setHtml($option[4], '@red');
     setHtml($option[5], '@white');
 
     setHtml($$('label[for="proportion"]'), '@proportion');
+    setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
     setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
     setHtml($$('label[for="pause"]'), '@pause');
@@ -902,6 +920,18 @@ else if (where === 'options') {
         setOption('showInfo', this.checked);
     });
 
+    var $fullscreen = $('fullscreen');
+    $fullscreen.checked = options.fullscreen;
+    onChange($fullscreen, function() {
+        setOption('fullscreen', this.checked);
+    });
+
+    var $ytLogo = $('yt-logo');
+    $ytLogo.checked = options.ytLogo;
+    onChange($ytLogo, function() {
+        setOption('ytLogo', this.checked);
+    });
+
     var $color = $('color');
     $color.value = options.color;
     onChange($color, function() {
@@ -912,6 +942,12 @@ else if (where === 'options') {
     $proportion.checked = options.proportion;
     onChange($proportion, function() {
         setOption('proportion', this.checked);
+    });
+
+    var $keyboard = $('keyboard');
+    $keyboard.checked = options.keyboard;
+    onChange($keyboard, function() {
+        setOption('keyboard', this.checked);
     });
 
     var $api = $('api');

@@ -62,6 +62,15 @@
     "show_info": {
         "message": "Mostrar el título del video en YouTube"
     },
+    "fullscreen": {
+        "message": "Mostrar el botón de pantalla completa en YouTube"
+    },
+    "yt_logo": {
+        "message": "Mostrar el logotipo de YouTube que permite abrir el video en una nueva pestaña"
+    },
+    "keyboard": {
+        "message": "Permitir controlar el reproductor de YouTube por el teclado"
+    },
     "color": {
         "message": "Color de la barra de progreso del reproductor de YouTube"
     },
