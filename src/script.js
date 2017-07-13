@@ -494,7 +494,7 @@ function parseYouTube(url, videoTime) {
         var channel = matches[1];
 
         popupUrl = youtubeDomain + '/embed?listType=user_uploads&list=' +
-            encodeURL(channel) + '&';
+            encodeURL(channel);
 
         ytCommonParams();
     }
@@ -637,7 +637,20 @@ function parseSmashcast(url) {
 
     if (matches = url.path.match(/^\/([a-z0-9]{3,25})$/i)) {
         var channel = matches[1];
-        popupUrl = 'http://www.smashcast.tv/embed/' + channel;
+        popupUrl = 'https://www.smashcast.tv/embed/' + channel + '?';
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=true';
+        }
+    }
+
+    else if (matches = url.path.match(/^\/[a-z0-9]{3,25}\/videos\/([0-9]+)$/i)) {
+        var videoId = matches[1];
+        popupUrl = 'https://www.smashcast.tv/embed/video/' + videoId + '?';
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=true';
+        }
     }
 
     return {
