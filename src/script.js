@@ -1203,7 +1203,7 @@ else if (where === 'youtube') {
                 location.href = parseYouTubeAsTv(videoUrl).popupUrl;
             }
             else if (confirm(getText('cannot_play'))) {
-                location.href = videoUrl;
+                location.href = videoUrl.href;
             }
         }
     }
