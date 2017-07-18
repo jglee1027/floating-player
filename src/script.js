@@ -25,6 +25,7 @@ var defaultOptions = {
     color: COLOR_RED,
     speed: 1,
     quality: 'auto',
+    volume: 100,
     embed: true,
     autoplay: true,
     noCookie: false,
@@ -855,6 +856,7 @@ else if (where === 'options') {
     setHtml($option[9], '@normal');
 
     setHtml($$('label[for="quality"]'), '@quality');
+    setHtml($$('label[for="volume"]'), '@volume');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
@@ -1000,6 +1002,12 @@ else if (where === 'options') {
     $quality.value = options.quality;
     onChange($quality, function() {
         setOption('quality', this.value);
+    });
+
+    var $volume = $('volume');
+    $volume.value = options.volume;
+    onChange($volume, function() {
+        setOption('volume', this.value);
     });
 
     var $proportion = $('proportion');
@@ -1205,9 +1213,10 @@ else if (where === 'youtube') {
         }
 
         // Set video playback speed
-        if (options.speed) {
-            player.setPlaybackRate(options.speed);
-        }
+        player.setPlaybackRate(options.speed);
+
+        // Set volume
+        player.setVolume(options.volume);
 
         // [BUG] To make shuffle work, sometimes we need to wait some time
         // https://stackoverflow.com/a/35229793
@@ -1227,9 +1236,7 @@ else if (where === 'youtube') {
             setVideoTitle();
 
             // Set video quality
-            if (options.quality) {
-                player.setPlaybackQuality(options.quality);
-            }
+            player.setPlaybackQuality(options.quality);
 
             // Fix proportion of the next video in the playlist
             if (options.proportion) {

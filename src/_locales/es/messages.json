@@ -57,13 +57,13 @@
         "message": "Mostrar videos relacionados en YouTube"
     },
     "controls": {
-        "message": "Mostrar los controles del reproductor de video en YouTube"
+        "message": "Mostrar los controles del reproductor en videos de YouTube"
     },
     "show_info": {
-        "message": "Mostrar el título del video en YouTube"
+        "message": "Mostrar el título en videos de YouTube"
     },
     "fullscreen": {
-        "message": "Mostrar el botón de pantalla completa en YouTube"
+        "message": "Mostrar el botón de pantalla completa en videos de YouTube"
     },
     "yt_logo": {
         "message": "Mostrar el logotipo de YouTube que permite abrir el video en una nueva pestaña"
@@ -89,8 +89,11 @@
     "quality": {
         "message": "Calidad de los videos de YouTube*"
     },
+    "volume": {
+        "message": "Volumen para los videos de YouTube*"
+    },
     "proportion": {
-        "message": "Abrir video de YouTube con la relación de aspecto correcta"
+        "message": "Abrir videos de YouTube con la relación de aspecto correcta"
     },
     "api": {
         "message": "Usar la API de YouTube para corregir el título de la lista de reproducción<br>y averiguar cuándo no se puede incrustar video"

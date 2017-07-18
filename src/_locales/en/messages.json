@@ -57,13 +57,13 @@
         "message": "Show related videos on YouTube"
     },
     "controls": {
-        "message": "Show video player controls on YouTube"
+        "message": "Show player controls on YouTube videos"
     },
     "show_info": {
-        "message": "Show video title on YouTube"
+        "message": "Show title on YouTube videos"
     },
     "fullscreen": {
-        "message": "Show fullscreen button on YouTube"
+        "message": "Show fullscreen button on YouTube videos"
     },
     "yt_logo": {
         "message": "Show YouTube logo that lets you open the video in a new tab"
@@ -72,7 +72,7 @@
         "message": "Allow control of the YouTube player by keyboard"
     },
     "color": {
-        "message": "Color in the player's video progress bar for YouTube"
+        "message": "Color in the YouTube player's video progress bar"
     },
     "red": {
         "message": "Red"
@@ -81,13 +81,16 @@
         "message": "White"
     },
     "speed": {
-        "message": "YouTube videos playback speed*"
+        "message": "Playback speed of YouTube videos*"
     },
     "normal": {
         "message": "Normal"
     },
     "quality": {
-        "message": "YouTube videos quality*"
+        "message": "Quality of YouTube videos*"
+    },
+    "volume": {
+        "message": "Volume for YouTube videos*"
     },
     "proportion": {
         "message": "Open YouTube video with the correct aspect ratio"

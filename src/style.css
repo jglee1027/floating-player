@@ -53,6 +53,11 @@ button {
     top: 2px
 }
 
+[type="range"] {
+    position: relative;
+    top: 4px
+}
+
 label {
     margin-right: 5px
 }

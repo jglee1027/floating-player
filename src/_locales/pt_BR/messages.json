@@ -57,13 +57,13 @@
         "message": "Exibir vídeos relacionados no YouTube"
     },
     "controls": {
-        "message": "Exibir controles do player do vídeo no YouTube"
+        "message": "Exibir controles do player nos vídeos do YouTube"
     },
     "show_info": {
-        "message": "Exibir título do vídeo no YouTube"
+        "message": "Exibir título nos vídeos do YouTube"
     },
     "fullscreen": {
-        "message": "Exibir botão de tela cheia no YouTube"
+        "message": "Exibir botão de tela cheia nos vídeos do YouTube"
     },
     "yt_logo": {
         "message": "Exibir logotipo do YouTube que permite abrir o vídeo em uma nova aba"
@@ -88,6 +88,9 @@
     },
     "quality": {
         "message": "Qualidade dos vídeos do YouTube*"
+    },
+    "volume": {
+        "message": "Volume para os vídeos do YouTube*"
     },
     "proportion": {
         "message": "Abrir vídeo do YouTube com a proporção correta"
