@@ -23,6 +23,7 @@ var defaultOptions = {
     hmargin: 0,
     vmargin: 0,
     color: COLOR_RED,
+    speed: 1,
     embed: true,
     autoplay: true,
     noCookie: false,
@@ -844,6 +845,9 @@ else if (where === 'options') {
     setHtml($option[4], '@red');
     setHtml($option[5], '@white');
 
+    setHtml($$('label[for="speed"]'), '@speed');
+    setHtml($option[9], '@normal');
+
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
@@ -975,6 +979,12 @@ else if (where === 'options') {
     $color.value = options.color;
     onChange($color, function() {
         setOption('color', this.value);
+    });
+
+    var $speed = $('speed');
+    $speed.value = options.speed;
+    onChange($speed, function() {
+        setOption('speed', this.value);
     });
 
     var $proportion = $('proportion');
@@ -1179,6 +1189,11 @@ else if (where === 'youtube') {
             player.playVideo();
         }
 
+        // Set video playback speed
+        if (options.speed) {
+            player.setPlaybackRate(options.speed);
+        }
+
         // [BUG] To make shuffle work, sometimes we need to wait some time
         // https://stackoverflow.com/a/35229793
         // https://stackoverflow.com/a/34881913
@@ -1195,6 +1210,8 @@ else if (where === 'youtube') {
             // Set video title
             videoData = player.getVideoData();
             setVideoTitle();
+
+
 
             // Fix proportion of the next video in the playlist
             if (options.proportion) {

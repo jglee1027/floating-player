@@ -80,6 +80,12 @@
     "white": {
         "message": "Blanco"
     },
+    "speed": {
+        "message": "Velocidad de reproducción de videos de YouTube"
+    },
+    "normal": {
+        "message": "Normal"
+    },
     "proportion": {
         "message": "Abrir video de YouTube con la relación de aspecto correcta"
     },

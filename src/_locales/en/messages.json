@@ -80,6 +80,12 @@
     "white": {
         "message": "White"
     },
+    "speed": {
+        "message": "YouTube videos playback speed"
+    },
+    "normal": {
+        "message": "Normal"
+    },
     "proportion": {
         "message": "Open YouTube video with the correct aspect ratio"
     },
