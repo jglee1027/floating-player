@@ -81,10 +81,13 @@
         "message": "Branco"
     },
     "speed": {
-        "message": "Velocidade de reprodução dos vídeos do YouTube"
+        "message": "Velocidade de reprodução dos vídeos do YouTube*"
     },
     "normal": {
         "message": "Normal"
+    },
+    "quality": {
+        "message": "Qualidade dos vídeos do YouTube*"
     },
     "proportion": {
         "message": "Abrir vídeo do YouTube com a proporção correta"
@@ -93,16 +96,16 @@
         "message": "Usar a API do YouTube para corrigir o título da playlist<br>e descobrir quando o vídeo não puder ser incorporado"
     },
     "playlist_counter": {
-        "message": "Mostrar contador da playlist do YouTube no título da popup (requer API)"
+        "message": "Mostrar contador da playlist do YouTube no título da popup*"
     },
     "shuffle": {
-        "message": "Reproduzir playlist do YouTube aleatoriamente (requer API)"
+        "message": "Reproduzir playlist do YouTube aleatoriamente*"
     },
     "pause": {
         "message": "Pausar vídeo e continuar de onde parou"
     },
     "youtube_tv_on_error": {
-        "message": "Abrir vídeo no YouTube TV se não puder ser incorporado (requer API)"
+        "message": "Abrir vídeo no YouTube TV se não puder ser incorporado*"
     },
     "force_youtube_tv": {
         "message": "Usar o YouTube TV para todos os vídeos do YouTube (não recomendado)"
@@ -130,5 +133,8 @@
     },
     "cannot_play": {
         "message": "Não é possível incorporar vídeo. Reproduzir no YouTube?"
+    },
+    "requires_api": {
+        "message": "* Requer API do YouTube"
     }
 }

@@ -81,6 +81,11 @@ label[for="vertical-margin"] {
     text-decoration: underline
 }
 
+#requires-api {
+    margin-bottom: 20px;
+    font-style: italic
+}
+
 br {
     line-height: 20px
 }

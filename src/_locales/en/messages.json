@@ -81,10 +81,13 @@
         "message": "White"
     },
     "speed": {
-        "message": "YouTube videos playback speed"
+        "message": "YouTube videos playback speed*"
     },
     "normal": {
         "message": "Normal"
+    },
+    "quality": {
+        "message": "YouTube videos quality*"
     },
     "proportion": {
         "message": "Open YouTube video with the correct aspect ratio"
@@ -93,16 +96,16 @@
         "message": "Use YouTube API to fix playlist title<br>and figure out when video cannot be embedded"
     },
     "playlist_counter": {
-        "message": "Show YouTube playlist counter in popup title (requires API)"
+        "message": "Show YouTube playlist counter in popup title*"
     },
     "shuffle": {
-        "message": "Shuffle YouTube playlist (requires API)"
+        "message": "Shuffle YouTube playlist*"
     },
     "pause": {
         "message": "Pause video and continue where you left off"
     },
     "youtube_tv_on_error": {
-        "message": "Play video on YouTube TV if it cannot be embedded (requires API)"
+        "message": "Play video on YouTube TV if it cannot be embedded*"
     },
     "force_youtube_tv": {
         "message": "Use YouTube TV for all YouTube videos (not recommended)"
@@ -130,5 +133,8 @@
     },
     "cannot_play": {
         "message": "Cannot embed video. Play it on YouTube?"
+    },
+    "requires_api": {
+        "message": "* Requires YouTube API"
     }
 }

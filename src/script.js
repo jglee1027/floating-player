@@ -24,6 +24,7 @@ var defaultOptions = {
     vmargin: 0,
     color: COLOR_RED,
     speed: 1,
+    quality: 'auto',
     embed: true,
     autoplay: true,
     noCookie: false,
@@ -131,7 +132,12 @@ function getOption(name) {
     if (value === 'true') {
         return true;
     }
-    return +value;
+    // Is number (https://stackoverflow.com/a/174921)
+    if (value - 0 == value && ('' + value).trim().length > 0) {
+        return +value;
+    }
+    // String
+    return value;
 }
 
 function getAllOptions() {
@@ -848,6 +854,7 @@ else if (where === 'options') {
     setHtml($$('label[for="speed"]'), '@speed');
     setHtml($option[9], '@normal');
 
+    setHtml($$('label[for="quality"]'), '@quality');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
@@ -859,6 +866,8 @@ else if (where === 'options') {
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
+
+    setHtml($('requires-api'), '@requires_api');
 
     var $defaultConfig = $('default-config');
     setHtml($defaultConfig, '@default');
@@ -985,6 +994,12 @@ else if (where === 'options') {
     $speed.value = options.speed;
     onChange($speed, function() {
         setOption('speed', this.value);
+    });
+
+    var $quality = $('quality');
+    $quality.value = options.quality;
+    onChange($quality, function() {
+        setOption('quality', this.value);
     });
 
     var $proportion = $('proportion');
@@ -1211,7 +1226,10 @@ else if (where === 'youtube') {
             videoData = player.getVideoData();
             setVideoTitle();
 
-
+            // Set video quality
+            if (options.quality) {
+                player.setPlaybackQuality(options.quality);
+            }
 
             // Fix proportion of the next video in the playlist
             if (options.proportion) {
