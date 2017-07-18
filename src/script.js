@@ -1005,9 +1005,12 @@ else if (where === 'options') {
     });
 
     var $volume = $('volume');
+    var $currentVolume = $('current-volume');
     $volume.value = options.volume;
-    onChange($volume, function() {
+    $currentVolume.innerHTML = options.volume;
+    onInput($volume, function() {
         setOption('volume', this.value);
+        $currentVolume.innerHTML = this.value;
     });
 
     var $proportion = $('proportion');

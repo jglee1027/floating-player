@@ -58,6 +58,11 @@ button {
     top: 4px
 }
 
+#current-volume {
+    position: relative;
+    bottom: 3px
+}
+
 label {
     margin-right: 5px
 }
