@@ -89,6 +89,9 @@
     "playlist_counter": {
         "message": "Show YouTube playlist counter in popup title (requires API)"
     },
+    "shuffle": {
+        "message": "Shuffle YouTube playlist (requires API)"
+    },
     "pause": {
         "message": "Pause video and continue where you left off"
     },

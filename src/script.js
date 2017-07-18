@@ -37,6 +37,7 @@ var defaultOptions = {
     proportion: true,
     api: true,
     playlistCounter: true,
+    shuffle: false,
     pause: true,
     youtubeTvOnError: true,
     forceYoutubeTv: false,
@@ -847,6 +848,7 @@ else if (where === 'options') {
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
     setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
+    setHtml($$('label[for="shuffle"]'), '@shuffle');
     setHtml($$('label[for="pause"]'), '@pause');
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
@@ -997,6 +999,12 @@ else if (where === 'options') {
     $playlistCounter.checked = options.playlistCounter;
     onChange($playlistCounter, function() {
         setOption('playlistCounter', this.checked);
+    });
+
+    var $shuffle = $('shuffle');
+    $shuffle.checked = options.shuffle;
+    onChange($shuffle, function() {
+        setOption('shuffle', this.checked);
     });
 
     var $pause = $('pause');
@@ -1169,6 +1177,15 @@ else if (where === 'youtube') {
         // To force the event onerror when the video cannot be played
         if (options.autoplay) {
             player.playVideo();
+        }
+
+        // [BUG] To make shuffle work, sometimes we need to wait some time
+        // https://stackoverflow.com/a/35229793
+        // https://stackoverflow.com/a/34881913
+        if (options.shuffle) {
+            setTimeout(function() {
+                player.setShuffle(true);
+            }, 1000);
         }
     }
 

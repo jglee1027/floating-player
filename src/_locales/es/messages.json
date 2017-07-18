@@ -89,6 +89,9 @@
     "playlist_counter": {
         "message": "Mostrar el contador de la lista de reproducción de YouTube<br>en el título del popup (requiere API)"
     },
+    "shuffle": {
+        "message": "Mezclar la lista de reproducción de YouTube (requiere API)"
+    },
     "pause": {
         "message": "Pausar video y continuar donde lo dejó"
     },

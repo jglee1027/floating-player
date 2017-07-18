@@ -1,3 +1,6 @@
+1.9.10 - 2017/07/17
+- Added option "Shuffle YouTube playlist"
+
 1.9.9 - 2017/07/13
 - Added option "Show fullscreen button on YouTube"
 - Added option "Show YouTube logo that lets you open the video in a new tab"
