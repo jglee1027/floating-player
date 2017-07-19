@@ -46,7 +46,8 @@ var defaultOptions = {
     forceYoutubeTv: false,
     fix: true,
     keepPopup: true,
-    context: true
+    context: true,
+    history: false
 };
 
 var LOCALSTORAGE_PREFIX = '_';
@@ -61,8 +62,8 @@ var WINDOWS_8 = 6.2;
 var WINDOWS_8_1 = 6.3;
 var WINDOWS_10 = 10;
 
-var UA = navigator.userAgent;
-var windowsVersion = parseFloat((UA.match(/Windows NT ([0-9.]+)/i) || [])[1]);
+var ua = navigator.userAgent;
+var windowsVersion = parseFloat((ua.match(/Windows NT ([0-9.]+)/i) || [])[1]);
 
 // Fix popup width and height on Windows
 switch (windowsVersion) {
@@ -119,6 +120,20 @@ function parseUrl(url) {
         rawQuery: rawQuery,
         query: queryStringParse(rawQuery)
     };
+}
+
+function htmlEscape(str) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&#34;',
+        "'": '&#39;'
+    };
+
+    return ('' + str).replace(/[&<>"']/g, function(match) {
+        return map[match];
+    });
 }
 
 function getOption(name) {
@@ -271,6 +286,10 @@ function showSourceCode() {
     window.open('https://github.com/gabrielbarros/floating-player');
 }
 
+function showHistory() {
+    window.open(getURL('history.html'));
+}
+
 function addContextMenu() {
     var menu = chrome.contextMenus;
 
@@ -294,8 +313,92 @@ function removeContextMenu() {
     chrome.contextMenus.removeAll();
 }
 
+function historyGet() {
+    return JSON.parse(localStorage.getItem('history')) || [];
+}
+
+function historySet(value) {
+    localStorage.setItem('history', JSON.stringify(value));
+}
+
+function historyAdd(link) {
+    var currentHistory = historyGet();
+    var timestamp = Date.now();
+
+    currentHistory.unshift({
+        link: link,
+        timestamp: timestamp
+    });
+
+    historySet(currentHistory);
+}
+
+function historyRemove(timestamp) {
+    var currentHistory = historyGet();
+    var indexToRemove;
+
+    for (var i = 0, len = currentHistory.length; i < len; i++) {
+        if (currentHistory[i].timestamp === timestamp) {
+            indexToRemove = i;
+            break;
+        }
+    }
+
+    if (indexToRemove !== undefined) {
+        currentHistory.splice(indexToRemove, 1);
+        historySet(currentHistory);
+    }
+}
+
+function historyClear() {
+    localStorage.removeItem('history');
+}
+
+function $(selector) {
+    return document.getElementById(selector);
+}
+
+function $$(selector) {
+    return document.querySelector(selector);
+}
+
+function $$$(selector) {
+    return document.querySelectorAll(selector);
+}
+
+function addEvent(obj, type, callback) {
+    obj.addEventListener(type, callback);
+}
+
+function onInput(obj, callback) {
+    addEvent(obj, 'input', callback);
+}
+
+function onChange(obj, callback) {
+    addEvent(obj, 'change', callback);
+}
+
+function onClick(obj, callback) {
+    addEvent(obj, 'click', callback);
+}
+
+function setHtml(obj, str) {
+    var html;
+    if (str[0] === '@') {
+        html = getText(str.slice(1));
+    }
+    else {
+        html = str;
+    }
+    obj.innerHTML = html;
+}
+
 function preparePopup(url, fromContextMenu, tabId) {
     options = getAllOptions();
+
+    if (options.history) {
+        historyAdd(url);
+    }
 
     if (!fromContextMenu && options.pause) {
         // Get video time (see content.js)
@@ -782,44 +885,6 @@ else if (where === 'popup') {
 }
 
 else if (where === 'options') {
-    function $(selector) {
-        return document.getElementById(selector);
-    }
-
-    function $$(selector) {
-        return document.querySelector(selector);
-    }
-
-    function $$$(selector) {
-        return document.querySelectorAll(selector);
-    }
-
-    function addEvent(obj, type, callback) {
-        obj.addEventListener(type, callback);
-    }
-
-    function onInput(obj, callback) {
-        addEvent(obj, 'input', callback);
-    }
-
-    function onChange(obj, callback) {
-        addEvent(obj, 'change', callback);
-    }
-
-    function onClick(obj, callback) {
-        addEvent(obj, 'click', callback);
-    }
-
-    function setHtml(obj, str) {
-        var html;
-        if (str[0] === '@') {
-            html = getText(str.slice(1));
-        }
-        else {
-            html = str;
-        }
-        obj.innerHTML = html;
-    }
 
     // Translation strings
     var strOptions = getText('options');
@@ -868,6 +933,7 @@ else if (where === 'options') {
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
+    setHtml($$('label[for="enable-history"]'), '@enable_history');
 
     setHtml($('requires-api'), '@requires_api');
 
@@ -879,6 +945,9 @@ else if (where === 'options') {
 
     var $instructions = $('instructions');
     setHtml($instructions, '@instructions');
+
+    var $seeHistory = $('see-history');
+    setHtml($seeHistory, '@history');
     // End Translation strings
 
 
@@ -1087,6 +1156,12 @@ else if (where === 'options') {
         setOption('context', isChecked);
     });
 
+    var $enableHistory = $('enable-history');
+    $enableHistory.checked = options.history;
+    onChange($enableHistory, function() {
+        setOption('history', this.checked);
+    });
+
     onClick($defaultConfig, function(e) {
         e.preventDefault();
 
@@ -1094,9 +1169,15 @@ else if (where === 'options') {
             addContextMenu();
         }
 
+        var isOption;
+
         if (confirm(getText('u_sure'))) {
             for (var i in localStorage) {
-                if (i !== 'ok') {
+
+                isOption = i.substring(0, LOCALSTORAGE_PREFIX.length) ===
+                    LOCALSTORAGE_PREFIX;
+
+                if (isOption) {
                     localStorage.removeItem(i);
                 }
             }
@@ -1112,6 +1193,11 @@ else if (where === 'options') {
     onClick($instructions, function(e) {
         e.preventDefault();
         showInstructions();
+    });
+
+    onClick($seeHistory, function(e) {
+        e.preventDefault();
+        showHistory();
     });
 
     var strRecommended = getText('recommended');
@@ -1185,21 +1271,15 @@ else if (where === 'youtube') {
 
     var player;
     var playerId = 'player';
-    var videoData;
+
+    var videoId;
+    var videoTitle;
+    var videoList;
+
     options = getAllOptions();
 
     function onYouTubeIframeAPIReady() {
         player = new YT.Player(playerId, {
-            /*
-            height: '360',
-            width: '640',
-            videoId: 'OPHLENt_Hpw',
-            playerVars: {
-                list: 'PLEFFEEFD2F395B896',
-                autoplay: 1,
-                rel: 0
-            },
-            */
             events: {
                 onReady: onPlayerReady,
                 onStateChange: onPlayerStateChange,
@@ -1232,10 +1312,35 @@ else if (where === 'youtube') {
     }
 
     function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING) {
+        var videoData = player.getVideoData();
+        videoId = videoData.video_id;
+        videoTitle = videoData.title;
+        videoList = videoData.list;
+
+        if (event.data === YT.PlayerState.BUFFERING) {
+
+            // Add link to history
+            if (options.history) {
+                var link = 'https://www.youtube.com/watch?v=' + videoId;
+
+                if (videoList) {
+                    link += '&list=' + videoList;
+                }
+
+                // Don't add duplicate link
+                var latestLink = historyGet()[0];
+                if (latestLink) {
+                    latestLink = latestLink.link;
+                }
+
+                if (link !== latestLink) {
+                    historyAdd(link);
+                }
+            }
+        }
+        else if (event.data === YT.PlayerState.PLAYING) {
 
             // Set video title
-            videoData = player.getVideoData();
             setVideoTitle();
 
             // Set video quality
@@ -1243,8 +1348,6 @@ else if (where === 'youtube') {
 
             // Fix proportion of the next video in the playlist
             if (options.proportion) {
-                var videoId = videoData.video_id;
-
                 function resizeWindow(width, height) {
                     var pos = getWindowPosition(width, height);
 
@@ -1279,8 +1382,8 @@ else if (where === 'youtube') {
         }
 
         var title;
-        if (videoData.title) {
-            title = playlistTitle + videoData.title + ' - YouTube';
+        if (videoTitle) {
+            title = playlistTitle + videoTitle + ' - YouTube';
         }
         else {
             title = 'YouTube';
@@ -1319,6 +1422,96 @@ else if (where === 'youtube') {
         iframe.allowFullscreen = 'true';
         document.body.appendChild(iframe);
     }
+}
+
+else if (where === 'history') {
+
+    // Translation strings
+    var strHistory = getText('history');
+    setHtml($$('title'), strHistory);
+    setHtml($$('h1'), strHistory);
+
+    var $clearHistory = $('clear-history');
+    setHtml($clearHistory, '@clear_history');
+    // End Translation strings
+
+    var $table = $('table');
+
+    var currentHistory = historyGet();
+    var historySize = currentHistory.length;
+
+    function historyIsEmpty() {
+        var isHistoryEnabled = getOption('history');
+        var key;
+
+        if (isHistoryEnabled) {
+            key = 'history_empty';
+        }
+        else {
+            key = 'history_disabled';
+        }
+
+        $table.parentNode.removeChild($table);
+        $clearHistory.outerHTML = '<p>' + getText(key) + '</p>';
+    }
+
+    if (historySize) {
+        var tpl = '<tbody>';
+
+        var link;
+        var timestamp;
+        var date;
+
+        for (var i = 0; i < historySize; i++) {
+            link = htmlEscape(currentHistory[i].link);
+            timestamp = currentHistory[i].timestamp;
+            date = new Date(timestamp).toLocaleString();
+
+            tpl += '<tr>';
+            tpl += '<td class="td-date">';
+            tpl += date;
+            tpl += '</td>';
+            tpl += '<td class="td-link">';
+            tpl += '<a href="' + link + '">' + link + '</a>';
+            tpl += '</td>';
+            tpl += '<td class="td-remove" data-timestamp="' + timestamp + '">';
+            tpl += '</td>';
+            tpl += '</tr>';
+        }
+
+        tpl += '</tbody>';
+
+        $table.innerHTML = tpl;
+    }
+    else {
+        historyIsEmpty();
+    }
+
+    // "X" image
+    onClick($table, function(e) {
+        var $target = e.target;
+        if ($target.className === 'td-remove') {
+            var timestamp = +$target.dataset.timestamp;
+            var $tr = $target.parentNode;
+            $tr.parentNode.removeChild($tr);
+
+            historyRemove(timestamp);
+            historySize--;
+
+            if (historySize === 0) {
+                historyIsEmpty();
+            }
+        }
+    });
+
+    onClick($clearHistory, function(e) {
+        e.preventDefault();
+
+        if (confirm(getText('u_sure'))) {
+            historyClear();
+            historyIsEmpty();
+        }
+    });
 }
 
 })(window, document, chrome, screen, navigator, localStorage);

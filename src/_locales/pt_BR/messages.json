@@ -122,6 +122,9 @@
     "use_context": {
         "message": "Usar menu de contexto"
     },
+    "enable_history": {
+        "message": "Habilitar o histórico"
+    },
     "default": {
         "message": "Restaurar configurações originais"
     },
@@ -139,5 +142,17 @@
     },
     "requires_api": {
         "message": "* Requer API do YouTube"
+    },
+    "history": {
+        "message": "Histórico"
+    },
+    "clear_history": {
+        "message": "Limpar o histórico"
+    },
+    "history_empty": {
+        "message": "O histórico está vazio"
+    },
+    "history_disabled": {
+        "message": "O histórico está desativado"
     }
 }

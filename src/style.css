@@ -99,3 +99,42 @@ label[for="vertical-margin"] {
 br {
     line-height: 20px
 }
+
+a {
+    color: #E52D27;
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #FFF; /* to fix when removing the 1st line */
+    border-bottom-color: #EEE
+}
+
+.td-date {
+    color: #444
+}
+
+.td-link {
+    width: 600px;
+    max-width: 600px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.td-remove {
+    width: 30px;
+    cursor: pointer;
+    background: #FFF url(img/remove.png) no-repeat center center
+}
+

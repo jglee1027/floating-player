@@ -122,6 +122,9 @@
     "use_context": {
         "message": "Use context menu"
     },
+    "enable_history": {
+        "message": "Enable history"
+    },
     "default": {
         "message": "Restore default settings"
     },
@@ -139,5 +142,17 @@
     },
     "requires_api": {
         "message": "* Requires YouTube API"
+    },
+    "history": {
+        "message": "History"
+    },
+    "clear_history": {
+        "message": "Clear history"
+    },
+    "history_empty": {
+        "message": "History is empty"
+    },
+    "history_disabled": {
+        "message": "History is disabled"
     }
 }
