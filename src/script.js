@@ -445,6 +445,10 @@ function showPopup(url, fromContextMenu, videoTime) {
                 parseResult = parseDailymotion(url, videoTime);
                 break;
 
+            case 'www.ustream.tv':
+                parseResult = parseUstream(url);
+                break;
+
             case 'www.smashcast.tv':
                 parseResult = parseSmashcast(url);
                 break;
@@ -746,6 +750,21 @@ function parseDailymotion(url, videoTime) {
         if (videoTime) {
             popupUrl += '&start=' + videoTime;
         }
+    }
+
+    return {
+        popupUrl: popupUrl
+    };
+}
+
+
+function parseUstream(url) {
+    var popupUrl;
+    var matches;
+
+    if ((matches = url.path.match(/\/recorded\/[0-9]+/i)) ||
+        (matches = url.path.match(/\/channel\/.+/i))) {
+        popupUrl = 'http://www.ustream.tv' + matches[0] + '/pop-out';
     }
 
     return {
