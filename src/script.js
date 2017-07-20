@@ -1255,15 +1255,19 @@ else if (where === 'options') {
     /*
     Algorithm to generate "perfect" resolutions:
 
-    var width;
-    var height;
+    var width16x9;
+    var height16x9;
+    var width4x3;
+    var height4x3;
 
-    for (var i = 100; i < 1024; i++) {
-        width = i;
-        height = (width * 9) / 16;
+    for (var i = 50; i < 500; i++) {
+        height16x9 = height4x3 = i;
+        width16x9 = (height16x9 * 16) / 9;
+        width4x3 = (height4x3 * 4) / 3;
 
-        if (height % 1 === 0) {
-            console.log(width + 'x' + height);
+        if (width16x9 % 1 === 0 && width4x3 % 1 === 0) {
+            console.log(width16x9 + 'x' + height16x9 +
+                '; ' + width4x3 + 'x' + height4x3);
         }
     }
     */
