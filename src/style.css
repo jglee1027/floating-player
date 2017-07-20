@@ -64,7 +64,8 @@ button {
 }
 
 label {
-    margin-right: 5px
+    margin-right: 5px;
+    user-select: none
 }
 
 label:hover {
@@ -137,4 +138,3 @@ td {
     cursor: pointer;
     background: #FFF url(img/remove.png) no-repeat center center
 }
-
