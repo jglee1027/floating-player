@@ -818,7 +818,7 @@ function parseYouku(url) {
     var popupUrl;
     var matches;
 
-    if (matches = url.path.match(/id_(.+)\.html/)) {
+    if (matches = url.path.match(/id_(.+)(\.html)?/)) {
         popupUrl = 'http://player.youku.com/embed/' + matches[1];
     }
 
