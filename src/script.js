@@ -422,6 +422,7 @@ function showPopup(url, fromContextMenu, videoTime) {
 
         switch (url.host) {
             case 'www.youtube.com':
+            case 'm.youtube.com':
             case 'gaming.youtube.com':
                 if (options.forceYoutubeTv) {
                     parseResult = parseYouTubeAsTv(url, videoTime);
