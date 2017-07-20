@@ -71,6 +71,9 @@
     "keyboard": {
         "message": "Permitir controlar el reproductor de YouTube por el teclado"
     },
+    "loop": {
+        "message": "Bucle en los videos y listas de reproducción de YouTube"
+    },
     "color": {
         "message": "Color de la barra de progreso del reproductor de YouTube"
     },

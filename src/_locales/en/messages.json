@@ -71,6 +71,9 @@
     "keyboard": {
         "message": "Allow control of the YouTube player by keyboard"
     },
+    "loop": {
+        "message": "Loop YouTube videos and playlists"
+    },
     "color": {
         "message": "Color in the YouTube player's video progress bar"
     },

@@ -37,6 +37,7 @@ var defaultOptions = {
     fullscreen: true,
     ytLogo: true,
     keyboard: true,
+    loop: false,
     proportion: true,
     api: true,
     playlistCounter: true,
@@ -526,9 +527,11 @@ function showPopup(url, fromContextMenu, videoTime) {
 
 function parseYouTube(url, videoTime) {
     var popupUrl;
-    var videoId;
     var matches;
     var youtubeDomain;
+
+    var videoId = url.query.v || '';
+    var playlist = url.query.list;
 
     if (options.noCookie) {
         youtubeDomain = 'https://www.youtube-nocookie.com';
@@ -557,6 +560,15 @@ function parseYouTube(url, videoTime) {
             popupUrl += '&showinfo=0';
         }
 
+        if (options.loop) {
+            popupUrl += '&loop=1';
+
+            // Workaround to make single videos loop
+            if (!playlist) {
+                popupUrl += '&playlist=' + videoId;
+            }
+        }
+
         if (!options.fullscreen) {
             popupUrl += '&fs=0';
         }
@@ -583,15 +595,12 @@ function parseYouTube(url, videoTime) {
 
     // YouTube video or playlist
     if (url.path === '/watch' || url.path === '/playlist') {
-        videoId = url.query.v || '';
-
         popupUrl = youtubeDomain + '/embed/' + videoId + '?';
 
         if (options.autoplay) {
             popupUrl += '&autoplay=1';
         }
 
-        var playlist = url.query.list;
         if (playlist) {
             popupUrl += '&listType=playlist&list=' + encodeURL(playlist);
         }
@@ -926,6 +935,7 @@ else if (where === 'options') {
     setHtml($$('label[for="volume"]'), '@volume');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
+    setHtml($$('label[for="loop"]'), '@loop');
     setHtml($$('label[for="api"]'), '@api');
     setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
     setHtml($$('label[for="animate-title"]'), '@animate_title');
@@ -1095,6 +1105,12 @@ else if (where === 'options') {
     $keyboard.checked = options.keyboard;
     onChange($keyboard, function() {
         setOption('keyboard', this.checked);
+    });
+
+    var $loop = $('loop');
+    $loop.checked = options.loop;
+    onChange($loop, function() {
+        setOption('loop', this.checked);
     });
 
     var $api = $('api');
