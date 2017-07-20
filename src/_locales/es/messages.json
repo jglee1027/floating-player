@@ -101,6 +101,9 @@
     "playlist_counter": {
         "message": "Mostrar el contador de la lista de reproducción de YouTube<br>en el título del popup*"
     },
+    "animate_title": {
+        "message": "Animar el título del popup para los videos de YouTube*"
+    },
     "shuffle": {
         "message": "Mezclar la lista de reproducción de YouTube*"
     },

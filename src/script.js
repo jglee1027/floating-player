@@ -40,6 +40,7 @@ var defaultOptions = {
     proportion: true,
     api: true,
     playlistCounter: true,
+    animateTitle: false,
     shuffle: false,
     pause: true,
     youtubeTvOnError: true,
@@ -926,6 +927,7 @@ else if (where === 'options') {
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="api"]'), '@api');
     setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
+    setHtml($$('label[for="animate-title"]'), '@animate_title');
     setHtml($$('label[for="shuffle"]'), '@shuffle');
     setHtml($$('label[for="pause"]'), '@pause');
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
@@ -1104,6 +1106,12 @@ else if (where === 'options') {
     $playlistCounter.checked = options.playlistCounter;
     onChange($playlistCounter, function() {
         setOption('playlistCounter', this.checked);
+    });
+
+    var $animateTitle = $('animate-title');
+    $animateTitle.checked = options.animateTitle;
+    onChange($animateTitle, function() {
+        setOption('animateTitle', this.checked);
     });
 
     var $shuffle = $('shuffle');
@@ -1368,6 +1376,23 @@ else if (where === 'youtube') {
         }
     }
 
+    var animateTimer;
+    function animateTitle(title) {
+        clearInterval(animateTimer);
+
+        title += ' \u2022 ';
+        var length = title.length;
+        var i = 0;
+
+        animateTimer = setInterval(function() {
+            if (i === length) {
+                i = 0;
+            }
+            document.title = title.substr(i) + title.substr(0, i);
+            i++;
+        }, 300);
+    }
+
     function setVideoTitle() {
         var playlistTitle = '';
 
@@ -1389,6 +1414,10 @@ else if (where === 'youtube') {
             title = 'YouTube';
         }
         document.title = title;
+
+        if (options.animateTitle) {
+            animateTitle(title);
+        }
     }
 
 

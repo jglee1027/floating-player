@@ -101,6 +101,9 @@
     "playlist_counter": {
         "message": "Show YouTube playlist counter in popup title*"
     },
+    "animate_title": {
+        "message": "Animate popup title for YouTube videos*"
+    },
     "shuffle": {
         "message": "Shuffle YouTube playlist*"
     },
