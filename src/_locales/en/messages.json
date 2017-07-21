@@ -23,6 +23,21 @@
     "bottom_right": {
         "message": "Bottom right"
     },
+    "top_center": {
+        "message": "Top center"
+    },
+    "bottom_center": {
+        "message": "Bottom center"
+    },
+    "left_center": {
+        "message": "Left center"
+    },
+    "right_center": {
+        "message": "Right center"
+    },
+    "center": {
+        "message": "Center"
+    },
     "default_size": {
         "message": "Default size"
     },

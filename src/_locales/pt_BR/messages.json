@@ -23,6 +23,21 @@
     "bottom_right": {
         "message": "Inferior direito"
     },
+    "top_center": {
+        "message": "Centro superior"
+    },
+    "bottom_center": {
+        "message": "Centro inferior"
+    },
+    "left_center": {
+        "message": "Centro esquerdo"
+    },
+    "right_center": {
+        "message": "Centro direito"
+    },
+    "center": {
+        "message": "Centro"
+    },
     "default_size": {
         "message": "Tamanho padrão"
     },

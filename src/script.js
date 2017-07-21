@@ -8,6 +8,11 @@ var TOP_LEFT = 1;
 var TOP_RIGHT = 2;
 var BOTTOM_LEFT = 3;
 var BOTTOM_RIGHT = 4;
+var TOP_CENTER = 5;
+var BOTTOM_CENTER = 6;
+var LEFT_CENTER = 7;
+var RIGHT_CENTER = 8;
+var CENTER = 9;
 
 var COLOR_RED = 1;
 var COLOR_WHITE = 2;
@@ -266,6 +271,31 @@ function getWindowPosition(width, height) {
         case BOTTOM_RIGHT:
             top = screen.height - height - options.vmargin;
             left = screen.width - width - options.hmargin;
+            break;
+
+        case TOP_CENTER:
+            top = options.vmargin;
+            left = (screen.width - width) / 2;
+            break;
+
+        case BOTTOM_CENTER:
+            top = screen.height - height - options.vmargin;
+            left = (screen.width - width) / 2;
+            break;
+
+        case LEFT_CENTER:
+            top = (screen.height - height) / 2;
+            left = options.hmargin;
+            break;
+
+        case RIGHT_CENTER:
+            top = (screen.height - height) / 2;
+            left = screen.width - width - options.hmargin;
+            break;
+
+        case CENTER:
+            top = (screen.height - height) / 2;
+            left = (screen.width - width) / 2;
     }
 
     return {
@@ -928,6 +958,11 @@ else if (where === 'options') {
     setHtml($option[1], '@top_right');
     setHtml($option[2], '@bottom_left');
     setHtml($option[3], '@bottom_right');
+    setHtml($option[4], '@top_center');
+    setHtml($option[5], '@bottom_center');
+    setHtml($option[6], '@left_center');
+    setHtml($option[7], '@right_center');
+    setHtml($option[8], '@center');
 
     setHtml($$('label[for="width16x9"]'), '@default_size');
     setHtml($$('label[for="width4x3"]'), '@size_4x3');
@@ -944,11 +979,11 @@ else if (where === 'options') {
     setHtml($$('label[for="fullscreen"]'), '@fullscreen');
     setHtml($$('label[for="yt-logo"]'), '@yt_logo');
     setHtml($$('label[for="color"]'), '@color');
-    setHtml($option[4], '@red');
-    setHtml($option[5], '@white');
+    setHtml($option[9], '@red');
+    setHtml($option[10], '@white');
 
     setHtml($$('label[for="speed"]'), '@speed');
-    setHtml($option[9], '@normal');
+    setHtml($option[14], '@normal');
 
     setHtml($$('label[for="quality"]'), '@quality');
     setHtml($$('label[for="volume"]'), '@volume');
