@@ -1,3 +1,8 @@
+2.0.2 - 2017/07/22
+- Added option "Close current tab when creating a new popup"
+- Added support to youtu.be links
+- Added new alignment options
+
 2.0.1 - 2017/07/20
 - Added option "Animate popup title for YouTube videos"
 - Added option "Loop YouTube videos and playlists"
