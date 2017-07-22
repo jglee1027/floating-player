@@ -59,6 +59,9 @@
     "autoplay": {
         "message": "Autoplay embedded video"
     },
+    "close_tab": {
+        "message": "Close current tab when creating a new popup"
+    },
     "no_cookie": {
         "message": "Enable privacy-enhanced mode using youtube-nocookie.com"
     },

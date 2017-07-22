@@ -33,6 +33,7 @@ var defaultOptions = {
     volume: 100,
     embed: true,
     autoplay: true,
+    closeTab: false,
     noCookie: false,
     captions: true,
     annotations: true,
@@ -56,6 +57,11 @@ var defaultOptions = {
     context: true,
     history: false
 };
+
+var tabId;
+var pageUrl;
+var fromContextMenu;
+var videoTime;
 
 var LOCALSTORAGE_PREFIX = '_';
 
@@ -336,8 +342,11 @@ function addContextMenu() {
     });
 
     menu.onClicked.addListener(function(info) {
-        var contextMenu = true;
-        preparePopup(info.linkUrl, contextMenu);
+
+        pageUrl = info.linkUrl;
+        fromContextMenu = true;
+
+        preparePopup();
     });
 }
 
@@ -425,27 +434,28 @@ function setHtml(obj, str) {
     obj.innerHTML = html;
 }
 
-function preparePopup(url, fromContextMenu, tabId) {
+function preparePopup() {
     options = getAllOptions();
 
     if (options.history) {
-        historyAdd(url);
+        historyAdd(pageUrl);
     }
 
     if (!fromContextMenu && options.pause) {
         // Get video time (see content.js)
-        chrome.tabs.sendMessage(tabId, '', function(videoTime) {
-            showPopup(url, fromContextMenu, videoTime);
+        chrome.tabs.sendMessage(tabId, '', function(time) {
+            videoTime = time;
+            showPopup();
         });
     }
     else {
-        showPopup(url, fromContextMenu);
+        showPopup();
     }
 }
 
-function showPopup(url, fromContextMenu, videoTime) {
+function showPopup() {
 
-    url = parseUrl(url);
+    var url = parseUrl(pageUrl);
     var popupUrl = url.href;
     var parseResult = {};
 
@@ -456,23 +466,23 @@ function showPopup(url, fromContextMenu, videoTime) {
             case 'm.youtube.com':
             case 'gaming.youtube.com':
                 if (options.forceYoutubeTv) {
-                    parseResult = parseYouTubeAsTv(url, videoTime);
+                    parseResult = parseYouTubeAsTv(url);
                 }
                 else {
-                    parseResult = parseYouTube(url, videoTime);
+                    parseResult = parseYouTube(url);
                 }
                 break;
 
             case 'www.twitch.tv':
-                parseResult = parseTwitch(url, videoTime);
+                parseResult = parseTwitch(url);
                 break;
 
             case 'vimeo.com':
-                parseResult = parseVimeo(url, videoTime);
+                parseResult = parseVimeo(url);
                 break;
 
             case 'www.dailymotion.com':
-                parseResult = parseDailymotion(url, videoTime);
+                parseResult = parseDailymotion(url);
                 break;
 
             case 'www.ustream.tv':
@@ -552,14 +562,21 @@ function showPopup(url, fromContextMenu, videoTime) {
             pos.height + ', top=' + pos.top + ', left=' + pos.left);
 
         if (!fromContextMenu) {
+
+            // Close the extension popup
             window.close();
+
+            // Close current tab
+            if (options.closeTab) {
+                chrome.tabs.remove(tabId);
+            }
         }
     }
 }
 
 
 
-function parseYouTube(url, videoTime) {
+function parseYouTube(url) {
     var popupUrl;
     var matches;
     var youtubeDomain;
@@ -675,7 +692,7 @@ function parseYouTube(url, videoTime) {
 }
 
 
-function parseYouTubeAsTv(url, videoTime) {
+function parseYouTubeAsTv(url) {
     var popupUrl = 'https://www.youtube.com/tv#/watch?';
 
     var videoId = url.query.v;
@@ -701,7 +718,7 @@ function parseYouTubeAsTv(url, videoTime) {
 }
 
 
-function parseTwitch(url, videoTime) {
+function parseTwitch(url) {
     var popupUrl;
     var matches;
 
@@ -734,7 +751,7 @@ function parseTwitch(url, videoTime) {
 }
 
 
-function parseVimeo(url, videoTime) {
+function parseVimeo(url) {
     var popupUrl;
     var matches;
 
@@ -757,7 +774,7 @@ function parseVimeo(url, videoTime) {
 }
 
 
-function parseDailymotion(url, videoTime) {
+function parseDailymotion(url) {
     var popupUrl;
     var matches;
 
@@ -938,9 +955,12 @@ if (where === 'background') {
 }
 
 else if (where === 'popup') {
-    getTab(function(tabUrl, tabId) {
-        var contextMenu = false;
-        preparePopup(tabUrl, contextMenu, tabId);
+    getTab(function(url, id) {
+        tabId = id;
+        pageUrl = url;
+        fromContextMenu = false;
+
+        preparePopup();
     });
 }
 
@@ -970,6 +990,7 @@ else if (where === 'options') {
     setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
     setHtml($$('label[for="embed"]'), '@embed');
     setHtml($$('label[for="autoplay"]'), '@autoplay');
+    setHtml($$('label[for="close-tab"]'), '@close_tab');
     setHtml($$('label[for="no-cookie"]'), '@no_cookie');
     setHtml($$('label[for="captions"]'), '@captions');
     setHtml($$('label[for="annotations"]'), '@annotations');
@@ -1072,6 +1093,12 @@ else if (where === 'options') {
     $autoplay.checked = options.autoplay;
     onChange($autoplay, function() {
         setOption('autoplay', this.checked);
+    });
+
+    var $closeTab = $('close-tab');
+    $closeTab.checked = options.closeTab;
+    onChange($closeTab, function() {
+        setOption('closeTab', this.checked);
     });
 
     var $noCookie = $('no-cookie');

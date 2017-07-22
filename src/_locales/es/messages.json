@@ -59,6 +59,9 @@
     "autoplay": {
         "message": "Reproducción automática de video incrustado"
     },
+    "close_tab": {
+        "message": "Cerrar la pestaña actual al crear un nuevo popup"
+    },
     "no_cookie": {
         "message": "Activar el modo de mejora de la privacidad mediante youtube-nocookie.com"
     },
