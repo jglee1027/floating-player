@@ -465,6 +465,7 @@ function showPopup() {
             case 'www.youtube.com':
             case 'm.youtube.com':
             case 'gaming.youtube.com':
+            case 'youtu.be':
                 if (options.forceYoutubeTv) {
                     parseResult = parseYouTubeAsTv(url);
                 }
@@ -581,8 +582,9 @@ function parseYouTube(url) {
     var matches;
     var youtubeDomain;
 
-    var videoId = url.query.v || '';
-    var playlist = url.query.list;
+    var videoId;
+    var playlist;
+    var isShortLink;
 
     if (options.noCookie) {
         youtubeDomain = 'https://www.youtube-nocookie.com';
@@ -590,6 +592,17 @@ function parseYouTube(url) {
     else {
         youtubeDomain = 'https://www.youtube.com';
     }
+
+
+    if (url.host === 'youtu.be') {
+        videoId = url.path.slice(1);
+        isShortLink = true;
+    }
+    else {
+        videoId = url.query.v || '';
+        playlist = url.query.list;
+    }
+
 
     function ytCommonParams() {
         if (!options.related) {
@@ -645,7 +658,7 @@ function parseYouTube(url) {
     }
 
     // YouTube video or playlist
-    if (url.path === '/watch' || url.path === '/playlist') {
+    if (url.path === '/watch' || url.path === '/playlist' || isShortLink) {
         popupUrl = youtubeDomain + '/embed/' + videoId + '?';
 
         if (options.autoplay) {
