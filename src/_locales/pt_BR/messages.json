@@ -117,7 +117,7 @@
         "message": "Abrir vídeo do YouTube com a proporção correta"
     },
     "api": {
-        "message": "Usar a API do YouTube para corrigir o título da playlist<br>e descobrir quando o vídeo não puder ser incorporado"
+        "message": "Usar a API do YouTube para corrigir o título da playlist e descobrir quando o vídeo não puder ser incorporado"
     },
     "playlist_counter": {
         "message": "Mostrar contador da playlist do YouTube no título da popup*"

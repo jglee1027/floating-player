@@ -320,14 +320,6 @@ function showInstructions() {
         + suffix + '.html');
 }
 
-function showSourceCode() {
-    window.open('https://github.com/gabrielbarros/floating-player');
-}
-
-function showHistory() {
-    window.open(getURL('history.html'));
-}
-
 function addContextMenu() {
     var menu = chrome.contextMenus;
 
@@ -965,6 +957,10 @@ if (where === 'background') {
         localStorage['ok'] = 1;
         showInstructions();
     }
+
+    chrome.browserAction.setTitle({
+        title: 'Floating Player'
+    });
 }
 
 else if (where === 'popup') {
@@ -982,7 +978,7 @@ else if (where === 'options') {
     // Translation strings
     var strOptions = getText('options');
     setHtml($$('title'), strOptions);
-    setHtml($$('h1'), strOptions);
+    setHtml($$('h1 a'), strOptions);
     setHtml($$('label[for="align"]'), '@align');
 
 
@@ -1061,28 +1057,37 @@ else if (where === 'options') {
     });
 
     var $width16x9 = $('width16x9');
+    var $height16x9 = $('height16x9');
+
     $width16x9.value = options.width16x9;
     onInput($width16x9, function() {
         setOption('width16x9', this.value);
+        highlightResolution('16x9', this.value, $height16x9.value);
     });
 
-    var $height16x9 = $('height16x9');
     $height16x9.value = options.height16x9;
     onInput($height16x9, function() {
         setOption('height16x9', this.value);
+        highlightResolution('16x9', $width16x9.value, this.value);
     });
 
     var $width4x3 = $('width4x3');
+    var $height4x3 = $('height4x3');
+
     $width4x3.value = options.width4x3;
     onInput($width4x3, function() {
         setOption('width4x3', this.value);
+        highlightResolution('4x3', this.value, $height4x3.value);
     });
 
-    var $height4x3 = $('height4x3');
     $height4x3.value = options.height4x3;
     onInput($height4x3, function() {
         setOption('height4x3', this.value);
+        highlightResolution('4x3', $width4x3.value, this.value);
     });
+
+    highlightResolution('16x9', $width16x9.value, $height16x9.value);
+    highlightResolution('4x3', $width4x3.value, $height4x3.value);
 
     var $horizontalMargin = $('horizontal-margin');
     $horizontalMargin.value = options.hmargin;
@@ -1306,7 +1311,7 @@ else if (where === 'options') {
 
     onClick($sourceCode, function(e) {
         e.preventDefault();
-        showSourceCode();
+        window.open('https://github.com/gabrielbarros/floating-player');
     });
 
     onClick($instructions, function(e) {
@@ -1316,7 +1321,7 @@ else if (where === 'options') {
 
     onClick($seeHistory, function(e) {
         e.preventDefault();
-        showHistory();
+        window.open(getURL('history.html'));
     });
 
     var strRecommended = getText('recommended');
@@ -1365,6 +1370,8 @@ else if (where === 'options') {
 
             setOption('width16x9', width);
             setOption('height16x9', height);
+
+            highlightResolution('16x9', width, height);
         }
     });
 
@@ -1386,8 +1393,21 @@ else if (where === 'options') {
 
             setOption('width4x3', width);
             setOption('height4x3', height);
+
+            highlightResolution('4x3', width, height);
         }
     });
+
+    function highlightResolution(format, width, height) {
+        var highlightClass = 'active-resolution' + format;
+        var $elem;
+
+        $elem = $$('.' + highlightClass);
+        $elem && $elem.classList.remove(highlightClass);
+
+        $elem = $(format + '_' + width + 'x' + height);
+        $elem && $elem.classList.add(highlightClass);
+    }
 }
 
 else if (where === 'youtube') {
@@ -1573,7 +1593,7 @@ else if (where === 'history') {
     // Translation strings
     var strHistory = getText('history');
     setHtml($$('title'), strHistory);
-    setHtml($$('h1'), strHistory);
+    setHtml($$('h1 a'), strHistory);
 
     var $clearHistory = $('clear-history');
     setHtml($clearHistory, '@clear_history');

@@ -13,15 +13,37 @@ body, html {
 }
 
 body {
+    font: 13px droid sans, segoe ui, ubuntu, sans-serif;
+    background-color: #F1F1F1;
+    color: #212121;
+    user-select: none
+}
+
+#layout {
+    width: 800px;
+    margin: 0 auto 40px auto;
     padding: 20px;
-    font: 13px droid sans, segoe ui, ubuntu, sans-serif
+    background-color: #FFF;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    background-color: #E52D27;
+    text-align: center
 }
 
 h1 {
-    margin-bottom: 15px;
     font-weight: bold;
-    font-size: 23px;
-    color: #E52D27
+    font-size: 16px
+}
+
+h1 a {
+    color: #FFF
 }
 
 button, select, input[type="number"] {
@@ -29,23 +51,20 @@ button, select, input[type="number"] {
 }
 
 button {
-    margin: 0 10px 60px 0
+    margin: 0 10px 10px 0
 }
 
 .form-block {
-    width: 620px;
     margin-bottom: 14px;
     padding-bottom: 14px;
-    border-bottom: 1px solid #EEE
+    border-bottom: 1px solid #F0F0F0
 }
 
 [type="number"] {
     padding: 4px;
     width: 60px;
     text-align: center;
-    border: 1px solid #999;
-    border-radius: 4px;
-    box-shadow: inset 1px 1px 3px #EEE
+    border: 1px solid #BBB
 }
 
 [type="checkbox"] {
@@ -65,7 +84,7 @@ button {
 
 label {
     margin-right: 5px;
-    user-select: none
+    line-height: 18px
 }
 
 label:hover {
@@ -88,8 +107,13 @@ label[for="vertical-margin"] {
 }
 
 .recommended-resolutions a:hover {
-    color: #651FFF;
+    color: #E52D27;
     text-decoration: underline
+}
+
+a.active-resolution16x9,
+a.active-resolution4x3 {
+    color: #E52D27
 }
 
 #requires-api {
@@ -98,12 +122,13 @@ label[for="vertical-margin"] {
 }
 
 br {
-    line-height: 20px
+    display: none
 }
 
 a {
     color: #E52D27;
-    text-decoration: none
+    text-decoration: none;
+    line-height: 17px
 }
 
 a:hover {
@@ -126,8 +151,8 @@ td {
 }
 
 .td-link {
-    width: 600px;
-    max-width: 600px;
+    width: 580px;
+    max-width: 580px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis
@@ -137,4 +162,35 @@ td {
     width: 30px;
     cursor: pointer;
     background: #FFF url(img/remove.png) no-repeat center center
+}
+
+p {
+    text-align: center
+}
+
+@media only screen and (max-width: 800px) {
+    #layout {
+        width: 100%
+    }
+
+    label[for="vertical-margin"] {
+        margin-left: 0
+    }
+
+    br {
+        display: block;
+        line-height: 30px
+    }
+
+    .td-link {
+        width: 500px;
+        max-width: 500px
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .td-link {
+        width: 300px;
+        max-width: 300px
+    }
 }

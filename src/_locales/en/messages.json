@@ -117,7 +117,7 @@
         "message": "Open YouTube video with the correct aspect ratio"
     },
     "api": {
-        "message": "Use YouTube API to fix playlist title<br>and figure out when video cannot be embedded"
+        "message": "Use YouTube API to fix playlist title and figure out when video cannot be embedded"
     },
     "playlist_counter": {
         "message": "Show YouTube playlist counter in popup title*"
