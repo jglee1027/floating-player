@@ -38,11 +38,8 @@
     "center": {
         "message": "Al centro"
     },
-    "default_size": {
-        "message": "Tamaño por defecto"
-    },
-    "size_4x3": {
-        "message": "Tamaño 4:3"
+    "size": {
+        "message": "Tamaño"
     },
     "recommended": {
         "message": "Recomendado"

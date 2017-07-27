@@ -21,10 +21,8 @@ var options;
 
 var defaultOptions = {
     align: BOTTOM_RIGHT,
-    width16x9: 512,
-    height16x9: 288,
-    width4x3: 384,
-    height4x3: 288,
+    width: 512,
+    height: 288,
     hmargin: 0,
     vmargin: 0,
     color: COLOR_RED,
@@ -245,6 +243,10 @@ function getVideoProportion(option) {
             option.onVideo16x9();
         }
     });
+}
+
+function getWidth4x3(height) {
+    return Math.round((4 * height) / 3);
 }
 
 function getWindowPosition(width, height) {
@@ -523,16 +525,16 @@ function showPopup() {
         getVideoProportion({
             videoId: youtubeVideoId,
             onVideo16x9: function() {
-                windowOpen(options.width16x9, options.height16x9);
+                windowOpen(options.width, options.height);
             },
             onVideo4x3: function() {
-                windowOpen(options.width4x3, options.height4x3);
+                windowOpen(getWidth4x3(options.height), options.height);
             }
         });
 
     }
     else {
-        windowOpen(options.width16x9, options.height16x9);
+        windowOpen(options.width, options.height);
     }
 
     function windowOpen(width, height) {
@@ -981,7 +983,6 @@ else if (where === 'options') {
     setHtml($$('h1 a'), strOptions);
     setHtml($$('label[for="align"]'), '@align');
 
-
     var $option = $$$('option');
     setHtml($option[0], '@top_left');
     setHtml($option[1], '@top_right');
@@ -993,8 +994,8 @@ else if (where === 'options') {
     setHtml($option[7], '@right_center');
     setHtml($option[8], '@center');
 
-    setHtml($$('label[for="width16x9"]'), '@default_size');
-    setHtml($$('label[for="width4x3"]'), '@size_4x3');
+    setHtml($$('label[for="width"]'), '@size');
+    setHtml($('recommended'), '@recommended');
     setHtml($$('label[for="horizontal-margin"]'), '@horizontal_margin');
     setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
     setHtml($$('label[for="embed"]'), '@embed');
@@ -1056,38 +1057,22 @@ else if (where === 'options') {
         setOption('align', this.value);
     });
 
-    var $width16x9 = $('width16x9');
-    var $height16x9 = $('height16x9');
+    var $width = $('width');
+    var $height = $('height');
 
-    $width16x9.value = options.width16x9;
-    onInput($width16x9, function() {
-        setOption('width16x9', this.value);
-        highlightResolution('16x9', this.value, $height16x9.value);
+    $width.value = options.width;
+    onInput($width, function() {
+        setOption('width', this.value);
+        highlightResolution(this.value, $height.value);
     });
 
-    $height16x9.value = options.height16x9;
-    onInput($height16x9, function() {
-        setOption('height16x9', this.value);
-        highlightResolution('16x9', $width16x9.value, this.value);
+    $height.value = options.height;
+    onInput($height, function() {
+        setOption('height', this.value);
+        highlightResolution($width.value, this.value);
     });
 
-    var $width4x3 = $('width4x3');
-    var $height4x3 = $('height4x3');
-
-    $width4x3.value = options.width4x3;
-    onInput($width4x3, function() {
-        setOption('width4x3', this.value);
-        highlightResolution('4x3', this.value, $height4x3.value);
-    });
-
-    $height4x3.value = options.height4x3;
-    onInput($height4x3, function() {
-        setOption('height4x3', this.value);
-        highlightResolution('4x3', $width4x3.value, this.value);
-    });
-
-    highlightResolution('16x9', $width16x9.value, $height16x9.value);
-    highlightResolution('4x3', $width4x3.value, $height4x3.value);
+    highlightResolution($width.value, $height.value);
 
     var $horizontalMargin = $('horizontal-margin');
     $horizontalMargin.value = options.hmargin;
@@ -1324,13 +1309,28 @@ else if (where === 'options') {
         window.open(getURL('history.html'));
     });
 
-    var strRecommended = getText('recommended');
-    var $recommended = $$$('.recommended');
-    setHtml($recommended[0], strRecommended);
-    setHtml($recommended[1], strRecommended);
+    onClick($('resolutions'), function(e) {
+        var $target = e.target;
+        var resolution;
+        var width;
+        var height;
 
-    var $recommendedResolutions16x9 = $('recommended-resolutions16x9');
-    var $recommendedResolutions4x3 = $('recommended-resolutions4x3');
+        e.preventDefault();
+
+        if ($target.href) {
+            resolution = $target.innerHTML.split('x');
+            width = resolution[0];
+            height = resolution[1];
+
+            $width.value = width;
+            $height.value = height;
+
+            setOption('width', width);
+            setOption('height', height);
+
+            highlightResolution(width, height);
+        }
+    });
 
     /*
     Algorithm to generate "perfect" resolutions:
@@ -1352,60 +1352,14 @@ else if (where === 'options') {
     }
     */
 
-    onClick($recommendedResolutions16x9, function(e) {
-        var $target = e.target;
-        var resolution;
-        var width;
-        var height;
-
-        e.preventDefault();
-
-        if ($target.href) {
-            resolution = $target.innerHTML.split('x');
-            width = resolution[0];
-            height = resolution[1];
-
-            $width16x9.value = width;
-            $height16x9.value = height;
-
-            setOption('width16x9', width);
-            setOption('height16x9', height);
-
-            highlightResolution('16x9', width, height);
-        }
-    });
-
-    onClick($recommendedResolutions4x3, function(e) {
-        var $target = e.target;
-        var resolution;
-        var width;
-        var height;
-
-        e.preventDefault();
-
-        if ($target.href) {
-            resolution = $target.innerHTML.split('x');
-            width = resolution[0];
-            height = resolution[1];
-
-            $width4x3.value = width;
-            $height4x3.value = height;
-
-            setOption('width4x3', width);
-            setOption('height4x3', height);
-
-            highlightResolution('4x3', width, height);
-        }
-    });
-
-    function highlightResolution(format, width, height) {
-        var highlightClass = 'active-resolution' + format;
+    function highlightResolution(width, height) {
+        var highlightClass = 'active-resolution';
         var $elem;
 
         $elem = $$('.' + highlightClass);
         $elem && $elem.classList.remove(highlightClass);
 
-        $elem = $(format + '_' + width + 'x' + height);
+        $elem = $(width + 'x' + height);
         $elem && $elem.classList.add(highlightClass);
     }
 }
@@ -1501,10 +1455,10 @@ else if (where === 'youtube') {
                 getVideoProportion({
                     videoId: videoId,
                     onVideo16x9: function() {
-                        resizeWindow(options.width16x9, options.height16x9);
+                        resizeWindow(options.width, options.height);
                     },
                     onVideo4x3: function() {
-                        resizeWindow(options.width4x3, options.height4x3);
+                        resizeWindow(getWidth4x3(options.height), options.height);
                     }
                 });
             }
