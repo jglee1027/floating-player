@@ -1444,7 +1444,10 @@ else if (where === 'youtube') {
             player.setPlaybackQuality(options.quality);
 
             // Fix proportion of the next video in the playlist
-            if (options.proportion) {
+            // Except if fullscreen
+            var isFullscreen = window.innerWidth === screen.width;
+
+            if (!isFullscreen && options.proportion) {
                 function resizeWindow(width, height) {
                     var pos = getWindowPosition(width, height);
 

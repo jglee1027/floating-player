@@ -1,3 +1,6 @@
+2.0.5 - 2017/07/27
+- Fixed bug when videos play fullscreen
+
 2.0.4 - 2017/07/27
 - Removed option "4:3 size"
 - 4:3 width is now calculated automatically from 16:9 height
