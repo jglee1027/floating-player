@@ -77,6 +77,11 @@ button {
     top: 4px
 }
 
+select {
+    background-color: #FFF;
+    border: 1px solid #BBB
+}
+
 #current-volume {
     position: relative;
     bottom: 3px
