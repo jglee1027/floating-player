@@ -442,7 +442,7 @@ function preparePopup() {
         };
 
         chrome.tabs.executeScript(tabId, opt, function(time) {
-            videoTime = time;
+            videoTime = time[0];
             showPopup();
         });
     }
