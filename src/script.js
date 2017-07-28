@@ -885,6 +885,10 @@ function parseFacebook(url) {
     if (url.path.match(/^\/[a-z0-9_]+\/videos(\/vb\.[0-9]+)?\/[0-9]+/i)) {
         popupUrl = 'https://www.facebook.com/plugins/video.php?href=' +
             encodeURL(url.href);
+
+        if (options.autoplay) {
+            popupUrl += '&autoplay=1';
+        }
     }
 
     return {

@@ -1,6 +1,7 @@
 2.0.6 - 2017/07/28
 - Removed needless permissions
 - Added support to time params for YouTube videos
+- Added autoplay for Facebook
 
 2.0.5 - 2017/07/27
 - Fixed bug when videos play fullscreen
