@@ -22,16 +22,5 @@
     },
 
     "options_page": "options.html",
-    "permissions": ["contextMenus", "activeTab"],
-
-    "content_scripts": [{
-        "matches":    [
-            "*://www.youtube.com/*",
-            "*://www.twitch.tv/*",
-            "*://vimeo.com/*",
-            "*://www.dailymotion.com/*"
-        ],
-        "js": ["content.js"],
-        "run_at": "document_idle"
-    }]
+    "permissions": ["contextMenus", "activeTab"]
 }

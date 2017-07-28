@@ -436,8 +436,12 @@ function preparePopup() {
     }
 
     if (!fromContextMenu && options.pause) {
-        // Get video time (see content.js)
-        chrome.tabs.sendMessage(tabId, '', function(time) {
+        // Get video time
+        var opt = {
+            file: 'get-time.js'
+        };
+
+        chrome.tabs.executeScript(tabId, opt, function(time) {
             videoTime = time;
             showPopup();
         });
