@@ -456,6 +456,7 @@ function showPopup() {
     if (options.embed) {
 
         switch (url.host) {
+            case 'youtube.com':
             case 'www.youtube.com':
             case 'm.youtube.com':
             case 'gaming.youtube.com':
@@ -570,6 +571,20 @@ function showPopup() {
 }
 
 
+function parseTime(time) {
+    var matches = ('' + time).match(
+        /^(?:([0-9]+)h)?(?:([0-9]+)m)?(?:([0-9]+)s?)?$/) || [];
+
+    if (matches.length === 4) {
+        var hours = +(matches[1] || 0);
+        var minutes = +(matches[2] || 0);
+        var seconds = +(matches[3] || 0);
+
+        return hours * 3600 + minutes * 60 + seconds;
+    }
+    return 0;
+}
+
 
 function parseYouTube(url) {
     var popupUrl;
@@ -663,8 +678,13 @@ function parseYouTube(url) {
             popupUrl += '&listType=playlist&list=' + encodeURL(playlist);
         }
 
-        if (videoTime) {
-            popupUrl += '&start=' + videoTime;
+        var time = videoTime ||
+                   url.query.start ||
+                   url.query.t ||
+                   url.query.time_continue;
+
+        if (time) {
+            popupUrl += '&start=' + parseTime(time);
         }
 
         ytCommonParams();
