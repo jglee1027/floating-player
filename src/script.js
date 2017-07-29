@@ -57,44 +57,57 @@ var defaultOptions = {
     history: false
 };
 
-var tabId;
+var LOCALSTORAGE_PREFIX = '_';
+
+var currentTabId;
+var currentPopupId;
 var pageUrl;
 var fromContextMenu;
 var videoTime;
 
-var LOCALSTORAGE_PREFIX = '_';
-
 var WIDTH_FIX = 0;
 var HEIGHT_FIX = 0;
 
-var WINDOWS_XP = 5.1;
-var WINDOWS_VISTA = 6;
-var WINDOWS_7 = 6.1;
-var WINDOWS_8 = 6.2;
-var WINDOWS_8_1 = 6.3;
-var WINDOWS_10 = 10;
 
-var ua = navigator.userAgent;
-var windowsVersion = parseFloat((ua.match(/Windows NT ([0-9.]+)/i) || [])[1]);
+// Using Mac OS X
+var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+if (isMac) {
+    HEIGHT_FIX = 22;
+}
 
-// Fix popup width and height on Windows
-switch (windowsVersion) {
-    case WINDOWS_XP:
-    case WINDOWS_VISTA:
-        WIDTH_FIX = 10;
-        HEIGHT_FIX = 31;
-        break;
+// Using Windows
+else {
+    var windowsVersion;
+    if (windowsVersion = navigator.userAgent.match(/Windows NT ([0-9.]+)/i)) {
 
-    case WINDOWS_7:
-        WIDTH_FIX = 10;
-        HEIGHT_FIX = 29;
-        break;
+        windowsVersion = parseFloat(windowsVersion[1]);
 
-    case WINDOWS_8:
-    case WINDOWS_8_1:
-    case WINDOWS_10:
-        WIDTH_FIX = 16;
-        HEIGHT_FIX = 39;
+        var WINDOWS_XP = 5.1;
+        var WINDOWS_VISTA = 6;
+        var WINDOWS_7 = 6.1;
+        var WINDOWS_8 = 6.2;
+        var WINDOWS_8_1 = 6.3;
+        var WINDOWS_10 = 10;
+
+        switch (windowsVersion) {
+            case WINDOWS_XP:
+            case WINDOWS_VISTA:
+                WIDTH_FIX = 10;
+                HEIGHT_FIX = 31;
+                break;
+
+            case WINDOWS_7:
+                WIDTH_FIX = 10;
+                HEIGHT_FIX = 29;
+                break;
+
+            case WINDOWS_8:
+            case WINDOWS_8_1:
+            case WINDOWS_10:
+                WIDTH_FIX = 16;
+                HEIGHT_FIX = 39;
+        }
+    }
 }
 
 
@@ -182,6 +195,21 @@ function getAllOptions() {
 function setOption(name, value) {
     localStorage.setItem(LOCALSTORAGE_PREFIX + name, value);
     options[name] = getOption(name);
+}
+
+function getCurrentPopup(callback) {
+    var error;
+
+    if (currentPopupId === undefined) {
+        error = true;
+        callback(error);
+    }
+    else {
+        chrome.tabs.get(currentPopupId, function() {
+            error = chrome.runtime.lastError;
+            callback(error);
+        });
+    }
 }
 
 function getTab(callback) {
@@ -320,8 +348,10 @@ function showInstructions() {
     var lang = navigator.language.toLowerCase();
     var suffix = (lang === 'pt-br' || lang === 'pt-pt') ? 'pt' : 'en';
 
-    window.open('https://public-folder.github.io/floating-player/instructions-'
-        + suffix + '.html');
+    chrome.tabs.create({
+        url: 'https://public-folder.github.io/floating-player/instructions-'
+            + suffix + '.html'
+    });
 }
 
 function addContextMenu() {
@@ -443,13 +473,17 @@ function preparePopup() {
             file: 'get-time.js'
         };
 
-        chrome.tabs.executeScript(tabId, opt, function(time) {
-            videoTime = time[0];
+        chrome.tabs.executeScript(currentTabId, opt, function(time) {
+            videoTime = 0;
+
+            if (Array.isArray(time) && typeof time[0] === 'number') {
+                videoTime = time[0];
+            }
             showPopup();
         });
     }
     else {
-        videoTime = 0; // To avoid bug
+        videoTime = 0;
         showPopup();
     }
 }
@@ -563,28 +597,49 @@ function showPopup() {
         else {
 
             var pos = getWindowPosition(width, height);
-            var popupName = options.keepPopup ? 'floatingPlayer' : '';
 
-            /*
-            chrome.windows.create({
-                url: popupUrl,
-                width: pos.width,
-                height: pos.height,
-                top: pos.top,
-                left: pos.left,
-                type: 'popup'
-            });
-            */
+            function create() {
+                chrome.windows.create({
+                    url: popupUrl,
+                    width: pos.width,
+                    height: pos.height,
+                    top: pos.top,
+                    left: pos.left,
+                    type: 'popup',
+                    focused: true
+                }, function(info) {
+                    currentPopupId = info.tabs[0].id;
+                });
+            }
 
-            window.open(popupUrl, popupName, 'width=' + pos.width + ', height='
-            + pos.height + ', top=' + pos.top + ', left=' + pos.left);
+            if (options.keepPopup) {
+
+                // Find the current popup if any
+                getCurrentPopup(function(error) {
+
+                    // No popup found; create a new one
+                    if (error) {
+                        create();
+                    }
+
+                    // We found the popup, let's update its url
+                    else {
+                        chrome.tabs.update(currentPopupId, {
+                            url: popupUrl // <-- need web_accessible_resources
+                        });
+                    }
+                });
+            }
+            else {
+                create();
+            }
         }
 
         if (!fromContextMenu) {
 
             // Close current tab
             if (options.closeTab) {
-                chrome.tabs.remove(tabId);
+                chrome.tabs.remove(currentTabId);
             }
         }
     }
@@ -1010,7 +1065,7 @@ if (where === 'background') {
 
     // Extension icon
     chrome.browserAction.onClicked.addListener(function(tab) {
-        tabId = tab.id;
+        currentTabId = tab.id;
         pageUrl = tab.url;
         fromContextMenu = false;
 
@@ -1351,7 +1406,9 @@ else if (where === 'options') {
 
     onClick($sourceCode, function(e) {
         e.preventDefault();
-        window.open('https://github.com/gabrielbarros/floating-player');
+        chrome.tabs.create({
+            url: 'https://github.com/gabrielbarros/floating-player'
+        });
     });
 
     onClick($instructions, function(e) {
@@ -1361,7 +1418,9 @@ else if (where === 'options') {
 
     onClick($seeHistory, function(e) {
         e.preventDefault();
-        window.open(getURL('history.html'));
+        chrome.tabs.create({
+            url: getURL('history.html')
+        });
     });
 
     onClick($('resolutions'), function(e) {
@@ -1470,6 +1529,9 @@ else if (where === 'youtube') {
         videoList = videoData.list;
 
         if (event.data === YT.PlayerState.BUFFERING) {
+
+            // Set video quality
+            player.setPlaybackQuality(options.quality);
 
             // Add link to history
             if (options.history) {

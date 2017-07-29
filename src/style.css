@@ -91,6 +91,10 @@ select {
     bottom: 3px
 }
 
+.os-mac #current-volume {
+    bottom: 0
+}
+
 label {
     margin-right: 5px;
     line-height: 18px

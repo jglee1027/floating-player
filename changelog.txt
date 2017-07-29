@@ -1,8 +1,12 @@
+2.0.7 - 2017/07/29
+- Fix popup height on Mac OS X
+- Code improvements
+
 2.0.6 - 2017/07/28
 - Removed needless permissions
 - Added support to time params for YouTube videos
 - Added autoplay for Facebook
-- Added support to Helium on MacOS
+- Added support to Helium on Mac OS X
 
 2.0.5 - 2017/07/27
 - Fixed bug when videos play fullscreen
