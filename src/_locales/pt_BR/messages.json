@@ -137,6 +137,9 @@
     "fix": {
         "message": "Corrigir a largura e a altura da popup no Windows"
     },
+    "helium": {
+        "message": "Abrir vídeo com o Helium no MacOS"
+    },
     "keep_popup": {
         "message": "Manter a popup atual em vez de abrir uma nova"
     },

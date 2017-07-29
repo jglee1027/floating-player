@@ -51,6 +51,7 @@ var defaultOptions = {
     youtubeTvOnError: true,
     forceYoutubeTv: false,
     fix: true,
+    helium: false,
     keepPopup: true,
     context: true,
     history: false
@@ -128,6 +129,7 @@ function parseUrl(url) {
         protocol: e.protocol,
         host: e.host.toLowerCase(),
         path: e.pathname,
+        hash: e.hash,
         rawQuery: rawQuery,
         query: queryStringParse(rawQuery)
     };
@@ -447,6 +449,7 @@ function preparePopup() {
         });
     }
     else {
+        videoTime = 0; // To avoid bug
         showPopup();
     }
 }
@@ -544,27 +547,40 @@ function showPopup() {
 
     function windowOpen(width, height) {
 
-        var pos = getWindowPosition(width, height);
-        var popupName = options.keepPopup ? 'floatingPlayer' : '';
+        if (options.helium) {
+            popupUrl = 'helium://' + popupUrl;
 
-        /*
-        chrome.windows.create({
-            url: popupUrl,
-            width: pos.width,
-            height: pos.height,
-            top: pos.top,
-            left: pos.left,
-            type: 'popup'
-        });
-        */
+            chrome.tabs.create({
+                url: popupUrl,
+                pinned: true,
+                active: false
+            }, function(tab) {
+                setTimeout(function() {
+                    chrome.tabs.remove(tab.id);
+                }, 3000);
+            });
+        }
+        else {
 
-        window.open(popupUrl, popupName, 'width=' + pos.width + ', height=' +
-            pos.height + ', top=' + pos.top + ', left=' + pos.left);
+            var pos = getWindowPosition(width, height);
+            var popupName = options.keepPopup ? 'floatingPlayer' : '';
+
+            /*
+            chrome.windows.create({
+                url: popupUrl,
+                width: pos.width,
+                height: pos.height,
+                top: pos.top,
+                left: pos.left,
+                type: 'popup'
+            });
+            */
+
+            window.open(popupUrl, popupName, 'width=' + pos.width + ', height='
+            + pos.height + ', top=' + pos.top + ', left=' + pos.left);
+        }
 
         if (!fromContextMenu) {
-
-            // Close the extension popup
-            window.close();
 
             // Close current tab
             if (options.closeTab) {
@@ -662,7 +678,7 @@ function parseYouTube(url) {
             popupUrl += '&color=white';
         }
 
-        if (options.api) {
+        if (options.api && !options.helium) {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getURL('').
                 slice(0, -1));
 
@@ -991,12 +1007,11 @@ if (where === 'background') {
     chrome.browserAction.setTitle({
         title: 'Floating Player'
     });
-}
 
-else if (where === 'popup') {
-    getTab(function(url, id) {
-        tabId = id;
-        pageUrl = url;
+    // Extension icon
+    chrome.browserAction.onClicked.addListener(function(tab) {
+        tabId = tab.id;
+        pageUrl = tab.url;
         fromContextMenu = false;
 
         preparePopup();
@@ -1057,6 +1072,7 @@ else if (where === 'options') {
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
+    setHtml($$('label[for="helium"]'), '@helium');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
     setHtml($$('label[for="enable-history"]'), '@enable_history');
@@ -1076,6 +1092,11 @@ else if (where === 'options') {
     setHtml($seeHistory, '@history');
     // End Translation strings
 
+
+    // Add css class to body about the OS
+    chrome.runtime.getPlatformInfo(function(info) {
+        document.body.classList.add('os-' + info.os);
+    });
 
     options = getAllOptions();
 
@@ -1271,6 +1292,12 @@ else if (where === 'options') {
     $fix.checked = options.fix;
     onChange($fix, function() {
         setOption('fix', this.checked);
+    });
+
+    var $helium = $('helium');
+    $helium.checked = options.helium;
+    onChange($helium, function() {
+        setOption('helium', this.checked);
     });
 
     var $keepPopup = $('keep-popup');

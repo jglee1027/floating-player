@@ -2,6 +2,7 @@
 - Removed needless permissions
 - Added support to time params for YouTube videos
 - Added autoplay for Facebook
+- Added support to Helium on MacOS
 
 2.0.5 - 2017/07/27
 - Fixed bug when videos play fullscreen
