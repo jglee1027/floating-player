@@ -832,9 +832,13 @@ function parseYouTubeAsTv() {
     }
 
     // [BUG] Video time doesn't work with list on YouTube TV
-    var time = videoTime || pageUrl.query.t;
+    var time = videoTime ||
+               pageUrl.query.start ||
+               pageUrl.query.t ||
+               pageUrl.query.time_continue;
+
     if (time) {
-        popupUrl += '&t=' + time;
+        popupUrl += '&t=' + parseTime(time);
     }
 
     youtubeVideoId = videoId;
