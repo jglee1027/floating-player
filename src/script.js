@@ -1,9 +1,7 @@
 (function(window, document, chrome, screen, navigator, localStorage) {
 'use strict';
 
-var encodeURL = encodeURIComponent;
-var decodeURL = decodeURIComponent;
-
+// Constants
 var TOP_LEFT = 1;
 var TOP_RIGHT = 2;
 var BOTTOM_LEFT = 3;
@@ -17,6 +15,12 @@ var CENTER = 9;
 var COLOR_RED = 1;
 var COLOR_WHITE = 2;
 
+var VIDEO_16X9 = 1;
+var VIDEO_4X3 = 2;
+
+
+// Options
+var LOCALSTORAGE_PREFIX = '_';
 var options;
 
 var defaultOptions = {
@@ -57,14 +61,23 @@ var defaultOptions = {
     history: false
 };
 
-var LOCALSTORAGE_PREFIX = '_';
 
-var currentTabId;
-var currentPopupId;
-var pageUrl;
-var fromContextMenu;
+// Popup info
+var popupUrl;
+var popupTabId;
+var popupWindowId;
+
+// Tab info
+var tabId;
+var pageUrl; // <-- Either tab url or context menu url
+
+// Video info
+var videoFormat;
 var videoTime;
+var youtubeVideoId;
 
+
+// Fix for popup width/height on Windows and Mac OS X
 var WIDTH_FIX = 0;
 var HEIGHT_FIX = 0;
 
@@ -109,6 +122,10 @@ else {
         }
     }
 }
+
+
+var encodeURL = encodeURIComponent;
+var decodeURL = decodeURIComponent;
 
 
 function queryStringParse(q) {
@@ -200,25 +217,19 @@ function setOption(name, value) {
 function getCurrentPopup(callback) {
     var error;
 
-    if (currentPopupId === undefined) {
+    if (popupTabId === undefined) {
         error = true;
         callback(error);
     }
     else {
-        chrome.tabs.get(currentPopupId, function() {
+        chrome.tabs.get(popupTabId, function() {
             error = chrome.runtime.lastError;
             callback(error);
         });
     }
 }
 
-function getTab(callback) {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        callback(tabs[0].url, tabs[0].id);
-    });
-}
-
-function getURL(url) {
+function getExtensionUrl(url) {
     return chrome.runtime.getURL(url);
 }
 
@@ -228,25 +239,25 @@ function getText(key) {
 
 function ajax(option) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', option.url);
+    xhr.timeout = 5000;
+    xhr.open('GET', option.url, true);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) { // XMLHttpRequest.DONE = 4
+        if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 option.success(xhr.responseText);
             }
             else {
-                option.error(xhr.statusText);
+                option.error();
             }
         }
     };
     xhr.send();
 }
 
-function getVideoProportion(option) {
+function getVideoProportion(callback) {
 
-    // option: videoId, onVideo16x9, onVideo4x3
-
-    var youtubeUrl = 'https://www.youtube.com/watch?v=' + option.videoId;
+    var youtubeUrl = 'https://www.youtube.com/watch?v=' + youtubeVideoId;
+    videoFormat = VIDEO_16X9;
 
     ajax({
         url: 'https://www.youtube.com/oembed?url=' + encodeURL(youtubeUrl),
@@ -256,38 +267,40 @@ function getVideoProportion(option) {
                 var originalWidth = response.width;
                 var originalHeight = response.height;
                 var proportion = originalWidth / originalHeight;
-                var is16x9 = proportion > 1.4;
+                var is4x3 = proportion <= 1.4;
 
-                if (is16x9) {
-                    option.onVideo16x9();
+                if (is4x3) {
+                    videoFormat = VIDEO_4X3;
                 }
-                else {
-                    option.onVideo4x3();
-                }
+
+                callback();
             }
             catch(e) {
-                option.onVideo16x9();
+                console.log('oEmbed parse error');
+                callback();
             }
         },
         error: function() {
-            option.onVideo16x9();
+            console.log('oEmbed error');
+            callback();
         }
     });
 }
 
-function getWidth4x3(height) {
-    return Math.round((4 * height) / 3);
-}
+function getWindowPosition() {
+    var width = options.width;
+    var height = options.height;
+    var top;
+    var left;
 
-function getWindowPosition(width, height) {
+    if (videoFormat === VIDEO_4X3) {
+        width = Math.round((4 * height) / 3);
+    }
 
     if (options.fix) {
         width += WIDTH_FIX;
         height += HEIGHT_FIX;
     }
-
-    var top;
-    var left;
 
     switch (options.align) {
 
@@ -345,8 +358,19 @@ function getWindowPosition(width, height) {
 }
 
 function showInstructions() {
-    var lang = navigator.language.toLowerCase();
-    var suffix = (lang === 'pt-br' || lang === 'pt-pt') ? 'pt' : 'en';
+    var lang = chrome.i18n.getUILanguage().toLowerCase();
+    var suffix;
+
+    switch (lang) {
+        case 'pt-br':
+        case 'pt-pt':
+        case 'pt':
+            suffix = 'pt';
+            break;
+
+        default:
+            suffix = 'en';
+    }
 
     chrome.tabs.create({
         url: 'https://public-folder.github.io/floating-player/instructions-'
@@ -368,9 +392,8 @@ function addContextMenu() {
     });
 
     menu.onClicked.addListener(function(info) {
-
-        pageUrl = info.linkUrl;
-        fromContextMenu = true;
+        pageUrl = parseUrl(info.linkUrl);
+        tabId = null;
 
         preparePopup();
     });
@@ -464,16 +487,14 @@ function preparePopup() {
     options = getAllOptions();
 
     if (options.history) {
-        historyAdd(pageUrl);
+        historyAdd(pageUrl.href);
     }
 
-    if (!fromContextMenu && options.pause) {
-        // Get video time
-        var opt = {
-            file: 'get-time.js'
-        };
+    // From extension icon
+    if (tabId !== null && options.pause) {
 
-        chrome.tabs.executeScript(currentTabId, opt, function(time) {
+        // Get video time
+        chrome.tabs.executeScript(tabId, {file: 'get-time.js'}, function(time) {
             videoTime = 0;
 
             if (Array.isArray(time) && typeof time[0] === 'number') {
@@ -482,6 +503,8 @@ function preparePopup() {
             showPopup();
         });
     }
+
+    // From context menu
     else {
         videoTime = 0;
         showPopup();
@@ -490,96 +513,84 @@ function preparePopup() {
 
 function showPopup() {
 
-    var url = parseUrl(pageUrl);
-    var popupUrl = url.href;
-    var parseResult = {};
+    popupUrl = pageUrl.href;
+    youtubeVideoId = null;
 
     if (options.embed) {
 
-        switch (url.host) {
+        switch (pageUrl.host) {
             case 'youtube.com':
             case 'www.youtube.com':
             case 'm.youtube.com':
             case 'gaming.youtube.com':
             case 'youtu.be':
                 if (options.forceYoutubeTv) {
-                    parseResult = parseYouTubeAsTv(url);
+                    parseYouTubeAsTv();
                 }
                 else {
-                    parseResult = parseYouTube(url);
+                    parseYouTube();
                 }
                 break;
 
             case 'www.twitch.tv':
-                parseResult = parseTwitch(url);
+                parseTwitch();
                 break;
 
             case 'vimeo.com':
-                parseResult = parseVimeo(url);
+                parseVimeo();
                 break;
 
             case 'www.dailymotion.com':
-                parseResult = parseDailymotion(url);
+                parseDailymotion();
                 break;
 
             case 'www.ustream.tv':
-                parseResult = parseUstream(url);
+                parseUstream();
                 break;
 
             case 'www.smashcast.tv':
-                parseResult = parseSmashcast(url);
+                parseSmashcast();
                 break;
 
             case 'www.facebook.com':
-                parseResult = parseFacebook(url);
+                parseFacebook();
                 break;
 
             case 'www.instagram.com':
-                parseResult = parseInstagram(url);
+                parseInstagram();
                 break;
 
             case 'www.ted.com':
-                parseResult = parseTed(url);
+                parseTed();
                 break;
 
             case 'v.youku.com':
-                parseResult = parseYouku(url);
+                parseYouku();
                 break;
 
             case 'www.vevo.com':
-                parseResult = parseVevo(url);
+                parseVevo();
                 break;
 
             case 'www.metacafe.com':
-                parseResult = parseMetacafe(url);
+                parseMetacafe();
                 break;
-        }
-
-        if (parseResult.popupUrl) {
-            popupUrl = parseResult.popupUrl;
         }
     }
 
-
-    var youtubeVideoId = parseResult.youtubeVideoId;
     if (youtubeVideoId && options.proportion) {
 
-        getVideoProportion({
-            videoId: youtubeVideoId,
-            onVideo16x9: function() {
-                windowOpen(options.width, options.height);
-            },
-            onVideo4x3: function() {
-                windowOpen(getWidth4x3(options.height), options.height);
-            }
+        getVideoProportion(function() {
+            windowOpen();
         });
 
     }
     else {
-        windowOpen(options.width, options.height);
+        videoFormat = VIDEO_16X9;
+        windowOpen();
     }
 
-    function windowOpen(width, height) {
+    function windowOpen() {
 
         if (options.helium) {
             popupUrl = 'helium://' + popupUrl;
@@ -595,8 +606,7 @@ function showPopup() {
             });
         }
         else {
-
-            var pos = getWindowPosition(width, height);
+            var pos = getWindowPosition();
 
             function create() {
                 chrome.windows.create({
@@ -608,7 +618,8 @@ function showPopup() {
                     type: 'popup',
                     focused: true
                 }, function(info) {
-                    currentPopupId = info.tabs[0].id;
+                    popupTabId = info.tabs[0].id;
+                    popupWindowId = info.id;
                 });
             }
 
@@ -624,8 +635,15 @@ function showPopup() {
 
                     // We found the popup, let's update its url
                     else {
-                        chrome.tabs.update(currentPopupId, {
-                            url: popupUrl // <-- need web_accessible_resources
+                        chrome.tabs.update(popupTabId, {
+                            url: popupUrl // <-- needs web_accessible_resources
+                        });
+
+                        chrome.windows.update(popupWindowId, {
+                            top: pos.top,
+                            left: pos.left,
+                            width: pos.width,
+                            height: pos.height
                         });
                     }
                 });
@@ -635,16 +653,12 @@ function showPopup() {
             }
         }
 
-        if (!fromContextMenu) {
-
-            // Close current tab
-            if (options.closeTab) {
-                chrome.tabs.remove(currentTabId);
-            }
+        // Close current tab
+        if (tabId !== null && options.closeTab) {
+            chrome.tabs.remove(tabId);
         }
     }
 }
-
 
 function parseTime(time) {
     var matches = ('' + time).match(
@@ -660,9 +674,7 @@ function parseTime(time) {
     return 0;
 }
 
-
-function parseYouTube(url) {
-    var popupUrl;
+function parseYouTube() {
     var matches;
     var youtubeDomain;
 
@@ -678,13 +690,15 @@ function parseYouTube(url) {
     }
 
 
-    if (url.host === 'youtu.be') {
-        videoId = url.path.slice(1);
+    if (pageUrl.host === 'youtu.be') {
+        videoId = pageUrl.path.slice(1);
+        youtubeVideoId = videoId;
         isShortLink = true;
     }
     else {
-        videoId = url.query.v || '';
-        playlist = url.query.list;
+        videoId = pageUrl.query.v || '';
+        youtubeVideoId = videoId;
+        playlist = pageUrl.query.list;
     }
 
 
@@ -734,15 +748,15 @@ function parseYouTube(url) {
         }
 
         if (options.api && !options.helium) {
-            popupUrl += '&enablejsapi=1&origin=' + encodeURL(getURL('').
+            popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
                 slice(0, -1));
 
-            popupUrl = getURL('youtube.html?' + encodeURL(popupUrl));
+            popupUrl = getExtensionUrl('youtube.html?' + encodeURL(popupUrl));
         }
     }
 
     // YouTube video or playlist
-    if (url.path === '/watch' || url.path === '/playlist' || isShortLink) {
+    if (pageUrl.path === '/watch' || pageUrl.path === '/playlist' || isShortLink) {
         popupUrl = youtubeDomain + '/embed/' + videoId + '?';
 
         if (options.autoplay) {
@@ -754,9 +768,9 @@ function parseYouTube(url) {
         }
 
         var time = videoTime ||
-                   url.query.start ||
-                   url.query.t ||
-                   url.query.time_continue;
+                   pageUrl.query.start ||
+                   pageUrl.query.t ||
+                   pageUrl.query.time_continue;
 
         if (time) {
             popupUrl += '&start=' + parseTime(time);
@@ -766,7 +780,7 @@ function parseYouTube(url) {
     }
 
     // YouTube channel
-    else if (matches = url.path.match(/^\/user\/([a-zA-Z0-9_-]+).*$/)) {
+    else if (matches = pageUrl.path.match(/^\/user\/([a-zA-Z0-9_-]+).*$/)) {
         var channel = matches[1];
 
         popupUrl = youtubeDomain + '/embed?listType=user_uploads&list=' +
@@ -776,8 +790,8 @@ function parseYouTube(url) {
     }
 
     // YouTube search
-    else if (url.path === '/results') {
-        var search = url.query.search_query || url.query.q;
+    else if (pageUrl.path === '/results') {
+        var search = pageUrl.query.search_query || pageUrl.query.q;
 
         // [BUG] YouTube search doesn't work with youtube-nocookie.com
 
@@ -786,45 +800,34 @@ function parseYouTube(url) {
 
         ytCommonParams();
     }
-
-    return {
-        youtubeVideoId: videoId,
-        popupUrl: popupUrl
-    };
 }
 
+function parseYouTubeAsTv() {
+    popupUrl = 'https://www.youtube.com/tv#/watch?';
 
-function parseYouTubeAsTv(url) {
-    var popupUrl = 'https://www.youtube.com/tv#/watch?';
-
-    var videoId = url.query.v;
+    var videoId = pageUrl.query.v;
     if (videoId) {
         popupUrl += '&v=' + encodeURL(videoId);
     }
 
-    var playlist = url.query.list;
+    var playlist = pageUrl.query.list;
     if (playlist) {
         popupUrl += '&list=' + encodeURL(playlist);
     }
 
     // [BUG] Video time doesn't work with list on YouTube TV
-    var time = videoTime || url.query.t;
+    var time = videoTime || pageUrl.query.t;
     if (time) {
         popupUrl += '&t=' + time;
     }
 
-    return {
-        youtubeVideoId: videoId,
-        popupUrl: popupUrl
-    };
+    youtubeVideoId = videoId;
 }
 
-
-function parseTwitch(url) {
-    var popupUrl;
+function parseTwitch() {
     var matches;
 
-    if (matches = url.path.match(/^\/([a-z0-9_]{1,25})$/i)) {
+    if (matches = pageUrl.path.match(/^\/([a-z0-9_]{1,25})$/i)) {
         var channel = matches[1];
         popupUrl = 'https://player.twitch.tv/?volume=0.5&channel=' + channel;
 
@@ -833,8 +836,8 @@ function parseTwitch(url) {
         }
     }
 
-    else if ((matches = url.path.match(/^\/(?:[a-z0-9_]{1,25})\/p\/([0-9]+)$/i))
-          || (matches = url.path.match(/^\/videos\/([0-9]+)$/i))) {
+    else if ((matches = pageUrl.path.match(/^\/(?:[a-z0-9_]{1,25})\/p\/([0-9]+)$/i))
+          || (matches = pageUrl.path.match(/^\/videos\/([0-9]+)$/i))) {
         var videoId = matches[1];
         popupUrl = 'https://player.twitch.tv/?volume=0.5&video=v' + videoId;
 
@@ -846,18 +849,12 @@ function parseTwitch(url) {
             popupUrl += '&time=' + videoTime + 's';
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseVimeo(url) {
-    var popupUrl;
+function parseVimeo() {
     var matches;
 
-    if (matches = url.path.match(/^\/([0-9]+)$/)) {
+    if (matches = pageUrl.path.match(/^\/([0-9]+)$/)) {
         var videoId = matches[1];
         popupUrl = 'https://player.vimeo.com/video/' + videoId + '?';
 
@@ -869,18 +866,12 @@ function parseVimeo(url) {
             popupUrl += '#t=' + videoTime + 's';
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseDailymotion(url) {
-    var popupUrl;
+function parseDailymotion() {
     var matches;
 
-    if (matches = url.path.match(/^\/video\/([a-z0-9]+)/i)) {
+    if (matches = pageUrl.path.match(/^\/video\/([a-z0-9]+)/i)) {
         var videoId = matches[1];
         popupUrl = 'http://www.dailymotion.com/embed/video/' + videoId + '?';
 
@@ -900,33 +891,21 @@ function parseDailymotion(url) {
             popupUrl += '&start=' + videoTime;
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseUstream(url) {
-    var popupUrl;
+function parseUstream() {
     var matches;
 
-    if ((matches = url.path.match(/\/recorded\/[0-9]+/i)) ||
-        (matches = url.path.match(/\/channel\/.+/i))) {
+    if ((matches = pageUrl.path.match(/\/recorded\/[0-9]+/i)) ||
+        (matches = pageUrl.path.match(/\/channel\/.+/i))) {
         popupUrl = 'http://www.ustream.tv' + matches[0] + '/pop-out';
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseSmashcast(url) {
-    var popupUrl;
+function parseSmashcast() {
     var matches;
 
-    if (matches = url.path.match(/^\/([a-z0-9]{3,25})$/i)) {
+    if (matches = pageUrl.path.match(/^\/([a-z0-9]{3,25})$/i)) {
         var channel = matches[1];
         popupUrl = 'https://www.smashcast.tv/embed/' + channel + '?';
 
@@ -935,7 +914,7 @@ function parseSmashcast(url) {
         }
     }
 
-    else if (matches = url.path.match(/^\/[a-z0-9]{3,25}\/videos\/([0-9]+)$/i)) {
+    else if (matches = pageUrl.path.match(/^\/[a-z0-9]{3,25}\/videos\/([0-9]+)$/i)) {
         var videoId = matches[1];
         popupUrl = 'https://www.smashcast.tv/embed/video/' + videoId + '?';
 
@@ -943,106 +922,63 @@ function parseSmashcast(url) {
             popupUrl += '&autoplay=true';
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseFacebook(url) {
-    var popupUrl;
-
-    if (url.path.match(/^\/[a-z0-9_]+\/videos(\/vb\.[0-9]+)?\/[0-9]+/i)) {
+function parseFacebook() {
+    if (pageUrl.path.match(/^\/[a-z0-9_]+\/videos(\/vb\.[0-9]+)?\/[0-9]+/i)) {
         popupUrl = 'https://www.facebook.com/plugins/video.php?href=' +
-            encodeURL(url.href);
+            encodeURL(pageUrl.href);
 
         if (options.autoplay) {
             popupUrl += '&autoplay=1';
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseInstagram(url) {
-    var popupUrl;
+function parseInstagram() {
     var matches;
 
-    if (matches = url.path.match(/^\/p\/[a-z0-9_-]+\/$/i)) {
+    if (matches = pageUrl.path.match(/^\/p\/[a-z0-9_-]+\/$/i)) {
         popupUrl = 'https://www.instagram.com' + matches[0] + 'embed';
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseTed(url) {
-    var popupUrl;
+function parseTed() {
     var matches;
 
-    if (matches = url.path.match(/^\/talks\/[a-z0-9_]+$/i)) {
+    if (matches = pageUrl.path.match(/^\/talks\/[a-z0-9_]+$/i)) {
         popupUrl = 'https://embed.ted.com' + matches[0];
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseYouku(url) {
-    var popupUrl;
+function parseYouku() {
     var matches;
 
-    if (matches = url.path.match(/id_(.+)(\.html)?/)) {
+    if (matches = pageUrl.path.match(/id_(.+)(\.html)?/)) {
         popupUrl = 'http://player.youku.com/embed/' + matches[1];
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseVevo(url) {
-    var popupUrl;
+function parseVevo() {
     var matches;
 
-    if (matches = url.path.match(/[A-Z0-9]+/g)) {
+    if (matches = pageUrl.path.match(/[A-Z0-9]+/g)) {
         popupUrl = 'https://embed.vevo.com/?video=' + matches[0];
 
         if (options.autoplay) {
             popupUrl += '&autoplay=1';
         }
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
 
-
-function parseMetacafe(url) {
-    var popupUrl;
+function parseMetacafe() {
     var matches;
 
-    if (matches = url.path.match(/watch\/(.+)/)) {
+    if (matches = pageUrl.path.match(/watch\/(.+)/)) {
         popupUrl = 'http://www.metacafe.com/embed/' + matches[1];
     }
-
-    return {
-        popupUrl: popupUrl
-    };
 }
-
-
-// -----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 var where = location.pathname.slice(1, -5);
 
@@ -1065,9 +1001,8 @@ if (where === 'background') {
 
     // Extension icon
     chrome.browserAction.onClicked.addListener(function(tab) {
-        currentTabId = tab.id;
-        pageUrl = tab.url;
-        fromContextMenu = false;
+        pageUrl = parseUrl(tab.url);
+        tabId = tab.id;
 
         preparePopup();
     });
@@ -1419,7 +1354,7 @@ else if (where === 'options') {
     onClick($seeHistory, function(e) {
         e.preventDefault();
         chrome.tabs.create({
-            url: getURL('history.html')
+            url: getExtensionUrl('history.html')
         });
     });
 
@@ -1528,6 +1463,8 @@ else if (where === 'youtube') {
         videoTitle = videoData.title;
         videoList = videoData.list;
 
+        youtubeVideoId = videoId;
+
         if (event.data === YT.PlayerState.BUFFERING) {
 
             // Set video quality
@@ -1565,21 +1502,20 @@ else if (where === 'youtube') {
             var isFullscreen = window.innerWidth === screen.width;
 
             if (!isFullscreen && options.proportion) {
-                function resizeWindow(width, height) {
-                    var pos = getWindowPosition(width, height);
+                getVideoProportion(function() {
+                    var pos = getWindowPosition();
 
-                    resizeTo(pos.width, pos.height);
-                    moveTo(pos.left, pos.top);
-                }
+                    //resizeTo(pos.width, pos.height);
+                    //moveTo(pos.left, pos.top);
 
-                getVideoProportion({
-                    videoId: videoId,
-                    onVideo16x9: function() {
-                        resizeWindow(options.width, options.height);
-                    },
-                    onVideo4x3: function() {
-                        resizeWindow(getWidth4x3(options.height), options.height);
-                    }
+                    chrome.windows.getCurrent({}, function(info) {
+                        chrome.windows.update(info.id, {
+                            top: pos.top,
+                            left: pos.left,
+                            width: pos.width,
+                            height: pos.height
+                        });
+                    });
                 });
             }
         }
@@ -1640,7 +1576,9 @@ else if (where === 'youtube') {
             var videoUrl = parseUrl(player.getVideoUrl());
 
             if (options.youtubeTvOnError) {
-                location.href = parseYouTubeAsTv(videoUrl).popupUrl;
+                pageUrl = videoUrl;
+                parseYouTubeAsTv();
+                location.href = popupUrl;
             }
             else if (confirm(getText('cannot_play'))) {
                 location.href = videoUrl.href;
