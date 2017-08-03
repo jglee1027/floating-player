@@ -581,12 +581,14 @@ function showPopup() {
                             url: popupUrl // <-- needs web_accessible_resources
                         });
 
+                        /*
                         chrome.windows.update(popupWindowId, {
                             top: pos.top,
                             left: pos.left,
                             width: pos.width,
                             height: pos.height
                         });
+                        */
                     }
                 });
             }
@@ -1534,9 +1536,10 @@ else if (where === 'youtube') {
                 getVideoProportion(function() {
                     var pos = getWindowPosition();
 
-                    //resizeTo(pos.width, pos.height);
-                    //moveTo(pos.left, pos.top);
+                    resizeTo(pos.width, pos.height);
+                    moveTo(pos.left, pos.top);
 
+                    /*
                     chrome.windows.getCurrent({}, function(info) {
                         chrome.windows.update(info.id, {
                             top: pos.top,
@@ -1545,6 +1548,7 @@ else if (where === 'youtube') {
                             height: pos.height
                         });
                     });
+                    */
                 });
             }
         }
