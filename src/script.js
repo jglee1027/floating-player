@@ -517,65 +517,7 @@ function showPopup() {
     youtubeVideoId = null;
 
     if (options.embed) {
-
-        switch (pageUrl.host) {
-            case 'youtube.com':
-            case 'www.youtube.com':
-            case 'm.youtube.com':
-            case 'gaming.youtube.com':
-            case 'youtu.be':
-                if (options.forceYoutubeTv) {
-                    parseYouTubeAsTv();
-                }
-                else {
-                    parseYouTube();
-                }
-                break;
-
-            case 'www.twitch.tv':
-                parseTwitch();
-                break;
-
-            case 'vimeo.com':
-                parseVimeo();
-                break;
-
-            case 'www.dailymotion.com':
-                parseDailymotion();
-                break;
-
-            case 'www.ustream.tv':
-                parseUstream();
-                break;
-
-            case 'www.smashcast.tv':
-                parseSmashcast();
-                break;
-
-            case 'www.facebook.com':
-                parseFacebook();
-                break;
-
-            case 'www.instagram.com':
-                parseInstagram();
-                break;
-
-            case 'www.ted.com':
-                parseTed();
-                break;
-
-            case 'v.youku.com':
-                parseYouku();
-                break;
-
-            case 'www.vevo.com':
-                parseVevo();
-                break;
-
-            case 'www.metacafe.com':
-                parseMetacafe();
-                break;
-        }
+        parseHost();
     }
 
     if (youtubeVideoId && options.proportion) {
@@ -657,6 +599,80 @@ function showPopup() {
         if (tabId !== null && options.closeTab) {
             chrome.tabs.remove(tabId);
         }
+    }
+}
+
+function parseHost() {
+    switch (pageUrl.host) {
+        case 'youtube.com':
+        case 'www.youtube.com':
+        case 'm.youtube.com':
+        case 'gaming.youtube.com':
+        case 'youtu.be':
+            if (options.forceYoutubeTv) {
+                parseYouTubeAsTv();
+            }
+            else {
+                parseYouTube();
+            }
+            break;
+
+        case 'www.twitch.tv':
+            parseTwitch();
+            break;
+
+        case 'vimeo.com':
+            parseVimeo();
+            break;
+
+        case 'www.dailymotion.com':
+            parseDailymotion();
+            break;
+
+        case 'www.ustream.tv':
+            parseUstream();
+            break;
+
+        case 'www.smashcast.tv':
+            parseSmashcast();
+            break;
+
+        case 'www.facebook.com':
+            parseFacebook();
+            break;
+
+        case 'www.instagram.com':
+            parseInstagram();
+            break;
+
+        case 'www.ted.com':
+            parseTed();
+            break;
+
+        case 'v.youku.com':
+            parseYouku();
+            break;
+
+        case 'www.vevo.com':
+            parseVevo();
+            break;
+
+        case 'www.metacafe.com':
+            parseMetacafe();
+            break;
+
+        default:
+            // Google search, eg.:
+            // - www.google.com
+            // - www.google.com.br
+            // - www.google.co.uk
+            // - www.google.es
+            if (pageUrl.host.match(/^www\.google\./) &&
+                pageUrl.path === '/url' && pageUrl.query.url) {
+
+                pageUrl = parseUrl(pageUrl.query.url);
+                parseHost();
+            }
     }
 }
 
