@@ -819,14 +819,25 @@ function parseYouTube() {
 }
 
 function parseYouTubeAsTv() {
+    var videoId;
+    var playlist;
+
     popupUrl = 'https://www.youtube.com/tv#/watch?';
 
-    var videoId = pageUrl.query.v;
+    if (pageUrl.host === 'youtu.be') {
+        videoId = pageUrl.path.slice(1);
+        youtubeVideoId = videoId;
+    }
+    else {
+        videoId = pageUrl.query.v || '';
+        youtubeVideoId = videoId;
+        playlist = pageUrl.query.list;
+    }
+
     if (videoId) {
         popupUrl += '&v=' + encodeURL(videoId);
     }
 
-    var playlist = pageUrl.query.list;
     if (playlist) {
         popupUrl += '&list=' + encodeURL(playlist);
     }
@@ -840,8 +851,6 @@ function parseYouTubeAsTv() {
     if (time) {
         popupUrl += '&t=' + parseTime(time);
     }
-
-    youtubeVideoId = videoId;
 }
 
 function parseTwitch() {
