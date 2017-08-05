@@ -138,7 +138,7 @@
         "message": "Fix popup width and height on Windows"
     },
     "helium": {
-        "message": "Open video with Helium on MacOS"
+        "message": "Open video with Helium on macOS"
     },
     "keep_popup": {
         "message": "Keep current popup instead of opening a new one"
