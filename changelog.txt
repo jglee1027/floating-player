@@ -1,3 +1,6 @@
+2.0.11 - 2017/08/05
+- Focus on popup after updating its url
+
 2.0.10 - 2017/08/04
 - Now popup won't resize when pausing/playing
 - Fixed popup aspect ratio from 4:3 to non-youtube video

@@ -588,7 +588,8 @@ function showPopup() {
                                                  // on Windows and Mac OS
                             left: pos.left,
                             width: pos.width,
-                            height: pos.height
+                            height: pos.height,
+                            focused: true
                         });
                     }
                 });
