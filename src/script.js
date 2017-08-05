@@ -1496,19 +1496,12 @@ else if (where === 'youtube') {
         videoData = player.getVideoData();
         newVideoId = videoData.video_id;
 
-        if (newVideoId !== videoId) {
-            videoId = newVideoId;
-            youtubeVideoId = videoId;
-            onNextVideo();
-        }
-
         if (event.data === YT.PlayerState.PLAYING) {
-
-            // Sometimes the playlist length won't load
-            // To fix it up, just press pause and play
-            // Also, fix the playlist index while changing the video
-            // with the select box on the top left corner
-            setVideoTitle();
+            if (newVideoId !== videoId) {
+                videoId = newVideoId;
+                youtubeVideoId = videoId;
+                onNextVideo();
+            }
         }
     }
 
