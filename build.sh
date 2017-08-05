@@ -2,9 +2,7 @@
 
 dir=~/desktop/extension
 
-cp -r src $dir
-
-cd $dir
+cd src
 
 zip -r $dir.zip .
 
