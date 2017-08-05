@@ -1,3 +1,7 @@
+2.0.10 - 2017/08/04
+- Now popup won't resize when pausing/playing
+- Fixed popup aspect ratio from 4:3 to non-youtube video
+
 2.0.9 - 2017/08/03
 - Code improvements
 - Added support to Google search links
@@ -6,7 +10,7 @@
 - Readded permission to send data to YouTube
 
 2.0.7 - 2017/07/29
-- Fix popup height on Mac OS X
+- Fixed popup height on Mac OS X
 - Code improvements
 
 2.0.6 - 2017/07/28

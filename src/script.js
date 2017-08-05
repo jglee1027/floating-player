@@ -581,14 +581,15 @@ function showPopup() {
                             url: popupUrl // <-- needs web_accessible_resources
                         });
 
-                        /*
                         chrome.windows.update(popupWindowId, {
-                            top: pos.top,
+                            // top: pos.top, <-- // [BUG] If top is set,
+                                                 // the popup will be
+                                                 // under the taskbar
+                                                 // on Windows and Mac OS
                             left: pos.left,
                             width: pos.width,
                             height: pos.height
                         });
-                        */
                     }
                 });
             }
@@ -1449,7 +1450,9 @@ else if (where === 'youtube') {
     var player;
     var playerId = 'player';
 
+    var videoData;
     var videoId;
+    var newVideoId;
     var videoTitle;
     var videoList;
 
@@ -1489,68 +1492,76 @@ else if (where === 'youtube') {
     }
 
     function onPlayerStateChange(event) {
-        var videoData = player.getVideoData();
-        videoId = videoData.video_id;
+        videoData = player.getVideoData();
+        newVideoId = videoData.video_id;
+
+        if (newVideoId !== videoId) {
+            videoId = newVideoId;
+            youtubeVideoId = videoId;
+            onNextVideo();
+        }
+
+        if (event.data === YT.PlayerState.PLAYING) {
+
+            // Sometimes the playlist length won't load
+            // To fix it up, just press pause and play
+            // Also, fix the playlist index while changing the video
+            // with the select box on the top left corner
+            setVideoTitle();
+        }
+    }
+
+    function onNextVideo() {
         videoTitle = videoData.title;
         videoList = videoData.list;
 
-        youtubeVideoId = videoId;
+        // Set video title
+        setVideoTitle();
 
-        if (event.data === YT.PlayerState.BUFFERING) {
+        // Set video quality
+        player.setPlaybackQuality(options.quality);
 
-            // Set video quality
-            player.setPlaybackQuality(options.quality);
+        // Add link to history
+        if (options.history) {
+            var link = 'https://www.youtube.com/watch?v=' + videoId;
 
-            // Add link to history
-            if (options.history) {
-                var link = 'https://www.youtube.com/watch?v=' + videoId;
+            if (videoList) {
+                link += '&list=' + videoList;
+            }
 
-                if (videoList) {
-                    link += '&list=' + videoList;
-                }
+            // Don't add duplicate link
+            var latestLink = historyGet()[0];
+            if (latestLink) {
+                latestLink = latestLink.link;
+            }
 
-                // Don't add duplicate link
-                var latestLink = historyGet()[0];
-                if (latestLink) {
-                    latestLink = latestLink.link;
-                }
-
-                if (link !== latestLink) {
-                    historyAdd(link);
-                }
+            if (link !== latestLink) {
+                historyAdd(link);
             }
         }
-        else if (event.data === YT.PlayerState.PLAYING) {
 
-            // Set video title
-            setVideoTitle();
+        // Fix proportion of the next video in the playlist
+        // Except if fullscreen
+        var isFullscreen = window.innerWidth === screen.width;
 
-            // Set video quality
-            player.setPlaybackQuality(options.quality);
+        if (!isFullscreen && options.proportion) {
+            getVideoProportion(function() {
+                var pos = getWindowPosition();
 
-            // Fix proportion of the next video in the playlist
-            // Except if fullscreen
-            var isFullscreen = window.innerWidth === screen.width;
+                resizeTo(pos.width, pos.height);
+                moveTo(pos.left, pos.top);
 
-            if (!isFullscreen && options.proportion) {
-                getVideoProportion(function() {
-                    var pos = getWindowPosition();
-
-                    resizeTo(pos.width, pos.height);
-                    moveTo(pos.left, pos.top);
-
-                    /*
-                    chrome.windows.getCurrent({}, function(info) {
-                        chrome.windows.update(info.id, {
-                            top: pos.top,
-                            left: pos.left,
-                            width: pos.width,
-                            height: pos.height
-                        });
+                /*
+                chrome.windows.getCurrent({}, function(info) {
+                    chrome.windows.update(info.id, {
+                        top: pos.top,
+                        left: pos.left,
+                        width: pos.width,
+                        height: pos.height
                     });
-                    */
                 });
-            }
+                */
+            });
         }
     }
 
