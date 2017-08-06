@@ -1496,6 +1496,9 @@ else if (where === 'youtube') {
         videoData = player.getVideoData();
         newVideoId = videoData.video_id;
 
+        // Set video quality
+        player.setPlaybackQuality(options.quality);
+
         if (event.data === YT.PlayerState.PLAYING) {
             if (newVideoId !== videoId) {
                 videoId = newVideoId;
@@ -1511,9 +1514,6 @@ else if (where === 'youtube') {
 
         // Set video title
         setVideoTitle();
-
-        // Set video quality
-        player.setPlaybackQuality(options.quality);
 
         // Add link to history
         if (options.history) {

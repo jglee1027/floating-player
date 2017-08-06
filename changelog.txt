@@ -1,3 +1,6 @@
+2.0.13 - 2017/08/05
+- Fixed incorrect video quality
+
 2.0.12 - 2017/08/05
 - Fixed bug for non-embeddable videos
 
