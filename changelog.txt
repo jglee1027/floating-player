@@ -1,3 +1,6 @@
+2.0.14 - 2017/08/?
+- Added support to Pocket
+
 2.0.13 - 2017/08/05
 - Fixed incorrect video quality
 

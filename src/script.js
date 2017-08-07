@@ -665,6 +665,10 @@ function parseHost() {
             parseMetacafe();
             break;
 
+        case 'getpocket.com':
+            parsePocket();
+            break;
+
         default:
             // Google search, eg.:
             // - www.google.com
@@ -1009,6 +1013,13 @@ function parseMetacafe() {
 
     if (matches = pageUrl.path.match(/watch\/(.+)/)) {
         popupUrl = 'http://www.metacafe.com/embed/' + matches[1];
+    }
+}
+
+function parsePocket() {
+    if (pageUrl.path === '/redirect' && pageUrl.query.url) {
+        pageUrl = parseUrl(pageUrl.query.url);
+        parseHost();
     }
 }
 //------------------------------------------------------------------------------
