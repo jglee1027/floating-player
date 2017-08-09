@@ -1,3 +1,6 @@
+2.0.15 - 2017/08/?
+- Improved loop for single videos
+
 2.0.14 - 2017/08/06
 - Added support to Pocket
 

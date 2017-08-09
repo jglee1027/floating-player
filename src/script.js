@@ -746,13 +746,8 @@ function parseYouTube() {
             popupUrl += '&showinfo=0';
         }
 
-        if (options.loop) {
+        if (options.loop && playlist) {
             popupUrl += '&loop=1';
-
-            // Workaround to make single videos loop
-            if (!playlist) {
-                popupUrl += '&playlist=' + videoId;
-            }
         }
 
         if (!options.fullscreen) {
@@ -1506,6 +1501,8 @@ else if (where === 'youtube') {
     function onPlayerStateChange(event) {
         videoData = player.getVideoData();
         newVideoId = videoData.video_id;
+        videoTitle = videoData.title;
+        videoList = videoData.list;
 
         // Set video quality
         player.setPlaybackQuality(options.quality);
@@ -1517,11 +1514,15 @@ else if (where === 'youtube') {
                 onNextVideo();
             }
         }
+
+        else if (event.data === YT.PlayerState.ENDED &&
+            options.loop && !videoList) {
+
+            player.playVideo();
+        }
     }
 
     function onNextVideo() {
-        videoTitle = videoData.title;
-        videoList = videoData.list;
 
         // Set video title
         setVideoTitle();
