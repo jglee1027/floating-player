@@ -378,45 +378,30 @@ function showInstructions() {
     });
 }
 
-function contextMenuOnError() {
-    if (chrome.runtime.lastError) {
-        console.log(chrome.runtime.lastError.message);
-    }
-}
-
 function addContextMenu() {
-    chrome.contextMenus.create({
-        'id': 'context',
+    var menu = chrome.contextMenus;
+
+    menu.create({
+        'id': 'flp',
         'title': getText('open_in_popup'),
         'contexts': ['link']
-    }, contextMenuOnError);
+    }, function() {
+        if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError.message);
+        }
+    });
+
+    menu.onClicked.addListener(function(info) {
+        pageUrl = parseUrl(info.linkUrl);
+        tabId = null;
+
+        preparePopup();
+    });
 }
 
 function removeContextMenu() {
-    chrome.contextMenus.remove('context', contextMenuOnError);
+    chrome.contextMenus.removeAll();
 }
-
-function addInstructionsMenu() {
-    chrome.contextMenus.create({
-        'id': 'instructions',
-        'title': getText('instructions'),
-        'contexts': ['browser_action']
-    }, contextMenuOnError);
-}
-
-chrome.contextMenus.onClicked.addListener(function(info) {
-    switch (info.menuItemId) {
-        case 'context':
-            pageUrl = parseUrl(info.linkUrl);
-            tabId = null;
-            preparePopup();
-            break;
-
-        case 'instructions':
-            showInstructions();
-            break;
-    }
-});
 
 function historyGet() {
     return JSON.parse(localStorage.getItem('history')) || [];
@@ -1042,8 +1027,6 @@ if (where === 'background') {
     if (context) {
         addContextMenu();
     }
-
-    addInstructionsMenu();
 
     // 1st time
     if (!localStorage['ok']) {
