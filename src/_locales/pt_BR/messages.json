@@ -56,6 +56,9 @@
     "autoplay": {
         "message": "Iniciar automaticamente vídeo incorporado"
     },
+    "force_fullscreen": {
+        "message": "Forçar tela cheia (pressione F11 para sair)"
+    },
     "close_tab": {
         "message": "Fechar aba atual ao criar uma nova popup"
     },
@@ -77,7 +80,7 @@
     "show_info": {
         "message": "Exibir título nos vídeos do YouTube"
     },
-    "fullscreen": {
+    "fullscreen_button": {
         "message": "Exibir botão de tela cheia nos vídeos do YouTube"
     },
     "yt_logo": {

@@ -56,6 +56,9 @@
     "autoplay": {
         "message": "Reproducción automática de video incrustado"
     },
+    "force_fullscreen": {
+        "message": "Forzar pantalla completa (presione F11 para salir)"
+    },
     "close_tab": {
         "message": "Cerrar la pestaña actual al crear un nuevo popup"
     },
@@ -77,7 +80,7 @@
     "show_info": {
         "message": "Mostrar el título en videos de YouTube"
     },
-    "fullscreen": {
+    "fullscreen_button": {
         "message": "Mostrar el botón de pantalla completa en videos de YouTube"
     },
     "yt_logo": {

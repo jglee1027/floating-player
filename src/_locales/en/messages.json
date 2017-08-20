@@ -56,6 +56,9 @@
     "autoplay": {
         "message": "Autoplay embedded video"
     },
+    "force_fullscreen": {
+        "message": "Force full screen (press F11 to exit)"
+    },
     "close_tab": {
         "message": "Close current tab when creating a new popup"
     },
@@ -77,8 +80,8 @@
     "show_info": {
         "message": "Show title on YouTube videos"
     },
-    "fullscreen": {
-        "message": "Show fullscreen button on YouTube videos"
+    "fullscreen_button": {
+        "message": "Show full screen button on YouTube videos"
     },
     "yt_logo": {
         "message": "Show YouTube logo that lets you open the video in a new tab"

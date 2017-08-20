@@ -35,6 +35,7 @@ var defaultOptions = {
     volume: 100,
     embed: true,
     autoplay: true,
+    forceFullscreen: false,
     closeTab: false,
     noCookie: false,
     captions: true,
@@ -42,7 +43,7 @@ var defaultOptions = {
     related: false,
     controls: true,
     showInfo: true,
-    fullscreen: true,
+    fullscreenButton: true,
     ytLogo: true,
     keyboard: true,
     loop: false,
@@ -551,15 +552,27 @@ function showPopup() {
             var pos = getWindowPosition();
 
             function create() {
-                chrome.windows.create({
-                    url: popupUrl,
-                    width: pos.width,
-                    height: pos.height,
-                    top: pos.top,
-                    left: pos.left,
-                    type: 'popup',
-                    focused: true
-                }, function(info) {
+                var opt;
+
+                if (options.forceFullscreen) {
+                    opt = {
+                        url: popupUrl,
+                        state: 'fullscreen'
+                    };
+                }
+                else {
+                    opt = {
+                        url: popupUrl,
+                        width: pos.width,
+                        height: pos.height,
+                        top: pos.top,
+                        left: pos.left,
+                        type: 'popup',
+                        focused: true
+                    };
+                }
+
+                chrome.windows.create(opt, function(info) {
                     popupTabId = info.tabs[0].id;
                     popupWindowId = info.id;
                 });
@@ -581,16 +594,18 @@ function showPopup() {
                             url: popupUrl // <-- needs web_accessible_resources
                         });
 
-                        chrome.windows.update(popupWindowId, {
-                            // top: pos.top, <-- // [BUG] If top is set,
-                                                 // the popup will be
-                                                 // under the taskbar
-                                                 // on Windows and Mac OS
-                            left: pos.left,
-                            width: pos.width,
-                            height: pos.height,
-                            focused: true
-                        });
+                        if (!options.forceFullscreen) {
+                            chrome.windows.update(popupWindowId, {
+                                // top: pos.top, <-- // [BUG] If top is set,
+                                                     // the popup will be
+                                                     // under the taskbar
+                                                     // on Windows and Mac OS
+                                left: pos.left,
+                                width: pos.width,
+                                height: pos.height,
+                                focused: true
+                            });
+                        }
                     }
                 });
             }
@@ -750,7 +765,7 @@ function parseYouTube() {
             popupUrl += '&loop=1';
         }
 
-        if (!options.fullscreen) {
+        if (!options.fullscreenButton) {
             popupUrl += '&fs=0';
         }
 
@@ -1072,6 +1087,7 @@ else if (where === 'options') {
     setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
     setHtml($$('label[for="embed"]'), '@embed');
     setHtml($$('label[for="autoplay"]'), '@autoplay');
+    setHtml($$('label[for="force-fullscreen"]'), '@force_fullscreen');
     setHtml($$('label[for="close-tab"]'), '@close_tab');
     setHtml($$('label[for="no-cookie"]'), '@no_cookie');
     setHtml($$('label[for="captions"]'), '@captions');
@@ -1079,7 +1095,7 @@ else if (where === 'options') {
     setHtml($$('label[for="related"]'), '@related');
     setHtml($$('label[for="controls"]'), '@controls');
     setHtml($$('label[for="show-info"]'), '@show_info');
-    setHtml($$('label[for="fullscreen"]'), '@fullscreen');
+    setHtml($$('label[for="fullscreen-button"]'), '@fullscreen_button');
     setHtml($$('label[for="yt-logo"]'), '@yt_logo');
     setHtml($$('label[for="color"]'), '@color');
     setHtml($option[9], '@red');
@@ -1176,6 +1192,12 @@ else if (where === 'options') {
         setOption('autoplay', this.checked);
     });
 
+    var $forceFullscreen = $('force-fullscreen');
+    $forceFullscreen.checked = options.forceFullscreen;
+    onChange($forceFullscreen, function() {
+        setOption('forceFullscreen', this.checked);
+    });
+
     var $closeTab = $('close-tab');
     $closeTab.checked = options.closeTab;
     onChange($closeTab, function() {
@@ -1218,10 +1240,10 @@ else if (where === 'options') {
         setOption('showInfo', this.checked);
     });
 
-    var $fullscreen = $('fullscreen');
-    $fullscreen.checked = options.fullscreen;
-    onChange($fullscreen, function() {
-        setOption('fullscreen', this.checked);
+    var $fullscreenButton = $('fullscreen-button');
+    $fullscreenButton.checked = options.fullscreenButton;
+    onChange($fullscreenButton, function() {
+        setOption('fullscreenButton', this.checked);
     });
 
     var $ytLogo = $('yt-logo');
