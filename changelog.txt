@@ -1,3 +1,6 @@
+2.0.19 - 2017/?/?
+- Fixed popup height on Chrome OS
+
 2.0.18 - 2017/08/19
 - Added option "Force full screen"
 

@@ -78,15 +78,19 @@ var videoTime;
 var youtubeVideoId;
 
 
-// Fix for popup width/height on Windows and Mac OS X
+// Fix for popup inner width/height on Windows, Mac OS X and Chrome OS
 var WIDTH_FIX = 0;
 var HEIGHT_FIX = 0;
 
 
 // Using Mac OS X
-var isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-if (isMac) {
+if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
     HEIGHT_FIX = 22;
+}
+
+// Using Chrome OS
+else if (/\bCrOS\b/.test(navigator.userAgent)) {
+    HEIGHT_FIX = 33;
 }
 
 // Using Windows
