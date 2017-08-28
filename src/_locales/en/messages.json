@@ -140,6 +140,9 @@
     "fix": {
         "message": "Fix popup width and height on Windows"
     },
+    "app": {
+        "message": "Open popup using addon on Chrome OS"
+    },
     "helium": {
         "message": "Open video with Helium on macOS"
     },

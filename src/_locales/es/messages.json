@@ -140,6 +140,9 @@
     "fix": {
         "message": "Corregir la anchura y la altura del popup en Windows"
     },
+    "app": {
+        "message": "Abrir popup usando el complemento en Chrome OS"
+    },
     "helium": {
         "message": "Abrir video con Helium en macOS"
     },

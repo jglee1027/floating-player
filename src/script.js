@@ -56,6 +56,7 @@ var defaultOptions = {
     youtubeTvOnError: true,
     forceYoutubeTv: false,
     fix: true,
+    app: false,
     helium: false,
     keepPopup: true,
     context: true,
@@ -88,10 +89,10 @@ if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
     HEIGHT_FIX = 22;
 }
 
-// Using Chrome OS
-else if (/\bCrOS\b/.test(navigator.userAgent)) {
+// Using Chrome OS // no need to fix height if using app (https://goo.gl/QDERoA)
+/*else if (/\bCrOS\b/.test(navigator.userAgent)) {
     HEIGHT_FIX = 33;
-}
+}*/
 
 // Using Windows
 else {
@@ -576,10 +577,16 @@ function showPopup() {
                     };
                 }
 
-                chrome.windows.create(opt, function(info) {
-                    popupTabId = info.tabs[0].id;
-                    popupWindowId = info.id;
-                });
+                if (options.app && !options.forceFullscreen) {
+                    var appId = 'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
+                    chrome.runtime.sendMessage(appId, opt);
+                }
+                else {
+                    chrome.windows.create(opt, function(info) {
+                        popupTabId = info.tabs[0].id;
+                        popupWindowId = info.id;
+                    });
+                }
             }
 
             if (options.keepPopup) {
@@ -785,7 +792,7 @@ function parseYouTube() {
             popupUrl += '&color=white';
         }
 
-        if (options.api && !options.helium) {
+        if (options.api && !options.helium && !options.app) {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
                 slice(0, -1));
 
@@ -1121,6 +1128,7 @@ else if (where === 'options') {
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
+    setHtml($$('label[for="app"]'), '@app');
     setHtml($$('label[for="helium"]'), '@helium');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
@@ -1347,6 +1355,12 @@ else if (where === 'options') {
     $fix.checked = options.fix;
     onChange($fix, function() {
         setOption('fix', this.checked);
+    });
+
+    var $app = $('app');
+    $app.checked = options.app;
+    onChange($app, function() {
+        setOption('app', this.checked);
     });
 
     var $helium = $('helium');
