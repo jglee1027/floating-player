@@ -577,7 +577,17 @@ function showPopup() {
                 }
 
                 if (options.app && !options.forceFullscreen) {
-                    var appId = 'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
+                    var defaultAppId = 'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
+                    var customAppId = localStorage['appid'] || '';
+                    var appId;
+
+                    if (customAppId.match(/^[a-z]{32}$/)) {
+                        appId = customAppId;
+                    }
+                    else {
+                        appId = defaultAppId;
+                    }
+
                     chrome.runtime.sendMessage(appId, opt);
                 }
                 else {
