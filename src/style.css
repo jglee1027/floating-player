@@ -1,4 +1,4 @@
-body, h1, form, label, input, select, button {
+body, h1, form, label, input, select, button, img {
     padding: 0;
     margin: 0;
     font: inherit
@@ -6,6 +6,10 @@ body, h1, form, label, input, select, button {
 
 * {
     box-sizing: border-box
+}
+
+.hidden {
+    display: none
 }
 
 body, html {
@@ -19,7 +23,7 @@ body {
     user-select: none
 }
 
-#layout {
+#layout, .card {
     width: 800px;
     margin: 0 auto 40px auto;
     padding: 20px;
@@ -37,13 +41,14 @@ header {
     text-align: center
 }
 
+header a {
+    text-decoration: none;
+    color: #FFF
+}
+
 h1 {
     font-weight: bold;
     font-size: 16px
-}
-
-h1 a {
-    color: #FFF
 }
 
 button, select, input[type="number"] {
@@ -133,18 +138,22 @@ label[for="vertical-margin"] {
     font-style: italic
 }
 
-br {
+.options br {
     display: none
 }
 
-a {
+.history a {
     color: #E52D27;
     text-decoration: none;
     line-height: 17px
 }
 
-a:hover {
+.history a:hover {
     text-decoration: underline
+}
+
+.history p {
+    text-align: center
 }
 
 table {
@@ -179,12 +188,23 @@ td {
     background-position: center center
 }
 
-p {
-    text-align: center
+.instructions p {
+    font-weight: bold;
+    font-size: 17px
+}
+
+.instructions img {
+    max-width: 100%;
+    height: auto
+}
+
+.instructions a {
+    color: #00e;
+    text-decoration: underline
 }
 
 @media only screen and (max-width: 800px) {
-    #layout {
+    #layout, .card {
         width: 100%
     }
 
@@ -192,7 +212,7 @@ p {
         margin-left: 0
     }
 
-    br {
+    .options br {
         display: block;
         line-height: 30px
     }

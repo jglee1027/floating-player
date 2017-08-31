@@ -18,6 +18,11 @@ var COLOR_WHITE = 2;
 var VIDEO_16X9 = 1;
 var VIDEO_4X3 = 2;
 
+var OS_WINDOWS = 1;
+var OS_MACOS = 2;
+var OS_LINUX = 3;
+var OS_CHROMEOS = 4;
+
 
 // Options
 var LOCALSTORAGE_PREFIX = '_';
@@ -78,55 +83,63 @@ var videoFormat;
 var videoTime;
 var youtubeVideoId;
 
+// User's OS
+var operatingSystem;
 
 // Fix for popup inner width/height on Windows, Mac OS X and Chrome OS
 var WIDTH_FIX = 0;
 var HEIGHT_FIX = 0;
 
 
-// Using Mac OS X
-if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
-    HEIGHT_FIX = 22;
+// Using Windows
+var windowsVersion;
+if (windowsVersion = navigator.userAgent.match(/Windows NT ([0-9.]+)/i)) {
+
+    windowsVersion = parseFloat(windowsVersion[1]);
+    operatingSystem = OS_WINDOWS;
+
+    var WINDOWS_XP = 5.1;
+    var WINDOWS_VISTA = 6;
+    var WINDOWS_7 = 6.1;
+    var WINDOWS_8 = 6.2;
+    var WINDOWS_8_1 = 6.3;
+    var WINDOWS_10 = 10;
+
+    switch (windowsVersion) {
+        case WINDOWS_XP:
+        case WINDOWS_VISTA:
+            WIDTH_FIX = 10;
+            HEIGHT_FIX = 31;
+            break;
+
+        case WINDOWS_7:
+            WIDTH_FIX = 10;
+            HEIGHT_FIX = 29;
+            break;
+
+        case WINDOWS_8:
+        case WINDOWS_8_1:
+        case WINDOWS_10:
+            WIDTH_FIX = 16;
+            HEIGHT_FIX = 39;
+    }
 }
 
-// Using Chrome OS // no need to fix height if using app (https://goo.gl/QDERoA)
-/*else if (/\bCrOS\b/.test(navigator.userAgent)) {
+// Using Mac OS X
+else if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+    HEIGHT_FIX = 22;
+    operatingSystem = OS_MACOS;
+}
+
+// Using Chrome OS
+else if (/\bCrOS\b/.test(navigator.userAgent)) {
     HEIGHT_FIX = 33;
-}*/
+    operatingSystem = OS_CHROMEOS;
+}
 
-// Using Windows
+// Using Linux or other
 else {
-    var windowsVersion;
-    if (windowsVersion = navigator.userAgent.match(/Windows NT ([0-9.]+)/i)) {
-
-        windowsVersion = parseFloat(windowsVersion[1]);
-
-        var WINDOWS_XP = 5.1;
-        var WINDOWS_VISTA = 6;
-        var WINDOWS_7 = 6.1;
-        var WINDOWS_8 = 6.2;
-        var WINDOWS_8_1 = 6.3;
-        var WINDOWS_10 = 10;
-
-        switch (windowsVersion) {
-            case WINDOWS_XP:
-            case WINDOWS_VISTA:
-                WIDTH_FIX = 10;
-                HEIGHT_FIX = 31;
-                break;
-
-            case WINDOWS_7:
-                WIDTH_FIX = 10;
-                HEIGHT_FIX = 29;
-                break;
-
-            case WINDOWS_8:
-            case WINDOWS_8_1:
-            case WINDOWS_10:
-                WIDTH_FIX = 16;
-                HEIGHT_FIX = 39;
-        }
-    }
+    operatingSystem = OS_LINUX;
 }
 
 
@@ -303,7 +316,8 @@ function getWindowPosition() {
         width = Math.round((4 * height) / 3);
     }
 
-    if (options.fix) {
+    // Don't fix width/height if using app (https://goo.gl/QDERoA)
+    if (options.fix && !options.app) {
         width += WIDTH_FIX;
         height += HEIGHT_FIX;
     }
@@ -364,23 +378,8 @@ function getWindowPosition() {
 }
 
 function showInstructions() {
-    var lang = chrome.i18n.getUILanguage().toLowerCase();
-    var suffix;
-
-    switch (lang) {
-        case 'pt-br':
-        case 'pt-pt':
-        case 'pt':
-            suffix = 'pt';
-            break;
-
-        default:
-            suffix = 'en';
-    }
-
     chrome.tabs.create({
-        url: 'https://public-folder.github.io/floating-player/instructions-'
-            + suffix + '.html'
+        url: getExtensionUrl('instructions.html')
     });
 }
 
@@ -500,7 +499,7 @@ function preparePopup() {
     if (tabId !== null && options.pause) {
 
         // Get video time
-        chrome.tabs.executeScript(tabId, {file: 'get-time.js'}, function(time) {
+        chrome.tabs.executeScript(tabId, {file: 'inject.js'}, function(time) {
             videoTime = 0;
 
             if (Array.isArray(time) && typeof time[0] === 'number') {
@@ -1150,10 +1149,10 @@ else if (where === 'options') {
     // End Translation strings
 
 
-    // Add css class to body about the OS
-    chrome.runtime.getPlatformInfo(function(info) {
-        document.body.classList.add('os-' + info.os);
-    });
+    // Add css class to body to fix MacOS design issues
+    if (operatingSystem === OS_MACOS) {
+        document.body.classList.add('os-mac');
+    }
 
     options = getAllOptions();
 
@@ -1778,6 +1777,57 @@ else if (where === 'history') {
             historyIsEmpty();
         }
     });
+}
+
+else if (where === 'instructions') {
+    // Translation strings
+    var strInstructions = getText('instructions');
+    setHtml($$('title'), strInstructions);
+    setHtml($$('h1 a'), strInstructions);
+
+    setHtml($$('#instructions-click-icon p'), '@instructions_click_icon');
+    setHtml($$('#instructions-right-click p'), '@instructions_right_click');
+    setHtml($$('#instructions-windows p'), '@instructions_windows');
+    setHtml($$('#instructions-linux p'), '@instructions_linux');
+    setHtml($$('#instructions-macos p'), '@instructions_macos');
+    setHtml($$('#instructions-chromeos p'), '@instructions_chromeos');
+    setHtml($$('#instructions-options p'), '@instructions_options');
+    // End Translation strings
+
+    var $deskpins = $('deskpins');
+    $deskpins.href = 'https://bitbucket.org/efotinis/deskpins/downloads/' +
+        'DeskPins-1.32-setup.exe';
+
+    var $helium = $('helium');
+    $helium.target = '_blank';
+    $helium.href = 'https://itunes.apple.com/br/app/helium/id1054607607';
+
+    var $app = $('app');
+    $app.target = '_blank';
+    $app.href = 'https://chrome.google.com/webstore/detail/' +
+        'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
+
+    var showCard;
+
+    switch (operatingSystem) {
+        case OS_WINDOWS:
+            showCard = 'instructions-windows';
+            break;
+
+        case OS_MACOS:
+            showCard = 'instructions-macos';
+            break;
+
+        case OS_LINUX:
+            showCard = 'instructions-linux';
+            break;
+
+        case OS_CHROMEOS:
+            showCard = 'instructions-chromeos';
+            break;
+    }
+
+    $(showCard).classList.remove('hidden');
 }
 
 })(window, document, chrome, screen, navigator, localStorage);

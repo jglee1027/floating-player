@@ -173,6 +173,8 @@
     "requires_api": {
         "message": "* Requer API do YouTube"
     },
+
+
     "history": {
         "message": "Histórico"
     },
@@ -184,5 +186,28 @@
     },
     "history_disabled": {
         "message": "O histórico está desativado"
+    },
+
+
+    "instructions_click_icon": {
+        "message": "Abra a página desejada e clique no ícone da extensão no canto superior direito do Chrome:"
+    },
+    "instructions_right_click": {
+        "message": "Ou clique com o botão direito do mouse no link de algum vídeo:"
+    },
+    "instructions_windows": {
+        "message": "Baixe o <a href=\"#\" id=\"deskpins\">DeskPins</a>. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:"
+    },
+    "instructions_linux": {
+        "message": "Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":"
+    },
+    "instructions_macos": {
+        "message": "Baixe o <a href=\"#\" id=\"helium\">Helium</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\"."
+    },
+    "instructions_chromeos": {
+        "message": "Baixe o <a href=\"#\" id=\"app\">app para o Chrome OS</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\"."
+    },
+    "instructions_options": {
+        "message": "Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:"
     }
 }

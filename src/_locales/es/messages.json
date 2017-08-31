@@ -3,7 +3,7 @@
         "message": "Mira videos mientras navegas por Internet. Funciona con: YouTube, Netflix, Twitch.tv, Vimeo, Dailymotion, Instagram, TED."
     },
     "open_in_popup": {
-        "message": "Abrir enlace en un popup"
+        "message": "Abrir enlace en una ventana flotante"
     },
     "options": {
         "message": "Opciones"
@@ -60,7 +60,7 @@
         "message": "Forzar pantalla completa (presione F11 para salir)"
     },
     "close_tab": {
-        "message": "Cerrar la pestaña actual al crear un nuevo popup"
+        "message": "Cerrar la pestaña actual al crear una nueva ventana flotante"
     },
     "no_cookie": {
         "message": "Activar el modo de mejora de la privacidad mediante youtube-nocookie.com"
@@ -120,10 +120,10 @@
         "message": "Usar la API de YouTube para corregir el título de la lista de reproducción y averiguar cuándo no se puede incrustar video"
     },
     "playlist_counter": {
-        "message": "Mostrar el contador de la lista de reproducción de YouTube en el título del popup*"
+        "message": "Mostrar el contador de la lista de reproducción de YouTube en el título de la ventana flotante*"
     },
     "animate_title": {
-        "message": "Animar el título del popup para los videos de YouTube*"
+        "message": "Animar el título de la ventana flotante para los videos de YouTube*"
     },
     "shuffle": {
         "message": "Mezclar la lista de reproducción de YouTube*"
@@ -138,16 +138,16 @@
         "message": "Usar YouTube TV para todos los videos de YouTube (no recomendado)"
     },
     "fix": {
-        "message": "Corregir la anchura y la altura del popup en Windows"
+        "message": "Corregir la anchura y la altura de la ventana flotante en Windows"
     },
     "app": {
-        "message": "Abrir popup usando el complemento en Chrome OS"
+        "message": "Abrir ventana flotante usando el complemento en Chrome OS"
     },
     "helium": {
         "message": "Abrir video con Helium en macOS"
     },
     "keep_popup": {
-        "message": "Mantener el popup actual en lugar de abrir un nuevo"
+        "message": "Mantener la ventana flotante actual en lugar de abrir una nueva"
     },
     "use_context": {
         "message": "Usar el menú contextual"
@@ -173,6 +173,8 @@
     "requires_api": {
         "message": "* Requiere API de YouTube"
     },
+
+
     "history": {
         "message": "Historial"
     },
@@ -184,5 +186,28 @@
     },
     "history_disabled": {
         "message": "El historial está deshabilitado"
+    },
+
+
+    "instructions_click_icon": {
+        "message": "Abra la página deseada y haga clic en el icono de la extensión en la esquina superior derecha de Chrome:"
+    },
+    "instructions_right_click": {
+        "message": "O haga clic con el botón derecho del ratón en el enlace de algún video:"
+    },
+    "instructions_windows": {
+        "message": "Descargue <a href=\"#\" id=\"deskpins\">DeskPins</a>. Después de instalar, abra la aplicación y haga clic en el icono de la bandeja del sistema. Su cursor girará un pin. A continuación, haga clic en la ventana flotante para fijarla en la parte superior:"
+    },
+    "instructions_linux": {
+        "message": "Haga clic con el botón derecho del ratón en el título de la ventana flotante y después \"Siempre encima\":"
+    },
+    "instructions_macos": {
+        "message": "Descargue <a href=\"#\" id=\"helium\">Helium</a>. Después de instalar, vaya a la página de opciones (ver abajo) y activa \"Abrir vídeo con el Helium en macOS\"."
+    },
+    "instructions_chromeos": {
+        "message": "Descargue la <a href=\"#\" id=\"app\">aplicación para Chrome OS</a>. Después de instalar, vaya a la página de opciones (ver abajo) y marque \"Abrir ventana flotante usando el complemento en Chrome OS\"."
+    },
+    "instructions_options": {
+        "message": "Puede definir la anchura y la altura de la ventana flotante, además de otros ajustes, en la página de opciones. Para acceder a ella, haga clic con el botón derecho del ratón en el icono de la extensión:"
     }
 }
