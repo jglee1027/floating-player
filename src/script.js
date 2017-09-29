@@ -657,6 +657,7 @@ function parseHost() {
             break;
 
         case 'www.twitch.tv':
+        case 'go.twitch.tv':
             parseTwitch();
             break;
 
@@ -893,10 +894,12 @@ function parseYouTubeAsTv() {
 
 function parseTwitch() {
     var matches;
+    var volume = options.volume / 100;
 
     if (matches = pageUrl.path.match(/^\/([a-z0-9_]{1,25})$/i)) {
         var channel = matches[1];
-        popupUrl = 'https://player.twitch.tv/?volume=0.5&channel=' + channel;
+        popupUrl = 'https://player.twitch.tv/?volume=' + volume + '&channel=' +
+            channel;
 
         if (!options.autoplay) {
             popupUrl += '&autoplay=false';
@@ -906,7 +909,8 @@ function parseTwitch() {
     else if ((matches = pageUrl.path.match(/^\/(?:[a-z0-9_]{1,25})\/p\/([0-9]+)$/i))
           || (matches = pageUrl.path.match(/^\/videos\/([0-9]+)$/i))) {
         var videoId = matches[1];
-        popupUrl = 'https://player.twitch.tv/?volume=0.5&video=v' + videoId;
+        popupUrl = 'https://player.twitch.tv/?volume=' + volume + '&video=v' +
+            videoId;
 
         if (!options.autoplay) {
             popupUrl += '&autoplay=false';

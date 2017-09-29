@@ -1,3 +1,7 @@
+2.0.21 - 2017/09/29
+- Fixed new url of Twitch.tv
+- Added volume control for Twitch.tv
+
 2.0.20 - 2017/08/31
 - Improved instructions page
 
