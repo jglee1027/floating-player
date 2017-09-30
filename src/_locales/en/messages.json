@@ -113,14 +113,14 @@
     "volume": {
         "message": "Volume for YouTube videos*"
     },
+    "title": {
+        "message": "Title for YouTube videos*"
+    },
     "proportion": {
         "message": "Open YouTube video with the correct aspect ratio"
     },
     "api": {
         "message": "Use YouTube API to fix playlist title and figure out when video cannot be embedded"
-    },
-    "playlist_counter": {
-        "message": "Show YouTube playlist counter in popup title*"
     },
     "animate_title": {
         "message": "Animate popup title for YouTube videos*"

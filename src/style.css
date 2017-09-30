@@ -65,6 +65,12 @@ button {
     border-bottom: 1px solid #F0F0F0
 }
 
+[type="text"] {
+    padding: 4px;
+    width: 280px;
+    border: 1px solid #BBB
+}
+
 [type="number"] {
     padding: 4px;
     width: 60px;

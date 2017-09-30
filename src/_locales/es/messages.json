@@ -113,14 +113,14 @@
     "volume": {
         "message": "Volumen para los videos de YouTube*"
     },
+    "title": {
+        "message": "Título para los videos de YouTube*"
+    },
     "proportion": {
         "message": "Abrir videos de YouTube con la relación de aspecto correcta"
     },
     "api": {
         "message": "Usar la API de YouTube para corregir el título de la lista de reproducción y averiguar cuándo no se puede incrustar video"
-    },
-    "playlist_counter": {
-        "message": "Mostrar el contador de la lista de reproducción de YouTube en el título de la ventana flotante*"
     },
     "animate_title": {
         "message": "Animar el título de la ventana flotante para los videos de YouTube*"

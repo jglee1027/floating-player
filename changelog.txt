@@ -1,3 +1,7 @@
+2.0.22 - 2017/09/30
+- Added option "Title for YouTube videos"
+- Removed option "Show YouTube playlist counter[...]"
+
 2.0.21 - 2017/09/29
 - Fixed new url of Twitch.tv
 - Added volume control for Twitch.tv

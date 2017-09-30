@@ -38,6 +38,7 @@ var defaultOptions = {
     speed: 1,
     quality: 'auto',
     volume: 100,
+    title: '%playlist% %title% - YouTube',
     embed: true,
     autoplay: true,
     forceFullscreen: false,
@@ -54,7 +55,6 @@ var defaultOptions = {
     loop: false,
     proportion: true,
     api: true,
-    playlistCounter: true,
     animateTitle: false,
     shuffle: false,
     pause: true,
@@ -1130,11 +1130,11 @@ else if (where === 'options') {
 
     setHtml($$('label[for="quality"]'), '@quality');
     setHtml($$('label[for="volume"]'), '@volume');
+    setHtml($$('label[for="title"]'), '@title');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
     setHtml($$('label[for="loop"]'), '@loop');
     setHtml($$('label[for="api"]'), '@api');
-    setHtml($$('label[for="playlist-counter"]'), '@playlist_counter');
     setHtml($$('label[for="animate-title"]'), '@animate_title');
     setHtml($$('label[for="shuffle"]'), '@shuffle');
     setHtml($$('label[for="pause"]'), '@pause');
@@ -1304,6 +1304,12 @@ else if (where === 'options') {
         $currentVolume.innerHTML = this.value;
     });
 
+    var $title = $('title');
+    $title.value = options.title;
+    onInput($title, function() {
+        setOption('title', this.value);
+    });
+
     var $proportion = $('proportion');
     $proportion.checked = options.proportion;
     onChange($proportion, function() {
@@ -1326,12 +1332,6 @@ else if (where === 'options') {
     $api.checked = options.api;
     onChange($api, function() {
         setOption('api', this.checked);
-    });
-
-    var $playlistCounter = $('playlist-counter');
-    $playlistCounter.checked = options.playlistCounter;
-    onChange($playlistCounter, function() {
-        setOption('playlistCounter', this.checked);
     });
 
     var $animateTitle = $('animate-title');
@@ -1643,24 +1643,22 @@ else if (where === 'youtube') {
 
     function setVideoTitle() {
         var playlistTitle = '';
+        var playlistIndex = player.getPlaylistIndex() + 1;
+        var playlistSize;
 
-        if (options.playlistCounter) {
-            var playlistIndex = player.getPlaylistIndex() + 1;
-            var playlistSize;
-
-            if (playlistIndex > 0) {
-                playlistSize = player.getPlaylist().length;
-                playlistTitle = '(' + playlistIndex + '/' + playlistSize + ') ';
-            }
+        if (playlistIndex > 0) {
+            playlistSize = player.getPlaylist().length;
+            playlistTitle = '(' + playlistIndex + '/' + playlistSize + ') ';
         }
 
-        var title;
-        if (videoTitle) {
-            title = playlistTitle + videoTitle + ' - YouTube';
+        var title = options.title
+            .replace(/%playlist%/g, playlistTitle)
+            .replace(/%title%/g, videoTitle).trim();
+
+        if (title === '') {
+            title = '\uFEFF';
         }
-        else {
-            title = 'YouTube';
-        }
+
         document.title = title;
 
         if (options.animateTitle) {

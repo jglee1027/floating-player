@@ -113,14 +113,14 @@
     "volume": {
         "message": "Volume para os vídeos do YouTube*"
     },
+    "title": {
+        "message": "Título para os vídeos do YouTube*"
+    },
     "proportion": {
         "message": "Abrir vídeo do YouTube com a proporção correta"
     },
     "api": {
         "message": "Usar a API do YouTube para corrigir o título da playlist e descobrir quando o vídeo não puder ser incorporado"
-    },
-    "playlist_counter": {
-        "message": "Mostrar contador da playlist do YouTube no título da popup*"
     },
     "animate_title": {
         "message": "Animar o título da popup para os vídeos do YouTube*"

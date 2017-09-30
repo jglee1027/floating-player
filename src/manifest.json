@@ -1,7 +1,7 @@
 ﻿{
     "manifest_version": 2,
     "name": "Floating Player: YouTube, Twitch.tv, etc.",
-    "version": "2.0.21",
+    "version": "2.0.22",
 
     "content_security_policy": "script-src 'self' https://www.youtube.com https://s.ytimg.com; object-src 'self'",
 
