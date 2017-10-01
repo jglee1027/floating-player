@@ -52,6 +52,7 @@ var defaultOptions = {
     fullscreenButton: true,
     ytLogo: true,
     keyboard: true,
+    noclick: false,
     loop: false,
     proportion: true,
     api: true,
@@ -806,7 +807,13 @@ function parseYouTube() {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
                 slice(0, -1));
 
-            popupUrl = getExtensionUrl('youtube.html?' + encodeURL(popupUrl));
+            popupUrl = 'youtube.html?url=' + encodeURL(popupUrl);
+
+            if (options.noclick) {
+                popupUrl += '&noclick';
+            }
+
+            popupUrl = getExtensionUrl(popupUrl);
         }
     }
 
@@ -1133,6 +1140,7 @@ else if (where === 'options') {
     setHtml($$('label[for="title"]'), '@title');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
+    setHtml($$('label[for="noclick"]'), '@noclick');
     setHtml($$('label[for="loop"]'), '@loop');
     setHtml($$('label[for="api"]'), '@api');
     setHtml($$('label[for="animate-title"]'), '@animate_title');
@@ -1320,6 +1328,12 @@ else if (where === 'options') {
     $keyboard.checked = options.keyboard;
     onChange($keyboard, function() {
         setOption('keyboard', this.checked);
+    });
+
+    var $noclick = $('noclick');
+    $noclick.checked = options.noclick;
+    onChange($noclick, function() {
+        setOption('noclick', this.checked);
     });
 
     var $loop = $('loop');
@@ -1689,7 +1703,9 @@ else if (where === 'youtube') {
 
     window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
-    var iframeUrl = decodeURL(location.search.slice(1));
+    var query = parseUrl(location.href).query;
+    var iframeUrl = query.url;
+    var noclick = query.noclick;
 
     if (iframeUrl) {
         var iframe = document.createElement('iframe');
@@ -1698,6 +1714,13 @@ else if (where === 'youtube') {
         iframe.frameBorder = '0';
         iframe.allowFullscreen = 'true';
         document.body.appendChild(iframe);
+    }
+
+    if (noclick !== undefined) {
+        document.body.classList.add('noclick');
+        addEvent(document, 'contextmenu', function(e) {
+            e.preventDefault();
+        });
     }
 }
 

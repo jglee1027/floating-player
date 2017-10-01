@@ -89,6 +89,9 @@
     "keyboard": {
         "message": "Permitir controlar el reproductor de YouTube por el teclado"
     },
+    "noclick": {
+        "message": "Bloquear eventos del ratón en los videos de YouTube*"
+    },
     "loop": {
         "message": "Bucle en los videos y listas de reproducción de YouTube"
     },

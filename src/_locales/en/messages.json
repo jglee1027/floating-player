@@ -89,6 +89,9 @@
     "keyboard": {
         "message": "Allow control of the YouTube player by keyboard"
     },
+    "noclick": {
+        "message": "Block mouse events on YouTube videos*"
+    },
     "loop": {
         "message": "Loop YouTube videos and playlists"
     },
