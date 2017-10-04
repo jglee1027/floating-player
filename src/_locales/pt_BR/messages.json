@@ -149,6 +149,9 @@
     "borderless": {
         "message": "Remover bordas e barra de título no Chrome OS (com complemento)"
     },
+    "always_on_top": {
+        "message": "Manter popup sempre no topo no Chrome OS"
+    },
     "helium": {
         "message": "Abrir vídeo com o Helium no macOS"
     },

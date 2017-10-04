@@ -64,6 +64,7 @@ var defaultOptions = {
     fix: true,
     app: false,
     borderless: false,
+    alwaysOnTop: true,
     helium: false,
     keepPopup: true,
     context: true,
@@ -591,6 +592,7 @@ function showPopup() {
                     }
 
                     opt.borderless = options.borderless;
+                    opt.alwaysOnTop = options.alwaysOnTop;
 
                     chrome.runtime.sendMessage(appId, opt);
                 }
@@ -1154,6 +1156,7 @@ else if (where === 'options') {
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="app"]'), '@app');
     setHtml($$('label[for="borderless"]'), '@borderless');
+    setHtml($$('label[for="always-on-top"]'), '@always_on_top');
     setHtml($$('label[for="helium"]'), '@helium');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
@@ -1398,6 +1401,12 @@ else if (where === 'options') {
     $borderless.checked = options.borderless;
     onChange($borderless, function() {
         setOption('borderless', this.checked);
+    });
+
+    var $alwaysOnTop = $('always-on-top');
+    $alwaysOnTop.checked = options.alwaysOnTop;
+    onChange($alwaysOnTop, function() {
+        setOption('alwaysOnTop', this.checked);
     });
 
     var $helium = $('helium');
