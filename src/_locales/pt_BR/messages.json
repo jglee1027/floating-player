@@ -146,6 +146,9 @@
     "app": {
         "message": "Abrir popup usando o complemento no Chrome OS"
     },
+    "borderless": {
+        "message": "Remover bordas e barra de título no Chrome OS (com complemento)"
+    },
     "helium": {
         "message": "Abrir vídeo com o Helium no macOS"
     },

@@ -63,6 +63,7 @@ var defaultOptions = {
     forceYoutubeTv: false,
     fix: true,
     app: false,
+    borderless: false,
     helium: false,
     keepPopup: true,
     context: true,
@@ -588,6 +589,8 @@ function showPopup() {
                     else {
                         appId = defaultAppId;
                     }
+
+                    opt.borderless = options.borderless;
 
                     chrome.runtime.sendMessage(appId, opt);
                 }
@@ -1150,6 +1153,7 @@ else if (where === 'options') {
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="app"]'), '@app');
+    setHtml($$('label[for="borderless"]'), '@borderless');
     setHtml($$('label[for="helium"]'), '@helium');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="use-context"]'), '@use_context');
@@ -1388,6 +1392,12 @@ else if (where === 'options') {
     $app.checked = options.app;
     onChange($app, function() {
         setOption('app', this.checked);
+    });
+
+    var $borderless = $('borderless');
+    $borderless.checked = options.borderless;
+    onChange($borderless, function() {
+        setOption('borderless', this.checked);
     });
 
     var $helium = $('helium');

@@ -1,3 +1,6 @@
+2.0.24 - 2017/10/04
+- Added option "Remove borders and title bar on Chrome OS"
+
 2.0.23 - 2017/10/01
 - Added option "Block mouse events on YouTube videos"
 

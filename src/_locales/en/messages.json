@@ -146,6 +146,9 @@
     "app": {
         "message": "Open popup using addon on Chrome OS"
     },
+    "borderless": {
+        "message": "Remove borders and title bar on Chrome OS (with addon)"
+    },
     "helium": {
         "message": "Open video with Helium on macOS"
     },
