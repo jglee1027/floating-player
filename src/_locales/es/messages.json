@@ -150,7 +150,7 @@
         "message": "Eliminar bordes y barra de título en Chrome OS (con complemento)"
     },
     "always_on_top": {
-        "message": "Mantener la ventana flotante fijada en la parte superior en Chrome OS"
+        "message": "Mantener la ventana flotante fijada en la parte superior en Chrome OS (con complemento)"
     },
     "helium": {
         "message": "Abrir video con Helium en macOS"
