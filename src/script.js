@@ -812,13 +812,7 @@ function parseYouTube() {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
                 slice(0, -1));
 
-            popupUrl = 'youtube.html?url=' + encodeURL(popupUrl);
-
-            if (options.noclick) {
-                popupUrl += '&noclick';
-            }
-
-            popupUrl = getExtensionUrl(popupUrl);
+            popupUrl = getExtensionUrl('youtube.html?' + encodeURL(popupUrl));
         }
     }
 
@@ -1722,9 +1716,7 @@ else if (where === 'youtube') {
 
     window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
-    var query = parseUrl(location.href).query;
-    var iframeUrl = query.url;
-    var noclick = query.noclick;
+    var iframeUrl = decodeURL(location.search.slice(1));
 
     if (iframeUrl) {
         var iframe = document.createElement('iframe');
@@ -1735,7 +1727,7 @@ else if (where === 'youtube') {
         document.body.appendChild(iframe);
     }
 
-    if (noclick !== undefined) {
+    if (options.noclick) {
         document.body.classList.add('noclick');
         addEvent(document, 'contextmenu', function(e) {
             e.preventDefault();
