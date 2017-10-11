@@ -18,10 +18,10 @@ var COLOR_WHITE = 2;
 var VIDEO_16X9 = 1;
 var VIDEO_4X3 = 2;
 
-var OS_WINDOWS = 1;
-var OS_MACOS = 2;
-var OS_LINUX = 3;
-var OS_CHROMEOS = 4;
+var OS_WINDOWS = 'windows';
+var OS_MACOS = 'mac';
+var OS_LINUX = 'linux';
+var OS_CHROMEOS = 'chromeos';
 
 
 // Options
@@ -1171,11 +1171,7 @@ else if (where === 'options') {
     setHtml($seeHistory, '@history');
     // End Translation strings
 
-
-    // Add css class to body to fix MacOS design issues
-    if (operatingSystem === OS_MACOS) {
-        document.body.classList.add('os-mac');
-    }
+    document.body.classList.add('os-' + operatingSystem);
 
     options = getAllOptions();
 
@@ -1835,7 +1831,7 @@ else if (where === 'instructions') {
     setHtml($$('#instructions-right-click p'), '@instructions_right_click');
     setHtml($$('#instructions-windows p'), '@instructions_windows');
     setHtml($$('#instructions-linux p'), '@instructions_linux');
-    setHtml($$('#instructions-macos p'), '@instructions_macos');
+    setHtml($$('#instructions-mac p'), '@instructions_macos');
     setHtml($$('#instructions-chromeos p'), '@instructions_chromeos');
     setHtml($$('#instructions-options p'), '@instructions_options');
     // End Translation strings
@@ -1853,27 +1849,7 @@ else if (where === 'instructions') {
     $app.href = 'https://chrome.google.com/webstore/detail/' +
         'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
 
-    var showCard;
-
-    switch (operatingSystem) {
-        case OS_WINDOWS:
-            showCard = 'instructions-windows';
-            break;
-
-        case OS_MACOS:
-            showCard = 'instructions-macos';
-            break;
-
-        case OS_LINUX:
-            showCard = 'instructions-linux';
-            break;
-
-        case OS_CHROMEOS:
-            showCard = 'instructions-chromeos';
-            break;
-    }
-
-    $(showCard).classList.remove('hidden');
+    $('instructions-' + operatingSystem).classList.remove('hidden');
 }
 
 })(window, document, chrome, screen, navigator, localStorage);

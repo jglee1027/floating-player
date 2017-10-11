@@ -144,6 +144,11 @@ label[for="vertical-margin"] {
     font-style: italic
 }
 
+body:not(.os-chromeos) .only-chrome-os,
+body:not(.os-mac) .only-mac-os {
+    display: none
+}
+
 .options br {
     display: none
 }
