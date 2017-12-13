@@ -1,6 +1,7 @@
-2.0.29 - ?
+2.0.29 - 2017/12/13
 - Fixed option "Block mouse events"
 - Removed Spanish translation
+- Improved instructions page
 
 2.0.28 - 2017/10/11
 - Hidden options of ChromeOS and macOS from other OSs

@@ -199,24 +199,24 @@
 
 
     "instructions_click_icon": {
-        "message": "Open the desired page and click the extension icon on the top right corner of Chrome:"
+        "message": "<p>Open the desired page and click the extension icon on the top right corner of Chrome:</p>"
     },
     "instructions_right_click": {
-        "message": "Or right click the link of some video:"
+        "message": "<p>Or right click the link of some video:</p>"
     },
     "instructions_windows": {
-        "message": "Download <a href=\"#\" id=\"deskpins\">DeskPins</a>. Once installed, open the app and click the icon in the system tray. Your cursor will turn into a pin. Then click the popup to make it always on top:"
+        "message": "<p>In order to keep the popup on top of other windows, you need to install a third-party application, since Windows doesn't have this feature by default.</p><p>Download <a href=\"#\" id=\"deskpins\">DeskPins</a>. Once installed, open the app and click the icon in the system tray. Your cursor will turn into a pin. Then click the popup to make it always on top:</p>"
     },
     "instructions_linux": {
-        "message": "Right click the title of the popup, then \"Always on top\":"
+        "message": "<p>Right click the title of the popup, then \"Always on top\":</p>"
     },
     "instructions_macos": {
-        "message": "Download <a href=\"#\" id=\"helium\">Helium</a>. Once installed, go to the options page (see below) and check \"Open video with Helium on macOS\"."
+        "message": "<p>In order to keep the popup on top of other windows, you need to install a third-party application, since macOS doesn't have this feature by default.</p><p>Download <a href=\"#\" id=\"helium\">Helium</a>. Once installed, go to the options page (see below) and check \"Open video with Helium on macOS\".</p>"
     },
     "instructions_chromeos": {
-        "message": "Download the <a href=\"#\" id=\"app\">app for Chrome OS</a>. Once installed, go to the options page (see below) and check \"Open popup using addon on Chrome OS\"."
+        "message": "<p>In order to keep the popup on top of other windows, you need to install an add-on, since Chrome OS doesn't have this feature by default.</p><p>Download the <a href=\"#\" id=\"app\">app for Chrome OS</a>. Once installed, go to the options page (see below) and check \"Open popup using addon on Chrome OS\".</p>"
     },
     "instructions_options": {
-        "message": "You can set the popup width and height besides other settings on the options page. To access it, right click the extension icon:"
+        "message": "<p>You can set the popup width and height besides other settings on the options page. To access it, right click the extension icon:</p>"
     }
 }

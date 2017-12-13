@@ -199,24 +199,24 @@
 
 
     "instructions_click_icon": {
-        "message": "Abra a página desejada e clique no ícone da extensão no canto superior direito do Chrome:"
+        "message": "<p>Abra a página desejada e clique no ícone da extensão no canto superior direito do Chrome:</p>"
     },
     "instructions_right_click": {
-        "message": "Ou clique com o botão direito do mouse no link de algum vídeo:"
+        "message": "<p>Ou clique com o botão direito do mouse no link de algum vídeo:</p>"
     },
     "instructions_windows": {
-        "message": "Baixe o <a href=\"#\" id=\"deskpins\">DeskPins</a>. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:"
+        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o Windows não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"deskpins\">DeskPins</a>. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:</p>"
     },
     "instructions_linux": {
-        "message": "Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":"
+        "message": "<p>Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":</p>"
     },
     "instructions_macos": {
-        "message": "Baixe o <a href=\"#\" id=\"helium\">Helium</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\"."
+        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o macOS não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"helium\">Helium</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\".</p>"
     },
     "instructions_chromeos": {
-        "message": "Baixe o <a href=\"#\" id=\"app\">app para o Chrome OS</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\"."
+        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um complemento, já que o Chrome OS não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"app\">app para o Chrome OS</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\".</p>"
     },
     "instructions_options": {
-        "message": "Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:"
+        "message": "<p>Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:</p>"
     }
 }

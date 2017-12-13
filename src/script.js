@@ -1831,13 +1831,13 @@ else if (where === 'instructions') {
     setHtml($$('title'), strInstructions);
     setHtml($$('h1 a'), strInstructions);
 
-    setHtml($$('#instructions-click-icon p'), '@instructions_click_icon');
-    setHtml($$('#instructions-right-click p'), '@instructions_right_click');
-    setHtml($$('#instructions-windows p'), '@instructions_windows');
-    setHtml($$('#instructions-linux p'), '@instructions_linux');
-    setHtml($$('#instructions-mac p'), '@instructions_macos');
-    setHtml($$('#instructions-chromeos p'), '@instructions_chromeos');
-    setHtml($$('#instructions-options p'), '@instructions_options');
+    setHtml($$('#instructions-click-icon div'), '@instructions_click_icon');
+    setHtml($$('#instructions-right-click div'), '@instructions_right_click');
+    setHtml($$('#instructions-windows div'), '@instructions_windows');
+    setHtml($$('#instructions-linux div'), '@instructions_linux');
+    setHtml($$('#instructions-mac div'), '@instructions_macos');
+    setHtml($$('#instructions-chromeos div'), '@instructions_chromeos');
+    setHtml($$('#instructions-options div'), '@instructions_options');
     // End Translation strings
 
     var $deskpins = $('deskpins');

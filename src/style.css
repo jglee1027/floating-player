@@ -1,4 +1,4 @@
-body, h1, form, label, input, select, button, img {
+body, h1, form, label, input, select, button, img, p {
     padding: 0;
     margin: 0;
     font: inherit
@@ -200,7 +200,8 @@ td {
 }
 
 .instructions p {
-    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 22px;
     font-size: 17px
 }
 
