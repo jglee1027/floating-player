@@ -1728,6 +1728,10 @@ else if (where === 'youtube') {
         addEvent(document, 'contextmenu', function(e) {
             e.preventDefault();
         });
+
+        addEvent(document, 'dragstart', function(e) {
+            e.preventDefault();
+        });
     }
 }
 
