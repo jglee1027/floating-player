@@ -1456,15 +1456,7 @@ else if (where === 'options') {
     var $context = $('use-context');
     $context.checked = options.context;
     onChange($context, function() {
-        var isChecked = this.checked;
-
-        if (isChecked) {
-            addContextMenu();
-        }
-        else {
-            removeContextMenu();
-        }
-        setOption('context', isChecked);
+        setOption('context', this.checked);
     });
 
     var $enableHistory = $('enable-history');
@@ -1475,10 +1467,6 @@ else if (where === 'options') {
 
     onClick($defaultConfig, function(e) {
         e.preventDefault();
-
-        if (!options.context) {
-            addContextMenu();
-        }
 
         var isOption;
 
