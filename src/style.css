@@ -17,7 +17,7 @@ body, html {
 }
 
 body {
-    font: 13px droid sans, segoe ui, ubuntu, sans-serif;
+    font: 13px Open Sans, sans-serif;
     background-color: #F1F1F1;
     color: #212121;
     user-select: none
@@ -79,12 +79,31 @@ button {
 }
 
 [type="checkbox"] {
-    position: relative;
-    top: 2px
+    /* visually hidden */
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0
 }
 
-.os-mac [type="checkbox"] {
-    top: 0
+.label-checkbox {
+    padding-left: 20px;
+    line-height: 15px;
+    display: inline-block;
+    background-image: url(/img/checkbox.png);
+    background-repeat: no-repeat
+}
+
+input[type=checkbox]:checked + .label-checkbox {
+    background-image: url(/img/checkbox-checked.png);
+}
+
+input[type=checkbox]:focus + .label-checkbox {
+    text-decoration: underline
 }
 
 [type="range"] {

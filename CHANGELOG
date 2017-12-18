@@ -1,5 +1,6 @@
 2.0.30 - 2017/12/19
 - Added option "Spoof Referrer header to be able to embed certain videos"
+- Improved design for instructions, history and options page
 
 2.0.29 - 2017/12/13
 - Fixed option "Block mouse events"
