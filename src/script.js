@@ -1104,7 +1104,7 @@ if (where === 'background') {
 
             for (var i = 0, len = details.requestHeaders.length; i < len; i++) {
                 if (details.requestHeaders[i].name === 'Referer') {
-                    details.requestHeaders[i].value = fakeReferrer;widg
+                    details.requestHeaders[i].value = fakeReferrer;
                     foundReferrer = true;
                     break;
                 }
