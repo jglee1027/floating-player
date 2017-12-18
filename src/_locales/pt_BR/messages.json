@@ -134,6 +134,9 @@
     "pause": {
         "message": "Pausar vídeo e continuar de onde parou"
     },
+    "spoof_referrer": {
+        "message": "Burlar cabeçalho Referrer para conseguir incorporar certos vídeos"
+    },
     "youtube_tv_on_error": {
         "message": "Abrir vídeo no YouTube TV se não puder ser incorporado*"
     },

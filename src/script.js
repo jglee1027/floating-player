@@ -59,6 +59,7 @@ var defaultOptions = {
     animateTitle: false,
     shuffle: false,
     pause: true,
+    spoofReferrer: true,
     youtubeTvOnError: true,
     forceYoutubeTv: false,
     fix: true,
@@ -1067,9 +1068,9 @@ function parsePocket() {
 var where = location.pathname.slice(1, -5);
 
 if (where === 'background') {
-    var context = getOption('context');
+    var options = getAllOptions();
 
-    if (context) {
+    if (options.context) {
         addContextMenu();
     }
 
@@ -1090,6 +1091,37 @@ if (where === 'background') {
 
         preparePopup();
     });
+
+
+    // In order to embed VEVO videos we have to spoof the Referrer header
+    if (options.spoofReferrer) {
+        chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+            var foundReferrer = false;
+            var fakeReferrer = 'https://www.youtube.com/';
+
+            for (var i = 0, len = details.requestHeaders.length; i < len; i++) {
+                if (details.requestHeaders[i].name === 'Referer') {
+                    details.requestHeaders[i].value = fakeReferrer;widg
+                    foundReferrer = true;
+                    break;
+                }
+            }
+
+            if (!foundReferrer) {
+                details.requestHeaders.push({
+                    name: 'Referer',
+                    value: fakeReferrer
+                });
+            }
+
+            return {
+                requestHeaders: details.requestHeaders
+            };
+        },
+            {urls: ['https://www.youtube.com/embed/*']},
+            ['blocking', 'requestHeaders']
+        );
+    }
 }
 
 else if (where === 'options') {
@@ -1145,6 +1177,7 @@ else if (where === 'options') {
     setHtml($$('label[for="animate-title"]'), '@animate_title');
     setHtml($$('label[for="shuffle"]'), '@shuffle');
     setHtml($$('label[for="pause"]'), '@pause');
+    setHtml($$('label[for="spoof-referrer"]'), '@spoof_referrer');
     setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
@@ -1361,6 +1394,12 @@ else if (where === 'options') {
     $pause.checked = options.pause;
     onChange($pause, function() {
         setOption('pause', this.checked);
+    });
+
+    var $spoofReferrer = $('spoof-referrer');
+    $spoofReferrer.checked = options.spoofReferrer;
+    onChange($spoofReferrer, function() {
+        setOption('spoofReferrer', this.checked);
     });
 
     var $youtubeTvOnError = $('youtube-tv-on-error');

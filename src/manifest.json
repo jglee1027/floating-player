@@ -1,7 +1,7 @@
 ﻿{
     "manifest_version": 2,
     "name": "Floating Player: YouTube, Twitch.tv, etc.",
-    "version": "2.0.29",
+    "version": "2.0.30",
 
     "content_security_policy": "script-src 'self' https://www.youtube.com https://s.ytimg.com; object-src 'self'",
 
@@ -22,7 +22,14 @@
     },
 
     "options_page": "options.html",
-    "permissions": ["contextMenus", "activeTab", "*://www.youtube.com/*"],
+
+    "permissions": [
+        "contextMenus",
+        "activeTab",
+        "*://www.youtube.com/*",
+        "webRequest",
+        "webRequestBlocking"
+    ],
 
     "web_accessible_resources": [
         "youtube.html"

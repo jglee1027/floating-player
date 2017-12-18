@@ -134,6 +134,9 @@
     "pause": {
         "message": "Pause video and continue where you left off"
     },
+    "spoof_referrer": {
+        "message": "Spoof Referrer header to be able to embed certain videos"
+    },
     "youtube_tv_on_error": {
         "message": "Play video on YouTube TV if it cannot be embedded*"
     },
