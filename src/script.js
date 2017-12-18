@@ -60,7 +60,7 @@ var defaultOptions = {
     shuffle: false,
     pause: true,
     spoofReferrer: true,
-    youtubeTvOnError: true,
+    youtubeTvOnError: false,
     forceYoutubeTv: false,
     fix: true,
     app: false,
@@ -1746,9 +1746,9 @@ else if (where === 'youtube') {
                 parseYouTubeAsTv();
                 location.href = popupUrl;
             }
-            else if (confirm(getText('cannot_play'))) {
+            /*else if (confirm(getText('cannot_play'))) {
                 location.href = videoUrl.href;
-            }
+            }*/
         }
     }
 
