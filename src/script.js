@@ -809,6 +809,9 @@ function parseYouTube() {
             popupUrl += '&color=white';
         }
 
+        popupUrl += '&widget_referrer=' + encodeURL('https://chrome.' +
+            'google.com/webstore/detail/' + chrome.runtime.id);
+
         if (options.api && !options.helium && !options.app) {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
                 slice(0, -1));
