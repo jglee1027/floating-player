@@ -31,6 +31,10 @@
         "webRequestBlocking"
     ],
 
+    "optional_permissions": [
+        "*://www.youtube-nocookie.com/*"
+    ],
+
     "web_accessible_resources": [
         "youtube.html"
     ]

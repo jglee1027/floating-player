@@ -1121,7 +1121,10 @@ if (where === 'background') {
                 requestHeaders: details.requestHeaders
             };
         },
-            {urls: ['https://www.youtube.com/embed/*']},
+            {urls: [
+                'https://www.youtube.com/embed/*',
+                'https://www.youtube-nocookie.com/embed/*'
+            ]},
             ['blocking', 'requestHeaders']
         );
     }
@@ -1273,7 +1276,27 @@ else if (where === 'options') {
     var $noCookie = $('no-cookie');
     $noCookie.checked = options.noCookie;
     onChange($noCookie, function() {
-        setOption('noCookie', this.checked);
+
+        var $this = this;
+        var isChecked = $this.checked;
+
+        if (isChecked) {
+            chrome.permissions.request({
+                origins: ['*://www.youtube-nocookie.com/*'],
+            },
+            function(granted) {
+                if (granted) {
+                    setOption('noCookie', true);
+                }
+                else {
+                    $this.checked = false;
+                    setOption('noCookie', false);
+                }
+            });
+        }
+        else {
+            setOption('noCookie', false);
+        }
     });
 
     var $captions = $('captions');
