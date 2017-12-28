@@ -202,7 +202,7 @@
 
 
     "instructions_click_icon": {
-        "message": "<p>Open the desired page and click the extension icon on the top right corner of Chrome:</p>"
+        "message": "<p>Open the desired page and click the extension icon on the top right corner of the browser:</p>"
     },
     "instructions_right_click": {
         "message": "<p>Or right click the link of some video:</p>"

@@ -1,3 +1,6 @@
+2.0.31 - 2017/12/28
+- Port to Firefox
+
 2.0.30 - 2017/12/18
 - Added option "Spoof Referrer header to be able to embed certain videos"
 - Improved design for instructions, history and options page

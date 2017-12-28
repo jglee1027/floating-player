@@ -202,7 +202,7 @@
 
 
     "instructions_click_icon": {
-        "message": "<p>Abra a página desejada e clique no ícone da extensão no canto superior direito do Chrome:</p>"
+        "message": "<p>Abra a página desejada e clique no ícone da extensão no canto superior direito do navegador:</p>"
     },
     "instructions_right_click": {
         "message": "<p>Ou clique com o botão direito do mouse no link de algum vídeo:</p>"

@@ -1,5 +1,7 @@
-(function(window, document, chrome, screen, navigator, localStorage) {
+(function(window, document, screen, navigator, localStorage) {
 'use strict';
+
+var browser = window.browser || window.chrome;
 
 // Constants
 var TOP_LEFT = 1;
@@ -90,7 +92,10 @@ var youtubeVideoId;
 // User's OS
 var operatingSystem;
 
-// Fix for popup inner width/height on Windows, Mac OS X and Chrome OS
+// Firefox?
+var isFirefox = !!window.sidebar;
+
+// Fix for popup inner width/height on some systems
 var WIDTH_FIX = 0;
 var HEIGHT_FIX = 0;
 
@@ -109,41 +114,80 @@ if (windowsVersion = navigator.userAgent.match(/Windows NT ([0-9.]+)/i)) {
     var WINDOWS_8_1 = 6.3;
     var WINDOWS_10 = 10;
 
-    switch (windowsVersion) {
-        case WINDOWS_XP:
-        case WINDOWS_VISTA:
-            WIDTH_FIX = 10;
-            HEIGHT_FIX = 31;
-            break;
+    if (isFirefox) {
+        switch (windowsVersion) {
+            case WINDOWS_XP:
+                WIDTH_FIX = 8;
+                HEIGHT_FIX = 35;
+                break;
 
-        case WINDOWS_7:
-            WIDTH_FIX = 10;
-            HEIGHT_FIX = 29;
-            break;
+            case WINDOWS_VISTA:
+                WIDTH_FIX = 16;
+                HEIGHT_FIX = 37;
+                break;
 
-        case WINDOWS_8:
-        case WINDOWS_8_1:
-        case WINDOWS_10:
-            WIDTH_FIX = 16;
-            HEIGHT_FIX = 39;
+            case WINDOWS_7:
+                WIDTH_FIX = 16;
+                HEIGHT_FIX = 39;
+                break;
+
+            case WINDOWS_8:
+            case WINDOWS_8_1:
+                WIDTH_FIX = 18;
+                HEIGHT_FIX = 41;
+                break;
+
+            case WINDOWS_10:
+                WIDTH_FIX = 16;
+                HEIGHT_FIX = 40;
+        }
+    }
+
+    else {
+        switch (windowsVersion) {
+            case WINDOWS_XP:
+            case WINDOWS_VISTA:
+                WIDTH_FIX = 10;
+                HEIGHT_FIX = 31;
+                break;
+
+            case WINDOWS_7:
+                WIDTH_FIX = 10;
+                HEIGHT_FIX = 29;
+                break;
+
+            case WINDOWS_8:
+            case WINDOWS_8_1:
+            case WINDOWS_10:
+                WIDTH_FIX = 16;
+                HEIGHT_FIX = 39;
+        }
     }
 }
 
 // Using Mac OS X
 else if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
-    HEIGHT_FIX = 22;
     operatingSystem = OS_MACOS;
+    HEIGHT_FIX = 22;
+
+    if (isFirefox) {
+        HEIGHT_FIX = 24;
+    }
 }
 
 // Using Chrome OS
 else if (/\bCrOS\b/.test(navigator.userAgent)) {
-    HEIGHT_FIX = 33;
     operatingSystem = OS_CHROMEOS;
+    HEIGHT_FIX = 33;
 }
 
 // Using Linux or other
 else {
     operatingSystem = OS_LINUX;
+
+    if (isFirefox) {
+        HEIGHT_FIX = 1;
+    }
 }
 
 
@@ -245,19 +289,19 @@ function getCurrentPopup(callback) {
         callback(error);
     }
     else {
-        chrome.tabs.get(popupTabId, function() {
-            error = chrome.runtime.lastError;
+        browser.tabs.get(popupTabId, function() {
+            error = browser.runtime.lastError;
             callback(error);
         });
     }
 }
 
 function getExtensionUrl(url) {
-    return chrome.runtime.getURL(url);
+    return browser.runtime.getURL(url);
 }
 
 function getText(key) {
-    return chrome.i18n.getMessage(key);
+    return browser.i18n.getMessage(key);
 }
 
 function ajax(option) {
@@ -382,21 +426,21 @@ function getWindowPosition() {
 }
 
 function showInstructions() {
-    chrome.tabs.create({
+    browser.tabs.create({
         url: getExtensionUrl('instructions.html')
     });
 }
 
 function addContextMenu() {
-    var menu = chrome.contextMenus;
+    var menu = browser.contextMenus;
 
     menu.create({
         'id': 'flp',
         'title': getText('open_in_popup'),
         'contexts': ['link']
     }, function() {
-        if (chrome.runtime.lastError) {
-            console.log(chrome.runtime.lastError.message);
+        if (browser.runtime.lastError) {
+            console.log(browser.runtime.lastError.message);
         }
     });
 
@@ -409,7 +453,7 @@ function addContextMenu() {
 }
 
 function removeContextMenu() {
-    chrome.contextMenus.removeAll();
+    browser.contextMenus.removeAll();
 }
 
 function historyGet() {
@@ -503,7 +547,7 @@ function preparePopup() {
     if (tabId !== null && options.pause) {
 
         // Get video time
-        chrome.tabs.executeScript(tabId, {file: 'inject.js'}, function(time) {
+        browser.tabs.executeScript(tabId, {file: 'inject.js'}, function(time) {
             videoTime = 0;
 
             if (Array.isArray(time) && typeof time[0] === 'number') {
@@ -546,13 +590,13 @@ function showPopup() {
         if (options.helium) {
             popupUrl = 'helium://' + popupUrl;
 
-            chrome.tabs.create({
+            browser.tabs.create({
                 url: popupUrl,
                 pinned: true,
                 active: false
             }, function(tab) {
                 setTimeout(function() {
-                    chrome.tabs.remove(tab.id);
+                    browser.tabs.remove(tab.id);
                 }, 3000);
             });
         }
@@ -575,8 +619,7 @@ function showPopup() {
                         height: pos.height,
                         top: pos.top,
                         left: pos.left,
-                        type: 'popup',
-                        focused: true
+                        type: 'popup'
                     };
                 }
 
@@ -595,10 +638,10 @@ function showPopup() {
                     opt.borderless = options.borderless;
                     opt.alwaysOnTop = options.alwaysOnTop;
 
-                    chrome.runtime.sendMessage(appId, opt);
+                    browser.runtime.sendMessage(appId, opt);
                 }
                 else {
-                    chrome.windows.create(opt, function(info) {
+                    browser.windows.create(opt, function(info) {
                         popupTabId = info.tabs[0].id;
                         popupWindowId = info.id;
                     });
@@ -617,20 +660,19 @@ function showPopup() {
 
                     // We found the popup, let's update its url
                     else {
-                        chrome.tabs.update(popupTabId, {
+                        browser.tabs.update(popupTabId, {
                             url: popupUrl // <-- needs web_accessible_resources
                         });
 
                         if (!options.forceFullscreen) {
-                            chrome.windows.update(popupWindowId, {
+                            browser.windows.update(popupWindowId, {
                                 // top: pos.top, <-- // [BUG] If top is set,
                                                      // the popup will be
                                                      // under the taskbar
                                                      // on Windows and Mac OS
                                 left: pos.left,
                                 width: pos.width,
-                                height: pos.height,
-                                focused: true
+                                height: pos.height
                             });
                         }
                     }
@@ -643,7 +685,7 @@ function showPopup() {
 
         // Close current tab
         if (tabId !== null && options.closeTab) {
-            chrome.tabs.remove(tabId);
+            browser.tabs.remove(tabId);
         }
     }
 }
@@ -808,9 +850,6 @@ function parseYouTube() {
         if (options.color === COLOR_WHITE) {
             popupUrl += '&color=white';
         }
-
-        popupUrl += '&widget_referrer=' + encodeURL('https://chrome.' +
-            'google.com/webstore/detail/' + chrome.runtime.id);
 
         if (options.api && !options.helium && !options.app) {
             popupUrl += '&enablejsapi=1&origin=' + encodeURL(getExtensionUrl('').
@@ -1083,12 +1122,12 @@ if (where === 'background') {
         showInstructions();
     }
 
-    chrome.browserAction.setTitle({
+    browser.browserAction.setTitle({
         title: 'Floating Player'
     });
 
     // Extension icon
-    chrome.browserAction.onClicked.addListener(function(tab) {
+    browser.browserAction.onClicked.addListener(function(tab) {
         pageUrl = parseUrl(tab.url);
         tabId = tab.id;
 
@@ -1098,7 +1137,7 @@ if (where === 'background') {
 
     // In order to embed VEVO videos we have to spoof the Referrer header
     if (options.spoofReferrer) {
-        chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+        browser.webRequest.onBeforeSendHeaders.addListener(function(details) {
             var foundReferrer = false;
             var fakeReferrer = 'https://www.youtube.com/';
 
@@ -1281,7 +1320,7 @@ else if (where === 'options') {
         var isChecked = $this.checked;
 
         if (isChecked) {
-            chrome.permissions.request({
+            browser.permissions.request({
                 origins: ['*://www.youtube-nocookie.com/*'],
             },
             function(granted) {
@@ -1509,7 +1548,7 @@ else if (where === 'options') {
 
     onClick($sourceCode, function(e) {
         e.preventDefault();
-        chrome.tabs.create({
+        browser.tabs.create({
             url: 'https://github.com/gabrielbarros/floating-player'
         });
     });
@@ -1521,7 +1560,7 @@ else if (where === 'options') {
 
     onClick($seeHistory, function(e) {
         e.preventDefault();
-        chrome.tabs.create({
+        browser.tabs.create({
             url: getExtensionUrl('history.html')
         });
     });
@@ -1687,8 +1726,8 @@ else if (where === 'youtube') {
                 moveTo(pos.left, pos.top);
 
                 /*
-                chrome.windows.getCurrent({}, function(info) {
-                    chrome.windows.update(info.id, {
+                browser.windows.getCurrent({}, function(info) {
+                    browser.windows.update(info.id, {
                         top: pos.top,
                         left: pos.left,
                         width: pos.width,
@@ -1909,4 +1948,4 @@ else if (where === 'instructions') {
     $('instructions-' + operatingSystem).classList.remove('hidden');
 }
 
-})(window, document, chrome, screen, navigator, localStorage);
+})(window, document, screen, navigator, localStorage);

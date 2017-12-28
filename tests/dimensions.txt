@@ -1,8 +1,22 @@
-      System        |  Popup inner size  | Expected inner size |  Difference
-----------------------------------------------------------------------------
-Linux (all distros) |  512x288, 384x288  |  512x288, 384x288   |    0 x 0
-Windows XP, Vista   |  502x257, 374x257  |  512x288, 384x288   |  -10 x -31
-Windows 7           |  502x259, 374x259  |  512x288, 384x288   |  -10 x -29
-Windows 8, 8.1, 10  |  496x249, 368x249  |  512x288, 384x288   |  -16 x -39
-Mac OS X 10.11      |  512x266, 384x266  |  512x288, 384x288   |    0 x -22
-Chrome OS 48        |  512x255, 384x255  |  512x288, 384x288   |    0 x -33
+            System            |  Popup inner size  | Difference
+----------------------------------------------------------------
+Chrome on Linux               |  512x288, 384x288  |   0 x 0
+Chrome on Windows XP, Vista   |  502x257, 374x257  | -10 x -31
+Chrome on Windows 7           |  502x259, 374x259  | -10 x -29
+Chrome on Windows 8.1, 10     |  496x249, 368x249  | -16 x -39
+Chrome on Mac OS X 10.12      |  512x266, 384x266  |   0 x -22
+Chrome on Chrome OS 48        |  512x255, 384x255  |   0 x -33
+----------------------------------------------------------------
+Firefox on Linux              |  512x287, 384x287  |   0 x -1
+Firefox on Windows XP         |  504x253, 376x253  |  -8 x -35
+Firefox on Windows Vista      |  496x251, 368x251  | -16 x -37
+Firefox on Windows 7          |  496x249, 368x249  | -16 x -39
+Firefox on Windows 8.1        |  494x247, 366x247  | -18 x -41
+Firefox on Windows 10         |  496x248, 368x248  | -16 x -40
+Firefox on Mac OS X 10.12     |  512x264, 384x264  |   0 x -24
+
+
+
+Expected inner size
+--------------------
+  512x288, 384x288
