@@ -621,6 +621,10 @@ function showPopup() {
                         left: pos.left,
                         type: 'popup'
                     };
+
+                    if (!isFirefox) {
+                        opt.focused = true;
+                    }
                 }
 
                 if (options.app && !options.forceFullscreen) {
@@ -665,7 +669,7 @@ function showPopup() {
                         });
 
                         if (!options.forceFullscreen) {
-                            browser.windows.update(popupWindowId, {
+                            var opt = {
                                 // top: pos.top, <-- // [BUG] If top is set,
                                                      // the popup will be
                                                      // under the taskbar
@@ -673,7 +677,13 @@ function showPopup() {
                                 left: pos.left,
                                 width: pos.width,
                                 height: pos.height
-                            });
+                            };
+
+                            if (!isFirefox) {
+                                opt.focused = true;
+                            }
+
+                            browser.windows.update(popupWindowId, opt);
                         }
                     }
                 });
