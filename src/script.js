@@ -70,6 +70,7 @@ var defaultOptions = {
     alwaysOnTop: true,
     helium: false,
     keepPopup: true,
+    keepDimensions: false,
     context: true,
     history: false
 };
@@ -668,7 +669,8 @@ function showPopup() {
                             url: popupUrl // <-- needs web_accessible_resources
                         });
 
-                        if (!options.forceFullscreen) {
+                        if (!options.forceFullscreen &&
+                            !options.keepDimensions) {
                             var opt = {
                                 // top: pos.top, <-- // [BUG] If top is set,
                                                      // the popup will be
@@ -1241,6 +1243,7 @@ else if (where === 'options') {
     setHtml($$('label[for="always-on-top"]'), '@always_on_top');
     setHtml($$('label[for="helium"]'), '@helium');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
+    setHtml($$('label[for="keep-dimensions"]'), '@keep_dimensions');
     setHtml($$('label[for="use-context"]'), '@use_context');
     setHtml($$('label[for="enable-history"]'), '@enable_history');
 
@@ -1525,6 +1528,12 @@ else if (where === 'options') {
         setOption('keepPopup', this.checked);
     });
 
+    var $keepDimensions = $('keep-dimensions');
+    $keepDimensions.checked = options.keepDimensions;
+    onChange($keepDimensions, function() {
+        setOption('keepDimensions', this.checked);
+    });
+
     var $context = $('use-context');
     $context.checked = options.context;
     onChange($context, function() {
@@ -1728,7 +1737,7 @@ else if (where === 'youtube') {
         // Except if fullscreen
         var isFullscreen = window.innerWidth === screen.width;
 
-        if (!isFullscreen && options.proportion) {
+        if (!isFullscreen && options.proportion && !options.keepDimensions) {
             getVideoProportion(function() {
                 var pos = getWindowPosition();
 

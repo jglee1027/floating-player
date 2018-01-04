@@ -144,7 +144,7 @@
         "message": "Usar o YouTube TV para todos os vídeos do YouTube (não recomendado)"
     },
     "fix": {
-        "message": "Corrigir a largura e a altura da popup no Windows"
+        "message": "Corrigir bug da largura e da altura da popup em alguns sistemas"
     },
     "app": {
         "message": "Abrir popup usando o complemento no Chrome OS"
@@ -160,6 +160,9 @@
     },
     "keep_popup": {
         "message": "Manter a popup atual em vez de abrir uma nova"
+    },
+    "keep_dimensions": {
+        "message": "Manter posição e dimensões atuais da popup ao mudar de vídeo"
     },
     "use_context": {
         "message": "Usar menu de contexto"
