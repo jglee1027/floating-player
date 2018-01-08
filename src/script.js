@@ -69,6 +69,8 @@ var defaultOptions = {
     borderless: false,
     alwaysOnTop: true,
     helium: false,
+    heliumPinTab: true,
+    heliumVersion: 'helium',
     keepPopup: true,
     keepDimensions: false,
     context: true,
@@ -589,11 +591,16 @@ function showPopup() {
     function windowOpen() {
 
         if (options.helium) {
-            popupUrl = 'helium://' + popupUrl;
+            if (options.heliumVersion === 'helium') {
+                popupUrl = 'helium://' + popupUrl;
+            }
+            else {
+                popupUrl = 'heliumlift://openURL=' + popupUrl;
+            }
 
             browser.tabs.create({
                 url: popupUrl,
-                pinned: true,
+                pinned: options.heliumPinTab,
                 active: false
             }, function(tab) {
                 setTimeout(function() {
@@ -1242,6 +1249,8 @@ else if (where === 'options') {
     setHtml($$('label[for="borderless"]'), '@borderless');
     setHtml($$('label[for="always-on-top"]'), '@always_on_top');
     setHtml($$('label[for="helium"]'), '@helium');
+    setHtml($$('label[for="helium-pin-tab"]'), '@helium_pin_tab');
+    setHtml($$('label[for="helium-version"]'), '@helium_version');
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="keep-dimensions"]'), '@keep_dimensions');
     setHtml($$('label[for="use-context"]'), '@use_context');
@@ -1520,6 +1529,18 @@ else if (where === 'options') {
     $helium.checked = options.helium;
     onChange($helium, function() {
         setOption('helium', this.checked);
+    });
+
+    var $heliumPinTab = $('helium-pin-tab');
+    $heliumPinTab.checked = options.heliumPinTab;
+    onChange($heliumPinTab, function() {
+        setOption('heliumPinTab', this.checked);
+    });
+
+    var $heliumVersion = $('helium-version');
+    $heliumVersion.value = options.heliumVersion;
+    onChange($heliumVersion, function() {
+        setOption('heliumVersion', this.value);
     });
 
     var $keepPopup = $('keep-popup');

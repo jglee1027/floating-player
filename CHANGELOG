@@ -1,3 +1,7 @@
+2.0.34 - 2018/01/08
+- Added option "Pin temporary tab before opening Helium" (macOS only)
+- Added option "Helium app" (macOS only)
+
 2.0.33 - 2018/01/04
 - Added option "Keep position and current dimensions of popup when changing video"
 

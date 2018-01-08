@@ -158,6 +158,12 @@
     "helium": {
         "message": "Abrir vídeo com o Helium no macOS"
     },
+    "helium_pin_tab": {
+        "message": "Fixar guia temporária antes de abrir o Helium"
+    },
+    "helium_version": {
+        "message": "App do Helium"
+    },
     "keep_popup": {
         "message": "Manter a popup atual em vez de abrir uma nova"
     },
