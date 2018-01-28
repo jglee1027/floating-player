@@ -429,9 +429,9 @@ function getWindowPosition() {
 }
 
 function showInstructions() {
-    browser.tabs.create({
+    /*browser.tabs.create({
         url: getExtensionUrl('instructions.html')
-    });
+    });*/
 }
 
 function addContextMenu() {
@@ -536,7 +536,7 @@ function setHtml(obj, str) {
     else {
         html = str;
     }
-    obj.innerHTML = html;
+    obj.innerText = html;
 }
 
 function preparePopup() {
@@ -1254,7 +1254,7 @@ else if (where === 'options') {
     setHtml($$('label[for="keep-popup"]'), '@keep_popup');
     setHtml($$('label[for="keep-dimensions"]'), '@keep_dimensions');
     setHtml($$('label[for="use-context"]'), '@use_context');
-    setHtml($$('label[for="enable-history"]'), '@enable_history');
+    //setHtml($$('label[for="enable-history"]'), '@enable_history');
 
     //setHtml($('requires-api'), '@requires_api');
 
@@ -1264,11 +1264,11 @@ else if (where === 'options') {
     var $sourceCode = $('source-code');
     setHtml($sourceCode, '@source_code');
 
-    var $instructions = $('instructions');
-    setHtml($instructions, '@instructions');
+    //var $instructions = $('instructions');
+    //setHtml($instructions, '@instructions');
 
-    var $seeHistory = $('see-history');
-    setHtml($seeHistory, '@history');
+    //var $seeHistory = $('see-history');
+    //setHtml($seeHistory, '@history');
     // End Translation strings
 
     document.body.classList.add('os-' + operatingSystem);
@@ -1561,11 +1561,11 @@ else if (where === 'options') {
         setOption('context', this.checked);
     });
 
-    var $enableHistory = $('enable-history');
+    /*var $enableHistory = $('enable-history');
     $enableHistory.checked = options.history;
     onChange($enableHistory, function() {
         setOption('history', this.checked);
-    });
+    });*/
 
     onClick($defaultConfig, function(e) {
         e.preventDefault();
@@ -1593,17 +1593,17 @@ else if (where === 'options') {
         });
     });
 
-    onClick($instructions, function(e) {
+    /*onClick($instructions, function(e) {
         e.preventDefault();
         showInstructions();
-    });
+    });*/
 
-    onClick($seeHistory, function(e) {
+    /*onClick($seeHistory, function(e) {
         e.preventDefault();
         browser.tabs.create({
             url: getExtensionUrl('history.html')
         });
-    });
+    });*/
 
     onClick($('resolutions'), function(e) {
         var $target = e.target;
@@ -1660,6 +1660,7 @@ else if (where === 'options') {
     }
 }
 
+/*
 else if (where === 'youtube') {
 
     var player;
@@ -1774,7 +1775,7 @@ else if (where === 'youtube') {
                         height: pos.height
                     });
                 });
-                */
+                *x/
             });
         }
     }
@@ -1838,7 +1839,7 @@ else if (where === 'youtube') {
             }
             /*else if (confirm(getText('cannot_play'))) {
                 location.href = videoUrl.href;
-            }*/
+            }*x/
         }
     }
 
@@ -1987,5 +1988,6 @@ else if (where === 'instructions') {
 
     $('instructions-' + operatingSystem).classList.remove('hidden');
 }
+*/
 
 })(window, document, screen, navigator, localStorage);
