@@ -57,7 +57,7 @@ var defaultOptions = {
     noclick: false,
     loop: false,
     proportion: true,
-    api: true,
+    api: false,
     animateTitle: false,
     shuffle: false,
     pause: true,
@@ -1194,10 +1194,10 @@ else if (where === 'options') {
     var strOptions = getText('options');
     setHtml($$('title'), strOptions);
     setHtml($$('h1 a'), strOptions);
-    setHtml($$('label[for="align"]'), '@align');
+    //setHtml($$('label[for="align"]'), '@align');
 
     var $option = $$$('option');
-    setHtml($option[0], '@top_left');
+    /*setHtml($option[0], '@top_left');
     setHtml($option[1], '@top_right');
     setHtml($option[2], '@bottom_left');
     setHtml($option[3], '@bottom_right');
@@ -1205,12 +1205,12 @@ else if (where === 'options') {
     setHtml($option[5], '@bottom_center');
     setHtml($option[6], '@left_center');
     setHtml($option[7], '@right_center');
-    setHtml($option[8], '@center');
+    setHtml($option[8], '@center');*/
 
     setHtml($$('label[for="width"]'), '@size');
     setHtml($('recommended'), '@recommended');
-    setHtml($$('label[for="horizontal-margin"]'), '@horizontal_margin');
-    setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
+    //setHtml($$('label[for="horizontal-margin"]'), '@horizontal_margin');
+    //setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
     setHtml($$('label[for="embed"]'), '@embed');
     setHtml($$('label[for="autoplay"]'), '@autoplay');
     setHtml($$('label[for="force-fullscreen"]'), '@force_fullscreen');
@@ -1224,25 +1224,25 @@ else if (where === 'options') {
     setHtml($$('label[for="fullscreen-button"]'), '@fullscreen_button');
     setHtml($$('label[for="yt-logo"]'), '@yt_logo');
     setHtml($$('label[for="color"]'), '@color');
-    setHtml($option[9], '@red');
-    setHtml($option[10], '@white');
+    setHtml($option[0], '@red');
+    setHtml($option[1], '@white');
 
-    setHtml($$('label[for="speed"]'), '@speed');
-    setHtml($option[14], '@normal');
+    //setHtml($$('label[for="speed"]'), '@speed');
+    //setHtml($option[14], '@normal');
 
-    setHtml($$('label[for="quality"]'), '@quality');
-    setHtml($$('label[for="volume"]'), '@volume');
-    setHtml($$('label[for="title"]'), '@title');
+    //setHtml($$('label[for="quality"]'), '@quality');
+    //setHtml($$('label[for="volume"]'), '@volume');
+    //setHtml($$('label[for="title"]'), '@title');
     setHtml($$('label[for="proportion"]'), '@proportion');
     setHtml($$('label[for="keyboard"]'), '@keyboard');
-    setHtml($$('label[for="noclick"]'), '@noclick');
-    setHtml($$('label[for="loop"]'), '@loop');
-    setHtml($$('label[for="api"]'), '@api');
-    setHtml($$('label[for="animate-title"]'), '@animate_title');
-    setHtml($$('label[for="shuffle"]'), '@shuffle');
+    //setHtml($$('label[for="noclick"]'), '@noclick');
+    //setHtml($$('label[for="loop"]'), '@loop');
+    //setHtml($$('label[for="api"]'), '@api');
+    //setHtml($$('label[for="animate-title"]'), '@animate_title');
+    //setHtml($$('label[for="shuffle"]'), '@shuffle');
     setHtml($$('label[for="pause"]'), '@pause');
     setHtml($$('label[for="spoof-referrer"]'), '@spoof_referrer');
-    setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
+    //setHtml($$('label[for="youtube-tv-on-error"]'), '@youtube_tv_on_error');
     setHtml($$('label[for="force-youtube-tv"]'), '@force_youtube_tv');
     setHtml($$('label[for="fix"]'), '@fix');
     setHtml($$('label[for="app"]'), '@app');
@@ -1256,7 +1256,7 @@ else if (where === 'options') {
     setHtml($$('label[for="use-context"]'), '@use_context');
     setHtml($$('label[for="enable-history"]'), '@enable_history');
 
-    setHtml($('requires-api'), '@requires_api');
+    //setHtml($('requires-api'), '@requires_api');
 
     var $defaultConfig = $('default-config');
     setHtml($defaultConfig, '@default');
@@ -1275,11 +1275,11 @@ else if (where === 'options') {
 
     options = getAllOptions();
 
-    var $align = $('align');
+    /*var $align = $('align');
     $align.value = options.align;
     onChange($align, function() {
         setOption('align', this.value);
-    });
+    });*/
 
     var $width = $('width');
     var $height = $('height');
@@ -1298,7 +1298,7 @@ else if (where === 'options') {
 
     highlightResolution($width.value, $height.value);
 
-    var $horizontalMargin = $('horizontal-margin');
+    /*var $horizontalMargin = $('horizontal-margin');
     $horizontalMargin.value = options.hmargin;
     onInput($horizontalMargin, function() {
         setOption('hmargin', this.value);
@@ -1308,7 +1308,7 @@ else if (where === 'options') {
     $verticalMargin.value = options.vmargin;
     onInput($verticalMargin, function() {
         setOption('vmargin', this.value);
-    });
+    });*/
 
     var $embed = $('embed');
     $embed.checked = options.embed;
@@ -1408,7 +1408,7 @@ else if (where === 'options') {
         setOption('color', this.value);
     });
 
-    var $speed = $('speed');
+    /*var $speed = $('speed');
     $speed.value = options.speed;
     onChange($speed, function() {
         setOption('speed', this.value);
@@ -1433,7 +1433,7 @@ else if (where === 'options') {
     $title.value = options.title;
     onInput($title, function() {
         setOption('title', this.value);
-    });
+    });*/
 
     var $proportion = $('proportion');
     $proportion.checked = options.proportion;
@@ -1447,7 +1447,7 @@ else if (where === 'options') {
         setOption('keyboard', this.checked);
     });
 
-    var $noclick = $('noclick');
+    /*var $noclick = $('noclick');
     $noclick.checked = options.noclick;
     onChange($noclick, function() {
         setOption('noclick', this.checked);
@@ -1475,7 +1475,7 @@ else if (where === 'options') {
     $shuffle.checked = options.shuffle;
     onChange($shuffle, function() {
         setOption('shuffle', this.checked);
-    });
+    });*/
 
     var $pause = $('pause');
     $pause.checked = options.pause;
@@ -1489,11 +1489,11 @@ else if (where === 'options') {
         setOption('spoofReferrer', this.checked);
     });
 
-    var $youtubeTvOnError = $('youtube-tv-on-error');
+    /*var $youtubeTvOnError = $('youtube-tv-on-error');
     $youtubeTvOnError.checked = options.youtubeTvOnError;
     onChange($youtubeTvOnError, function() {
         setOption('youtubeTvOnError', this.checked);
-    });
+    });*/
 
     var $forceYoutubeTv = $('force-youtube-tv');
     $forceYoutubeTv.checked = options.forceYoutubeTv;
@@ -1969,7 +1969,7 @@ else if (where === 'instructions') {
     setHtml($$('#instructions-linux div'), '@instructions_linux');
     setHtml($$('#instructions-mac div'), '@instructions_macos');
     setHtml($$('#instructions-chromeos div'), '@instructions_chromeos');
-    setHtml($$('#instructions-options div'), '@instructions_options');
+    //setHtml($$('#instructions-options div'), '@instructions_options');
     // End Translation strings
 
     var $deskpins = $('deskpins');
