@@ -569,7 +569,11 @@ function preparePopup() {
 
 function showPopup() {
 
-    popupUrl = pageUrl.href;
+    // Add ?floating_player=1 at the end of the url
+    var objUrl = new URL(pageUrl.href);
+    objUrl.searchParams.append('floating_player', '1');
+    popupUrl = objUrl.toString();
+
     youtubeVideoId = null;
 
     if (options.embed) {

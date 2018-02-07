@@ -1,3 +1,7 @@
+2.0.35 - 2018/02/07
+- Now ?floating_player=1 is added at the end of the url so you can inject scripts
+  and css via tampermonkey
+
 2.0.34 - 2018/01/08
 - Added option "Pin temporary tab before opening Helium" (macOS only)
 - Added option "Helium app" (macOS only)
