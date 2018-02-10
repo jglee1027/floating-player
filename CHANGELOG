@@ -1,3 +1,18 @@
+2.0.36 - 2018/02/10
+- Added secret option to enable the add-on to set borderless/always-on-top popup
+  • Download https://github.com/gabrielbarros/floating-player-app/archive/master.zip
+  • Unzip it
+  • Move the folder "floating-player-app-master" to somewhere safe (Documents, Desktop, etc)
+  • Open Google Chrome
+  • Go to chrome://extensions/
+  • Check "Developer mode"
+  • Click the button "Load unpacked extension"
+  • Select the folder ...\floating-player-app-master\src (<-- SRC FOLDER!)
+  • Go to chrome-extension://ekajjllcmeckibblgckgoceinmmgnfop/options.html
+  • Press F9
+  • Click "Allow" and test it on YouTube
+  • If you want to disable it, press F9 again on options page
+
 2.0.35 - 2018/02/07
 - Now ?floating_player=1 is added at the end of the url so you can inject scripts
   and css via tampermonkey

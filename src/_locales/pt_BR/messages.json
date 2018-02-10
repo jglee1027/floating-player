@@ -194,6 +194,18 @@
     "requires_api": {
         "message": "* Requer API do YouTube"
     },
+    "addon_not_installed": {
+        "message": "O complemento não está instalado"
+    },
+    "addon_enabled": {
+        "message": "O complemento foi ativado com sucesso"
+    },
+    "addon_disabled": {
+        "message": "O complemento foi desativado com sucesso"
+    },
+    "permission_not_granted": {
+        "message": "A permissão não foi concedida"
+    },
 
 
     "history": {

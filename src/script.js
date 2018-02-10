@@ -641,7 +641,7 @@ function showPopup() {
 
                 if (options.app && !options.forceFullscreen) {
                     var defaultAppId = 'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
-                    var customAppId = localStorage['appid'] || '';
+                    var customAppId = localStorage.getItem('appid') || '';
                     var appId;
 
                     if (customAppId.match(/^[a-z]{32}$/)) {
@@ -1140,8 +1140,8 @@ if (where === 'background') {
     }
 
     // 1st time
-    if (!localStorage['ok']) {
-        localStorage['ok'] = 1;
+    if (!localStorage.getItem('ok')) {
+        localStorage.setItem('ok', 1);
         showInstructions();
     }
 
@@ -1662,6 +1662,117 @@ else if (where === 'options') {
         $elem = $(width + 'x' + height);
         $elem && $elem.classList.add(highlightClass);
     }
+
+
+    // Secret option to enable the add-on (https://git.io/vALr4) and set
+    // the popup always on top and make it borderless
+    addEvent(window, 'keyup', function(e) {
+        var F9_KEY = 120;
+
+        if (e.keyCode === F9_KEY) {
+
+            browser.permissions.request({
+                permissions: ['management'],
+            },
+            function(granted) {
+
+                if (granted) {
+
+                    var addonId = localStorage.getItem('appid');
+                    var addonName = 'Addon for Floating Player (Chrome OS only)';
+
+                    // If appid is already set, then disable the extension
+                    if (addonId) {
+                        browser.management.setEnabled(addonId, false, function() {
+
+                            // Extension not found
+                            if (browser.runtime.lastError) {
+                                console.log(browser.runtime.lastError.message);
+                            }
+
+                            // Remove permission
+                            browser.permissions.remove({
+                                permissions: ['management']
+                            });
+
+                            localStorage.removeItem('appid');
+                            setOption('app', false);
+                            setOption('vmargin', 0);
+
+                            alert(getText('addon_disabled'));
+                        });
+                    }
+
+
+                    // If appid is not set, find the extension and enable it
+                    else {
+                        browser.management.getAll(function(result) {
+
+                            // Loop through all installed extensions
+                            for (var i = 0, len = result.length; i < len; i++) {
+                                var extensionName = result[i].name;
+                                var extensionId = result[i].id;
+
+                                if (extensionName === addonName) {
+                                    addonId = extensionId;
+                                    break;
+                                }
+                            }
+
+                            // Addon is not installed
+                            if (addonId === null) {
+                                alert(getText('addon_not_installed'));
+                            }
+
+                            // Addon is installed
+                            else {
+                                // Save addon id
+                                localStorage.setItem('appid', addonId);
+
+                                // Enable useful options
+                                setOption('app', true);
+                                setOption('borderless', true);
+                                setOption('alwaysOnTop', true);
+
+                                // Put the popup above the taskbar
+                                if (options.align === BOTTOM_LEFT ||
+                                    options.align === BOTTOM_RIGHT ||
+                                    options.align === BOTTOM_CENTER) {
+
+                                    switch (windowsVersion) {
+                                        case WINDOWS_XP:
+                                        case WINDOWS_VISTA:
+                                            setOption('vmargin', 30);
+                                            break;
+
+                                        case WINDOWS_7:
+                                        case WINDOWS_8:
+                                        case WINDOWS_8_1:
+                                        case WINDOWS_10:
+                                            setOption('vmargin', 40);
+                                    }
+                                }
+
+                                // Enable extension if it's disabled
+                                browser.management.setEnabled(addonId, true, function() {
+
+                                    // Remove permission no longer needed
+                                    browser.permissions.remove({
+                                        permissions: ['management']
+                                    });
+
+                                    alert(getText('addon_enabled'));
+                                });
+                            }
+                        });
+                    }
+                }
+                else {
+                    alert(getText('permission_not_granted'));
+                }
+            });
+        }
+    });
 }
 
 else if (where === 'youtube') {
