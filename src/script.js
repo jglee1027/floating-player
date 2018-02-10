@@ -570,9 +570,14 @@ function preparePopup() {
 function showPopup() {
 
     // Add ?floating_player=1 at the end of the url
-    var objUrl = new URL(pageUrl.href);
-    objUrl.searchParams.append('floating_player', '1');
-    popupUrl = objUrl.toString();
+    try {
+        var objUrl = new URL(pageUrl.href);
+        objUrl.searchParams.append('floating_player', '1');
+        popupUrl = objUrl.toString();
+    }
+    catch(e) {
+        popupUrl = pageUrl.href;
+    }
 
     youtubeVideoId = null;
 
