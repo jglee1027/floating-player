@@ -388,6 +388,7 @@ function setPopupPosition() {
         case align.center:
             top = (screen.height - height) / 2;
             left = (screen.width - width) / 2;
+            break;
     }
 
     popup.pos = {

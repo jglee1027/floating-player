@@ -555,6 +555,7 @@ addEvent(window, 'keyup', function(e) {
                                     case os.windows8_1:
                                     case os.windows10:
                                         setOption('verticalMargin', 40);
+                                        break;
                                 }
                             }
 
