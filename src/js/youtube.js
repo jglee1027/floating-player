@@ -178,8 +178,7 @@ function onPlayerError(event) {
 
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
-var url = new Url(location.href);
-var iframeUrl = url.query.url;
+var iframeUrl = (new Url(location.href)).query.url;
 
 if (iframeUrl) {
     var iframe = document.createElement('iframe');

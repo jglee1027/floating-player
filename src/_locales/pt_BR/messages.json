@@ -50,6 +50,30 @@
     "vertical_margin": {
         "message": "Margem vertical"
     },
+    "color": {
+        "message": "Cor da barra de progresso do player do YouTube"
+    },
+    "red": {
+        "message": "Vermelho"
+    },
+    "white": {
+        "message": "Branco"
+    },
+    "speed": {
+        "message": "Velocidade de reprodução dos vídeos do YouTube*"
+    },
+    "normal": {
+        "message": "Normal"
+    },
+    "quality": {
+        "message": "Qualidade dos vídeos do YouTube*"
+    },
+    "title": {
+        "message": "Título para os vídeos do YouTube*"
+    },
+    "volume": {
+        "message": "Volume para os vídeos do YouTube*"
+    },
     "embed": {
         "message": "Incorporar vídeo se possível"
     },
@@ -94,30 +118,6 @@
     },
     "loop": {
         "message": "Dar loop nos vídeos e playlists do YouTube"
-    },
-    "color": {
-        "message": "Cor da barra de progresso do player do YouTube"
-    },
-    "red": {
-        "message": "Vermelho"
-    },
-    "white": {
-        "message": "Branco"
-    },
-    "speed": {
-        "message": "Velocidade de reprodução dos vídeos do YouTube*"
-    },
-    "normal": {
-        "message": "Normal"
-    },
-    "quality": {
-        "message": "Qualidade dos vídeos do YouTube*"
-    },
-    "volume": {
-        "message": "Volume para os vídeos do YouTube*"
-    },
-    "title": {
-        "message": "Título para os vídeos do YouTube*"
     },
     "proportion": {
         "message": "Abrir vídeo do YouTube com a proporção correta"
@@ -176,23 +176,26 @@
     "enable_history": {
         "message": "Habilitar o histórico"
     },
+    "requires_api": {
+        "message": "* Requer API do YouTube"
+    },
     "default": {
         "message": "Restaurar configurações originais"
     },
     "source_code": {
         "message": "Código-fonte"
     },
-    "u_sure": {
-        "message": "Tem certeza?"
-    },
     "instructions": {
         "message": "Instruções"
     },
+    "history": {
+        "message": "Histórico"
+    },
+    "u_sure": {
+        "message": "Tem certeza?"
+    },
     "cannot_play": {
         "message": "Não é possível incorporar vídeo. Reproduzir no YouTube?"
-    },
-    "requires_api": {
-        "message": "* Requer API do YouTube"
     },
     "addon_not_installed": {
         "message": "O complemento não está instalado"
@@ -208,9 +211,6 @@
     },
 
 
-    "history": {
-        "message": "Histórico"
-    },
     "clear_history": {
         "message": "Limpar o histórico"
     },
@@ -223,24 +223,36 @@
 
 
     "instructions_click_icon": {
-        "message": "<p>Abra a página desejada e clique no ícone da extensão no canto superior direito do navegador:</p>"
+        "message": "Abra a página desejada e clique no ícone da extensão no canto superior direito do navegador:"
     },
     "instructions_right_click": {
-        "message": "<p>Ou clique com o botão direito do mouse no link de algum vídeo:</p>"
+        "message": "Ou clique com o botão direito do mouse no link de algum vídeo:"
     },
     "instructions_windows": {
-        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o Windows não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"deskpins\">DeskPins</a>. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:</p>"
+        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o Windows não tem esse recurso por padrão."
+    },
+    "instructions_windows2": {
+        "message": "Baixe o {DeskPins}. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:"
     },
     "instructions_linux": {
-        "message": "<p>Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":</p>"
+        "message": "Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":"
     },
     "instructions_macos": {
-        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o macOS não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"helium\">Helium</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\".</p>"
+        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o macOS não tem esse recurso por padrão."
+    },
+    "instructions_macos2": {
+        "message": "Baixe o {Helium}. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\"."
     },
     "instructions_chromeos": {
-        "message": "<p>Para manter a popup em cima das outras janelas, é necessário instalar um complemento, já que o Chrome OS não tem esse recurso por padrão.</p><p>Baixe o <a href=\"#\" id=\"app\">app para o Chrome OS</a>. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\".</p>"
+        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um complemento, já que o Chrome OS não tem esse recurso por padrão."
+    },
+    "addon": {
+        "message": "app para o Chrome OS"
+    },
+    "instructions_chromeos2": {
+        "message": "Baixe o {addon}. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\"."
     },
     "instructions_options": {
-        "message": "<p>Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:</p>"
+        "message": "Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:"
     }
 }

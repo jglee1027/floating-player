@@ -1,39 +1,37 @@
-var os = {
-    windowsXp: 5.1,
-    windowsVista: 6,
-    windows7: 6.1,
-    windows8: 6.2,
-    windows8_1: 6.3,
-    windows10: 10,
-    linux: 100,
-    macOs: 200,
-    chromeOs: 300
+var OS = {
+    WINDOWS_XP: 5.1,
+    WINDOWS_VISTA: 6,
+    WINDOWS_7: 6.1,
+    WINDOWS_8: 6.2,
+    WINDOWS_8_1: 6.3,
+    WINDOWS_10: 10,
+    LINUX: 100,
+    MACOS: 200,
+    CHROME_OS: 300
 };
 
-var format = {
-    f16x9: 1,
-    f4x3: 2
+var FORMAT = {
+    F16X9: 1,
+    F4X3: 2
 };
 
-var align = {
-    top_left: 1,
-    top_right: 2,
-    bottom_left: 3,
-    bottom_right: 4,
-    top_center: 5,
-    bottom_center: 6,
-    left_center: 7,
-    right_center: 8,
-    center: 9
+var ALIGN = {
+    TOP_LEFT: 1,
+    TOP_RIGHT: 2,
+    BOTTOM_LEFT: 3,
+    BOTTOM_RIGHT: 4,
+    TOP_CENTER: 5,
+    BOTTOM_CENTER: 6,
+    LEFT_CENTER: 7,
+    RIGHT_CENTER: 8,
+    CENTER: 9
 };
 
-
-
-var LOCALSTORAGE_PREFIX = '@';
+var OPTIONS_PREFIX = '@';
 
 // Default options
 var defaultOptions = {
-    align: align.bottom_right,
+    align: ALIGN.BOTTOM_RIGHT,
     width: 512,
     height: 288,
     horizontalMargin: 0,
@@ -41,8 +39,8 @@ var defaultOptions = {
     color: 'red',
     speed: 1,
     quality: 'auto',
-    volume: 100,
     title: '%playlist% %title% - YouTube',
+    volume: 100,
     embed: true,
     autoplay: true,
     forceFullscreen: false,
@@ -111,8 +109,8 @@ var video = {
 var widthFix = 0;
 var heightFix = 0;
 
-var userOS;
-var userOSclass;
+var userOs;
+var userOsClass;
 
 var isFirefox = !!window.sidebar;
 
@@ -122,100 +120,100 @@ function setUserOS() {
 
     // Using Windows
     if (matches) {
-        userOS = parseFloat(matches[1]);
-        userOSclass = 'windows';
+        userOs = parseFloat(matches[1]);
+        userOsClass = 'windows';
     }
 
     // Using Mac OS X
     else if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
-        userOS = os.macOs;
-        userOSclass = 'mac';
+        userOs = OS.MACOS;
+        userOsClass = 'mac';
     }
 
     // Using Chrome OS
     else if (/\bCrOS\b/.test(navigator.userAgent)) {
-        userOS = os.chromeOs;
-        userOSclass = 'chromeos';
+        userOs = OS.CHROME_OS;
+        userOsClass = 'chromeos';
     }
 
     // Using Linux or other
     else {
-        userOS = os.linux;
-        userOSclass = 'linux';
+        userOs = OS.LINUX;
+        userOsClass = 'linux';
     }
 }
 
 function fixWindowDimensions() {
     if (isFirefox) {
-        switch (userOS) {
-            case os.windowsXp:
+        switch (userOs) {
+            case OS.WINDOWS_XP:
                 widthFix = 8;
                 heightFix = 35;
                 break;
 
-            case os.windowsVista:
+            case OS.WINDOWS_VISTA:
                 widthFix = 16;
                 heightFix = 37;
                 break;
 
-            case os.windows7:
+            case OS.WINDOWS_7:
                 widthFix = 16;
                 heightFix = 39;
                 break;
 
-            case os.windows8:
-            case os.windows8_1:
+            case OS.WINDOWS_8:
+            case OS.WINDOWS_8_1:
                 widthFix = 18;
                 heightFix = 41;
                 break;
 
-            case os.windows10:
+            case OS.WINDOWS_10:
                 widthFix = 16;
                 heightFix = 40;
                 break;
 
-            case os.linux:
+            case OS.LINUX:
                 heightFix = 1;
                 break;
 
-            case os.macOs:
+            case OS.MACOS:
                 heightFix = 24;
                 break;
 
             // No Firefox for ChromeOS
-            // case os.chromeOs:
+            // case OS.CHROME_OS:
         }
     }
 
     else {
-        switch (userOS) {
-            case os.windowsXp:
-            case os.windowsVista:
+        switch (userOs) {
+            case OS.WINDOWS_XP:
+            case OS.WINDOWS_VISTA:
                 widthFix = 10;
                 heightFix = 31;
                 break;
 
-            case os.windows7:
+            case OS.WINDOWS_7:
                 widthFix = 10;
                 heightFix = 29;
                 break;
 
-            case os.windows8:
-            case os.windows8_1:
-            case os.windows10:
+            case OS.WINDOWS_8:
+            case OS.WINDOWS_8_1:
+            case OS.WINDOWS_10:
                 widthFix = 16;
                 heightFix = 39;
                 break;
 
-            case os.linux:
+            case OS.LINUX:
                 // empty
                 break;
 
-            case os.macOs:
+            case OS.MACOS:
                 heightFix = 22;
                 break;
 
-            case os.chromeOs:
+            case OS.CHROME_OS:
                 heightFix = 33;
                 break;
         }
@@ -227,7 +225,7 @@ function getOption(name) {
      *      n,1000 => Number(1000)
      *      s,text => String("text")
      */
-    var value = localStorage.getItem(LOCALSTORAGE_PREFIX + name);
+    var value = localStorage.getItem(OPTIONS_PREFIX + name);
 
     if (value === null) {
         return defaultOptions[name];
@@ -238,7 +236,7 @@ function getOption(name) {
 
     // Number
     if (type === 'n') {
-        value = Number(value);
+        value = +value;
     }
 
     // Boolean
@@ -258,8 +256,14 @@ function getAllOptions() {
 }
 
 function setOption(name, value) {
-    var valueWithType = (typeof value).charAt(0) + ':' + value;
-    localStorage.setItem(LOCALSTORAGE_PREFIX + name, valueWithType);
+    if (value === defaultOptions[name]) {
+        localStorage.removeItem(OPTIONS_PREFIX + name);
+    }
+    else {
+        var valueWithType = (typeof value).charAt(0) + ':' + value;
+        localStorage.setItem(OPTIONS_PREFIX + name, valueWithType);
+    }
+
     options[name] = value;
 }
 
@@ -288,10 +292,10 @@ function getPopupUrl() {
 }
 
 function getVideoProportion(callback) {
-    video.format = format.f16x9;
+    video.format = FORMAT.F16X9;
 
     var youtubeUrl = 'https://www.youtube.com/watch?v=' + video.youtubeId;
-    var url = 'https://www.youtube.com/oembed?url=' + Url.encodeUri(youtubeUrl);
+    var url = 'https://www.youtube.com/oembed?url=' + Url.encode(youtubeUrl);
 
     var xhr = new XMLHttpRequest();
     xhr.timeout = 5000;
@@ -308,7 +312,7 @@ function getVideoProportion(callback) {
                     var is4x3 = proportion <= 1.4;
 
                     if (is4x3) {
-                        video.format = format.f4x3;
+                        video.format = FORMAT.F4X3;
                     }
 
                     callback();
@@ -334,7 +338,7 @@ function setPopupPosition() {
     var top;
     var left;
 
-    if (video.format === format.f4x3) {
+    if (video.format === FORMAT.F4X3) {
         width = Math.round((4 * height) / 3);
     }
 
@@ -345,47 +349,47 @@ function setPopupPosition() {
     }
 
     switch (options.align) {
-        case align.top_left:
+        case ALIGN.TOP_LEFT:
             top = options.verticalMargin;
             left = options.horizontalMargin;
             break;
 
-        case align.top_right:
+        case ALIGN.TOP_RIGHT:
             top = options.verticalMargin;
             left = screen.width - width - options.horizontalMargin;
             break;
 
-        case align.bottom_left:
+        case ALIGN.BOTTOM_LEFT:
             top = screen.height - height - options.verticalMargin;
             left = options.horizontalMargin;
             break;
 
-        case align.bottom_right:
+        case ALIGN.BOTTOM_RIGHT:
             top = screen.height - height - options.verticalMargin;
             left = screen.width - width - options.horizontalMargin;
             break;
 
-        case align.top_center:
+        case ALIGN.TOP_CENTER:
             top = options.verticalMargin;
             left = (screen.width - width) / 2;
             break;
 
-        case align.bottom_center:
+        case ALIGN.BOTTOM_CENTER:
             top = screen.height - height - options.verticalMargin;
             left = (screen.width - width) / 2;
             break;
 
-        case align.left_center:
+        case ALIGN.LEFT_CENTER:
             top = (screen.height - height) / 2;
             left = options.horizontalMargin;
             break;
 
-        case align.right_center:
+        case ALIGN.RIGHT_CENTER:
             top = (screen.height - height) / 2;
             left = screen.width - width - options.horizontalMargin;
             break;
 
-        case align.center:
+        case ALIGN.CENTER:
             top = (screen.height - height) / 2;
             left = (screen.width - width) / 2;
             break;
@@ -399,7 +403,7 @@ function setPopupPosition() {
     };
 }
 
-function identifyPopupUrlFromHosts() {
+function identifyPopupUrl() {
     popup.url = pageUrl;
     popup.url.query.floating_player = 1;
 
@@ -480,7 +484,7 @@ function identifyPopupUrlFromHosts() {
                 pageUrl.path === '/url' && pageUrl.query.url) {
 
                 pageUrl = new Url(pageUrl.query.url);
-                identifyPopupUrlFromHosts();
+                identifyPopupUrl();
             }
     }
 }
@@ -506,7 +510,7 @@ function onExtensionClick() {
     getAllOptions();
 
     video.time = 0;
-    video.format = format.f16x9;
+    video.format = FORMAT.F16X9;
     video.youtubeId = null;
 
     if (options.history) {
@@ -515,13 +519,13 @@ function onExtensionClick() {
 
     if (!fromContextMenu() && options.pause) {
         setVideoTime(function() {
-            identifyPopupUrlFromHosts();
+            identifyPopupUrl();
             preparePopup();
         });
     }
 
     else {
-        identifyPopupUrlFromHosts();
+        identifyPopupUrl();
         preparePopup();
     }
 }
@@ -609,7 +613,7 @@ function updateCurrentPopup() {
 
         // [BUG] If top is set, the popup will be
         // under the taskbar on Windows and Mac OS
-        if (userOS === os.linux) {
+        if (userOs === OS.LINUX) {
             opt.top = popup.pos.top;
         }
 
@@ -669,8 +673,8 @@ function openHelium() {
 }
 
 function parseTime(time) {
-    var matches = ('' + time).match(
-        /^(?:([0-9]+)h)?(?:([0-9]+)m)?(?:([0-9]+)s?)?$/) || [];
+    var regexTime = /^(?:([0-9]+)h)?(?:([0-9]+)m)?(?:([0-9]+)s?)?$/;
+    var matches = ('' + time).match(regexTime) || [];
 
     if (matches.length === 4) {
         var hours = +(matches[1] || 0);
@@ -800,7 +804,6 @@ function parseYouTube() {
         var search = pageUrl.query.search_query || pageUrl.query.q;
 
         // [BUG] YouTube search doesn't work with youtube-nocookie.com
-
         popup.url = new Url('https://www.youtube.com/embed');
         popup.url.query.listType = 'search';
         popup.url.query.list = search;
@@ -824,11 +827,11 @@ function parseYouTubeAsTv() {
     }
 
     if (video.youtubeId) {
-        popup.url.hash += '&v=' + Url.encodeUri(video.youtubeId);
+        popup.url.hash += '&v=' + Url.encode(video.youtubeId);
     }
 
     if (playlist) {
-        popup.url.hash += '&list=' + Url.encodeUri(playlist);
+        popup.url.hash += '&list=' + Url.encode(playlist);
     }
 
     // [BUG] Video time doesn't work with list on YouTube TV
@@ -1027,7 +1030,7 @@ function parseMetacafe() {
 function parsePocket() {
     if (pageUrl.path === '/redirect' && pageUrl.query.url) {
         pageUrl = new Url(pageUrl.query.url);
-        identifyPopupUrlFromHosts();
+        identifyPopupUrl();
     }
 }
 
@@ -1035,3 +1038,4 @@ function parsePocket() {
 setUserOS();
 fixWindowDimensions();
 getAllOptions();
+document.body.classList.add('os-' + userOsClass);

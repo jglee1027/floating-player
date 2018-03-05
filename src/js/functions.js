@@ -127,7 +127,7 @@ function onClick(obj, callback) {
     addEvent(obj, 'click', callback);
 }
 
-function setHtml(obj, str) {
+function setHtml(node, str) {
     var html;
     if (str[0] === '@') {
         html = getText(str.slice(1));
@@ -135,5 +135,11 @@ function setHtml(obj, str) {
     else {
         html = str;
     }
-    obj.innerHTML = html;
+    node.innerText = html;
+}
+
+function setVars(str, vars) {
+    return str.replace(/\{([a-z_]+)\}/gi, function(match, p1) {
+        return vars[p1];
+    });
 }

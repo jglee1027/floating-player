@@ -10,7 +10,7 @@ function Url(url) {
     this.query = this._queryStringParse(this.rawQuery);
 }
 
-Url.encodeUri =function(str) {
+Url.encode = function(str) {
     return encodeURIComponent(str).
         replace(/!/g, '%21').
         replace(/'/g, '%27').
@@ -20,7 +20,7 @@ Url.encodeUri =function(str) {
         replace(/%20/g, '+');
 };
 
-Url.decodeUri = function(str) {
+Url.decode = function(str) {
     return decodeURIComponent(str.replace(/\+/g, '%20'));
 };
 
@@ -35,8 +35,8 @@ Url.prototype = {
         for (var i = 0, len = vars.length; i < len; i++) {
             part = vars[i].split('=');
 
-            key = (part[0] && Url.decodeUri(part[0])) || '';
-            value = (part[1] && Url.decodeUri(part[1])) || '';
+            key = (part[0] && Url.decode(part[0])) || '';
+            value = (part[1] && Url.decode(part[1])) || '';
 
             if (key) {
                 result[key] = value;
@@ -51,7 +51,7 @@ Url.prototype = {
 
         for (var i in obj) {
             if (obj.hasOwnProperty(i)) {
-                str.push(Url.encodeUri(i) + '=' + Url.encodeUri(obj[i]));
+                str.push(Url.encode(i) + '=' + Url.encode(obj[i]));
             }
         }
 

@@ -56,7 +56,7 @@ if (localStorage.getItem('ok')) {
                 else if (key !== 'title' && (value - 0 == value &&
                     ('' + value).trim().length > 0)) {
 
-                    setOption(key, Number(value));
+                    setOption(key, +value);
                 }
                 // String
                 else {
@@ -69,13 +69,13 @@ if (localStorage.getItem('ok')) {
     }
 
     localStorage.removeItem('ok');
-    localStorage.setItem('installed', (new Date()).getTime());
+    localStorage.setItem('installed', Date.now());
     getAllOptions();
 }
 
 // 1st time
 else if (!localStorage.getItem('installed')) {
-    localStorage.setItem('installed', (new Date()).getTime());
+    localStorage.setItem('installed', Date.now());
     showInstructions();
 }
 

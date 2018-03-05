@@ -1,5 +1,3 @@
-document.body.classList.add('os-' + userOSclass);
-
 // Translation strings
 var strOptions = getText('options');
 setHtml($$('title'), strOptions);
@@ -21,6 +19,17 @@ setHtml($$('label[for="width"]'), '@size');
 setHtml($('recommended'), '@recommended');
 setHtml($$('label[for="horizontal-margin"]'), '@horizontal_margin');
 setHtml($$('label[for="vertical-margin"]'), '@vertical_margin');
+
+setHtml($$('label[for="color"]'), '@color');
+setHtml($option[9], '@red');
+setHtml($option[10], '@white');
+
+setHtml($$('label[for="speed"]'), '@speed');
+setHtml($option[14], '@normal');
+
+setHtml($$('label[for="quality"]'), '@quality');
+setHtml($$('label[for="title"]'), '@title');
+setHtml($$('label[for="volume"]'), '@volume');
 setHtml($$('label[for="embed"]'), '@embed');
 setHtml($$('label[for="autoplay"]'), '@autoplay');
 setHtml($$('label[for="force-fullscreen"]'), '@force_fullscreen');
@@ -33,20 +42,10 @@ setHtml($$('label[for="controls"]'), '@controls');
 setHtml($$('label[for="show-info"]'), '@show_info');
 setHtml($$('label[for="fullscreen-button"]'), '@fullscreen_button');
 setHtml($$('label[for="yt-logo"]'), '@yt_logo');
-setHtml($$('label[for="color"]'), '@color');
-setHtml($option[9], '@red');
-setHtml($option[10], '@white');
-
-setHtml($$('label[for="speed"]'), '@speed');
-setHtml($option[14], '@normal');
-
-setHtml($$('label[for="quality"]'), '@quality');
-setHtml($$('label[for="volume"]'), '@volume');
-setHtml($$('label[for="title"]'), '@title');
-setHtml($$('label[for="proportion"]'), '@proportion');
 setHtml($$('label[for="keyboard"]'), '@keyboard');
 setHtml($$('label[for="noclick"]'), '@noclick');
 setHtml($$('label[for="loop"]'), '@loop');
+setHtml($$('label[for="proportion"]'), '@proportion');
 setHtml($$('label[for="youtube-api"]'), '@youtube_api');
 setHtml($$('label[for="animate-title"]'), '@animate_title');
 setHtml($$('label[for="shuffle"]'), '@shuffle');
@@ -116,6 +115,39 @@ var $verticalMargin = $('vertical-margin');
 $verticalMargin.value = options.verticalMargin;
 onInput($verticalMargin, function() {
     setOption('verticalMargin', +this.value);
+});
+
+var $color = $('color');
+$color.value = options.color;
+onChange($color, function() {
+    setOption('color', this.value);
+});
+
+var $speed = $('speed');
+$speed.value = options.speed;
+onChange($speed, function() {
+    setOption('speed', +this.value);
+});
+
+var $quality = $('quality');
+$quality.value = options.quality;
+onChange($quality, function() {
+    setOption('quality', this.value);
+});
+
+var $title = $('title');
+$title.value = options.title;
+onInput($title, function() {
+    setOption('title', this.value);
+});
+
+var $volume = $('volume');
+var $currentVolume = $('current-volume');
+$volume.value = options.volume;
+$currentVolume.innerText = options.volume;
+onInput($volume, function() {
+    setOption('volume', +this.value);
+    $currentVolume.innerText = this.value;
 });
 
 var $embed = $('embed');
@@ -210,45 +242,6 @@ onChange($ytLogo, function() {
     setOption('ytLogo', this.checked);
 });
 
-var $color = $('color');
-$color.value = options.color;
-onChange($color, function() {
-    setOption('color', this.value);
-});
-
-var $speed = $('speed');
-$speed.value = options.speed;
-onChange($speed, function() {
-    setOption('speed', +this.value);
-});
-
-var $quality = $('quality');
-$quality.value = options.quality;
-onChange($quality, function() {
-    setOption('quality', this.value);
-});
-
-var $volume = $('volume');
-var $currentVolume = $('current-volume');
-$volume.value = options.volume;
-$currentVolume.innerHTML = options.volume;
-onInput($volume, function() {
-    setOption('volume', +this.value);
-    $currentVolume.innerHTML = this.value;
-});
-
-var $title = $('title');
-$title.value = options.title;
-onInput($title, function() {
-    setOption('title', this.value);
-});
-
-var $proportion = $('proportion');
-$proportion.checked = options.proportion;
-onChange($proportion, function() {
-    setOption('proportion', this.checked);
-});
-
 var $keyboard = $('keyboard');
 $keyboard.checked = options.keyboard;
 onChange($keyboard, function() {
@@ -265,6 +258,12 @@ var $loop = $('loop');
 $loop.checked = options.loop;
 onChange($loop, function() {
     setOption('loop', this.checked);
+});
+
+var $proportion = $('proportion');
+$proportion.checked = options.proportion;
+onChange($proportion, function() {
+    setOption('proportion', this.checked);
 });
 
 var $youtubeApi = $('youtube-api');
@@ -383,8 +382,7 @@ onClick($defaultConfig, function(e) {
     if (confirm(getText('u_sure'))) {
         for (var i in localStorage) {
             if (localStorage.hasOwnProperty(i)) {
-                isOption = i.substr(0, LOCALSTORAGE_PREFIX.length) ===
-                    LOCALSTORAGE_PREFIX;
+                isOption = i.substr(0, OPTIONS_PREFIX.length) === OPTIONS_PREFIX;
 
                 if (isOption) {
                     localStorage.removeItem(i);
@@ -423,7 +421,7 @@ onClick($('resolutions'), function(e) {
     e.preventDefault();
 
     if ($target.href) {
-        resolution = $target.innerHTML.split('x');
+        resolution = $target.innerText.split('x');
         width = resolution[0];
         height = resolution[1];
 
@@ -540,20 +538,20 @@ addEvent(window, 'keyup', function(e) {
                             setOption('alwaysOnTop', true);
 
                             // Put the popup above the taskbar
-                            if (options.align === align.bottom_left ||
-                                options.align === align.bottom_right ||
-                                options.align === align.bottom_center) {
+                            if (options.align === ALIGN.BOTTOM_LEFT ||
+                                options.align === ALIGN.BOTTOM_RIGHT ||
+                                options.align === ALIGN.BOTTOM_CENTER) {
 
-                                switch (userOS) {
-                                    case os.windowsXp:
-                                    case os.windowsVista:
+                                switch (userOs) {
+                                    case OS.WINDOWS_XP:
+                                    case OS.WINDOWS_VISTA:
                                         setOption('verticalMargin', 30);
                                         break;
 
-                                    case os.windows7:
-                                    case os.windows8:
-                                    case os.windows8_1:
-                                    case os.windows10:
+                                    case OS.WINDOWS_7:
+                                    case OS.WINDOWS_8:
+                                    case OS.WINDOWS_8_1:
+                                    case OS.WINDOWS_10:
                                         setOption('verticalMargin', 40);
                                         break;
                                 }

@@ -3,26 +3,40 @@ var strInstructions = getText('instructions');
 setHtml($$('title'), strInstructions);
 setHtml($$('h1 a'), strInstructions);
 
-setHtml($$('#instructions-click-icon div'), '@instructions_click_icon');
-setHtml($$('#instructions-right-click div'), '@instructions_right_click');
-setHtml($$('#instructions-windows div'), '@instructions_windows');
-setHtml($$('#instructions-linux div'), '@instructions_linux');
-setHtml($$('#instructions-mac div'), '@instructions_macos');
-setHtml($$('#instructions-chromeos div'), '@instructions_chromeos');
-setHtml($$('#instructions-options div'), '@instructions_options');
+var $instructionsClickIcon = $$('#instructions-click-icon p');
+var $instructionsRightClick = $$('#instructions-right-click p');
+var $instructionsWindows = $$$('#instructions-windows p');
+var $instructionsLinux = $$('#instructions-linux p');
+var $instructionsMac = $$$('#instructions-mac p');
+var $instructionsChromeOs = $$$('#instructions-chromeos p');
+var $instructionsOptions = $$('#instructions-options p');
+
+setHtml($instructionsClickIcon, '@instructions_click_icon');
+setHtml($instructionsRightClick, '@instructions_right_click');
+setHtml($instructionsWindows[0], '@instructions_windows');
+setHtml($instructionsWindows[1], '@instructions_windows2');
+setHtml($instructionsLinux, '@instructions_linux');
+setHtml($instructionsMac[0], '@instructions_macos');
+setHtml($instructionsMac[1], '@instructions_macos2');
+setHtml($instructionsChromeOs[0], '@instructions_chromeos');
+setHtml($instructionsChromeOs[1], '@instructions_chromeos2');
+setHtml($instructionsOptions, '@instructions_options');
 // End Translation strings
 
-var $deskpins = $('deskpins');
-$deskpins.href = 'https://bitbucket.org/efotinis/deskpins/downloads/' +
-    'DeskPins-1.32-setup.exe';
 
-var $helium = $('helium');
-$helium.target = '_blank';
-$helium.href = 'https://itunes.apple.com/br/app/helium/id1054607607';
+$instructionsWindows[1].innerHTML = setVars($instructionsWindows[1].innerHTML, {
+    'DeskPins': '<a href="https://bitbucket.org/efotinis/deskpins/downloads/' +
+        'DeskPins-1.32-setup.exe">DeskPins</a>'
+});
 
-var $app = $('app');
-$app.target = '_blank';
-$app.href = 'https://chrome.google.com/webstore/detail/' +
-    'neefhpglbgbkmlkgdgkfoofkcpbodbfb';
+$instructionsMac[1].innerHTML = setVars($instructionsMac[1].innerHTML, {
+    'Helium': '<a target="_blank" href="https://itunes.apple.com/br/app/' +
+        'helium/id1054607607">Helium</a>'
+});
 
-$('instructions-' + userOSclass).classList.remove('hidden');
+$instructionsChromeOs[1].innerHTML = setVars($instructionsChromeOs[1].innerHTML, {
+    'addon': '<a target="_blank" href="https://chrome.google.com/webstore/' +
+        'detail/neefhpglbgbkmlkgdgkfoofkcpbodbfb">' + getText('addon') + '</a>'
+});
+
+$('instructions-' + userOsClass).classList.remove('hidden');

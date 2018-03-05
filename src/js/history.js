@@ -12,7 +12,7 @@ var $table = $('table');
 var currentHistory = historyGet();
 var historySize = currentHistory.length;
 
-function historyIsEmpty() {
+function historyEmptyMsg() {
     var isHistoryEnabled = getOption('history');
     var key;
 
@@ -56,7 +56,7 @@ if (historySize) {
     $table.innerHTML = tpl;
 }
 else {
-    historyIsEmpty();
+    historyEmptyMsg();
 }
 
 // "X" image
@@ -71,7 +71,7 @@ onClick($table, function(e) {
         historySize--;
 
         if (historySize === 0) {
-            historyIsEmpty();
+            historyEmptyMsg();
         }
     }
 });
@@ -81,6 +81,6 @@ onClick($clearHistory, function(e) {
 
     if (confirm(getText('u_sure'))) {
         historyClear();
-        historyIsEmpty();
+        historyEmptyMsg();
     }
 });

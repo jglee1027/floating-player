@@ -50,6 +50,30 @@
     "vertical_margin": {
         "message": "Vertical margin"
     },
+    "color": {
+        "message": "Color in the YouTube player's video progress bar"
+    },
+    "red": {
+        "message": "Red"
+    },
+    "white": {
+        "message": "White"
+    },
+    "speed": {
+        "message": "Playback speed of YouTube videos*"
+    },
+    "normal": {
+        "message": "Normal"
+    },
+    "quality": {
+        "message": "Quality of YouTube videos*"
+    },
+    "title": {
+        "message": "Title for YouTube videos*"
+    },
+    "volume": {
+        "message": "Volume for YouTube videos*"
+    },
     "embed": {
         "message": "Embed video if possible"
     },
@@ -94,30 +118,6 @@
     },
     "loop": {
         "message": "Loop YouTube videos and playlists"
-    },
-    "color": {
-        "message": "Color in the YouTube player's video progress bar"
-    },
-    "red": {
-        "message": "Red"
-    },
-    "white": {
-        "message": "White"
-    },
-    "speed": {
-        "message": "Playback speed of YouTube videos*"
-    },
-    "normal": {
-        "message": "Normal"
-    },
-    "quality": {
-        "message": "Quality of YouTube videos*"
-    },
-    "volume": {
-        "message": "Volume for YouTube videos*"
-    },
-    "title": {
-        "message": "Title for YouTube videos*"
     },
     "proportion": {
         "message": "Open YouTube video with the correct aspect ratio"
@@ -176,23 +176,26 @@
     "enable_history": {
         "message": "Enable history"
     },
+    "requires_api": {
+        "message": "* Requires YouTube API"
+    },
     "default": {
         "message": "Restore default settings"
     },
     "source_code": {
         "message": "Source code"
     },
-    "u_sure": {
-        "message": "Are you sure?"
-    },
     "instructions": {
         "message": "Instructions"
     },
+    "history": {
+        "message": "History"
+    },
+    "u_sure": {
+        "message": "Are you sure?"
+    },
     "cannot_play": {
         "message": "Cannot embed video. Play it on YouTube?"
-    },
-    "requires_api": {
-        "message": "* Requires YouTube API"
     },
     "addon_not_installed": {
         "message": "Addon is not installed"
@@ -208,9 +211,6 @@
     },
 
 
-    "history": {
-        "message": "History"
-    },
     "clear_history": {
         "message": "Clear history"
     },
@@ -223,24 +223,36 @@
 
 
     "instructions_click_icon": {
-        "message": "<p>Open the desired page and click the extension icon on the top right corner of the browser:</p>"
+        "message": "Open the desired page and click the extension icon on the top right corner of the browser:"
     },
     "instructions_right_click": {
-        "message": "<p>Or right click the link of some video:</p>"
+        "message": "Or right click the link of some video:"
     },
     "instructions_windows": {
-        "message": "<p>In order to keep the popup on top of other windows, you need to install a third-party application, since Windows doesn't have this feature by default.</p><p>Download <a href=\"#\" id=\"deskpins\">DeskPins</a>. Once installed, open the app and click the icon in the system tray. Your cursor will turn into a pin. Then click the popup to make it always on top:</p>"
+        "message": "In order to keep the popup on top of other windows, you need to install a third-party application, since Windows doesn't have this feature by default."
+    },
+    "instructions_windows2": {
+        "message": "Download {DeskPins}. Once installed, open the app and click the icon in the system tray. Your cursor will turn into a pin. Then click the popup to make it always on top:"
     },
     "instructions_linux": {
-        "message": "<p>Right click the title of the popup, then \"Always on top\":</p>"
+        "message": "Right click the title of the popup, then \"Always on top\":"
     },
     "instructions_macos": {
-        "message": "<p>In order to keep the popup on top of other windows, you need to install a third-party application, since macOS doesn't have this feature by default.</p><p>Download <a href=\"#\" id=\"helium\">Helium</a>. Once installed, go to the options page (see below) and check \"Open video with Helium on macOS\".</p>"
+        "message": "In order to keep the popup on top of other windows, you need to install a third-party application, since macOS doesn't have this feature by default."
+    },
+    "instructions_macos2": {
+        "message": "Download {Helium}. Once installed, go to the options page (see below) and check \"Open video with Helium on macOS\"."
     },
     "instructions_chromeos": {
-        "message": "<p>In order to keep the popup on top of other windows, you need to install an add-on, since Chrome OS doesn't have this feature by default.</p><p>Download the <a href=\"#\" id=\"app\">app for Chrome OS</a>. Once installed, go to the options page (see below) and check \"Open popup using addon on Chrome OS\".</p>"
+        "message": "In order to keep the popup on top of other windows, you need to install an add-on, since Chrome OS doesn't have this feature by default."
+    },
+    "addon": {
+        "message": "app for Chrome OS"
+    },
+    "instructions_chromeos2": {
+        "message": "Download the {addon}. Once installed, go to the options page (see below) and check \"Open popup using addon on Chrome OS\"."
     },
     "instructions_options": {
-        "message": "<p>You can set the popup width and height besides other settings on the options page. To access it, right click the extension icon:</p>"
+        "message": "You can set the popup width and height besides other settings on the options page. To access it, right click the extension icon:"
     }
 }
