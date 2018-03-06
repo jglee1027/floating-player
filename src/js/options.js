@@ -32,6 +32,7 @@ setHtml($$('label[for="title"]'), '@title');
 setHtml($$('label[for="volume"]'), '@volume');
 setHtml($$('label[for="embed"]'), '@embed');
 setHtml($$('label[for="autoplay"]'), '@autoplay');
+setHtml($$('label[for="chat"]'), '@chat');
 setHtml($$('label[for="force-fullscreen"]'), '@force_fullscreen');
 setHtml($$('label[for="close-tab"]'), '@close_tab');
 setHtml($$('label[for="no-cookie"]'), '@no_cookie');
@@ -160,6 +161,12 @@ var $autoplay = $('autoplay');
 $autoplay.checked = options.autoplay;
 onChange($autoplay, function() {
     setOption('autoplay', this.checked);
+});
+
+var $chat = $('chat');
+$chat.checked = options.chat;
+onChange($chat, function() {
+    setOption('chat', this.checked);
 });
 
 var $forceFullscreen = $('force-fullscreen');

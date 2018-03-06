@@ -80,6 +80,9 @@
     "autoplay": {
         "message": "Autoplay embedded video"
     },
+    "chat": {
+        "message": "Show chat for YouTube and Twitch live streams"
+    },
     "force_fullscreen": {
         "message": "Force full screen (press F11 to exit)"
     },

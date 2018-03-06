@@ -43,6 +43,7 @@ var defaultOptions = {
     volume: 100,
     embed: true,
     autoplay: true,
+    chat: false,
     forceFullscreen: false,
     closeTab: false,
     noCookie: false,
@@ -99,11 +100,23 @@ var popup = {
     }
 };
 
+// Second popup info (for now only for YouTube/Twitch chat)
+var popup2 = {
+    url: null,
+    pos: {
+        top: null,
+        left: null,
+        width: null,
+        height: null
+    }
+};
+
 // Video info
 var video = {
     time: 0,
     format: null,
-    youtubeId: null
+    youtubeId: null,
+    isYoutubeLive: false
 };
 
 var widthFix = 0;
@@ -294,6 +307,11 @@ function getPopupUrl() {
 function getVideoProportion(callback) {
     video.format = FORMAT.F16X9;
 
+    // [BUG] All live streams are reported as 4:3 videos
+    if (video.isYoutubeLive) {
+        return callback();
+    }
+
     var youtubeUrl = 'https://www.youtube.com/watch?v=' + video.youtubeId;
     var url = 'https://www.youtube.com/oembed?url=' + Url.encode(youtubeUrl);
 
@@ -407,6 +425,8 @@ function identifyPopupUrl() {
     popup.url = pageUrl;
     popup.url.query.floating_player = 1;
 
+    popup2.url = null;
+
     if (!options.embed) {
         return;
     }
@@ -494,13 +514,16 @@ function setVideoTime(callback) {
         file: 'js/inject.js'
     };
 
-    chrome.tabs.executeScript(tabId, opt, function(time) {
+    chrome.tabs.executeScript(tabId, opt, function(result) {
         if (chrome.runtime.lastError) {
             console.log(chrome.runtime.lastError.message);
         }
 
-        if (Array.isArray(time) && typeof time[0] === 'number') {
-            video.time = time[0];
+        if (Array.isArray(result)) {
+            result[0] = result[0] || [];
+
+            video.time = result[0][0] || 0;
+            video.isYoutubeLive = result[0][1];
         }
         callback();
     });
@@ -512,6 +535,7 @@ function onExtensionClick() {
     video.time = 0;
     video.format = FORMAT.F16X9;
     video.youtubeId = null;
+    video.isYoutubeLive = false;
 
     if (options.history) {
         historyAdd(pageUrl.toString());
@@ -595,7 +619,34 @@ function createNewPopup() {
     chrome.windows.create(opt, function(windowInfo) {
         popup.tabId = windowInfo.tabs[0].id;
         popup.windowId = windowInfo.id;
+
+        if (popup2.url) {
+            createSecondPopup();
+        }
     });
+}
+
+function createSecondPopup() {
+    var distance = 5;
+
+    var opt = {
+        url: popup2.url.toString(),
+        width: popup.pos.width,
+        height: popup.pos.height,
+        top: popup.pos.top,
+        left: popup.pos.left - popup.pos.width - distance,
+        type: 'popup'
+    };
+
+    if (opt.left < 0) {
+        opt.left = popup.pos.left + popup.pos.width + distance;
+    }
+
+    if (!isFirefox) {
+        opt.focused = false;
+    }
+
+    chrome.windows.create(opt);
 }
 
 function updateCurrentPopup() {
@@ -785,6 +836,13 @@ function parseYouTube() {
             popup.url.query.start = parseTime(time);
         }
 
+        if (video.isYoutubeLive && options.chat) {
+            // [BUG] YouTube chat doesn't work with youtube-nocookie.com
+            popup2.url = new Url('https://www.youtube.com/live_chat');
+            popup2.url.query.is_popout = '1';
+            popup2.url.query.v = video.youtubeId;
+        }
+
         ytCommonParams();
     }
 
@@ -863,6 +921,11 @@ function parseTwitch() {
 
         if (!options.autoplay) {
             popup.url.query.autoplay = 'false';
+        }
+
+        if (options.chat) {
+            popup2.url = new Url('https://www.twitch.tv/popout/' +
+                channel + '/chat');
         }
     }
 

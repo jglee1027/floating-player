@@ -80,6 +80,9 @@
     "autoplay": {
         "message": "Iniciar automaticamente vídeo incorporado"
     },
+    "chat": {
+        "message": "Abrir chat em live streams do YouTube e Twitch"
+    },
     "force_fullscreen": {
         "message": "Forçar tela cheia (pressione F11 para sair)"
     },

@@ -7,6 +7,10 @@ var newVideoId;
 var videoTitle;
 var videoList;
 
+var bg = chrome.extension.getBackgroundPage();
+var popup = bg.popup;
+var video = bg.video;
+
 function onYouTubeIframeAPIReady() {
     player = new YT.Player(playerId, {
         events: {
@@ -178,12 +182,10 @@ function onPlayerError(event) {
 
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
-var iframeUrl = (new Url(location.href)).query.url;
-
-if (iframeUrl) {
+if (popup.url) {
     var iframe = document.createElement('iframe');
     iframe.id = playerId;
-    iframe.src = iframeUrl;
+    iframe.src = popup.url.query.url;
     iframe.frameBorder = '0';
     iframe.allowFullscreen = 'true';
     document.body.appendChild(iframe);
