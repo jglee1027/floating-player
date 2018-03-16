@@ -1,3 +1,6 @@
+3.3 - 2018/03/16
+- Fixed bug for odd width/height and popup centered
+
 3.2 - 2018/03/06
 - Added option "Show chat for YouTube and Twitch live streams"
 

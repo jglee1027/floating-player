@@ -414,10 +414,10 @@ function setPopupPosition() {
     }
 
     popup.pos = {
-        top: top,
-        left: left,
-        width: width,
-        height: height
+        top: Math.round(top),
+        left: Math.round(left),
+        width: Math.round(width),
+        height: Math.round(height)
     };
 }
 
