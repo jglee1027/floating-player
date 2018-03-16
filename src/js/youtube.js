@@ -10,6 +10,7 @@ var videoList;
 var bg = chrome.extension.getBackgroundPage();
 var popup = bg.popup;
 var video = bg.video;
+var browserInfo = bg.browserInfo;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player(playerId, {
@@ -100,10 +101,9 @@ function onNextVideo() {
         getVideoProportion(function() {
             setPopupPosition();
 
-            resizeTo(popup.pos.width, popup.pos.height);
-            moveTo(popup.pos.left, popup.pos.top);
+            //resizeTo(popup.pos.width, popup.pos.height);
+            //moveTo(popup.pos.left, popup.pos.top);
 
-            /*
             chrome.windows.getCurrent({}, function(windowInfo) {
                 chrome.windows.update(windowInfo.id, {
                     top: popup.pos.top,
@@ -112,7 +112,6 @@ function onNextVideo() {
                     height: popup.pos.height
                 });
             });
-            */
         });
     }
 }

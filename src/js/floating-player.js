@@ -119,6 +119,14 @@ var video = {
     isYoutubeLive: false
 };
 
+// Browser info
+var browserInfo = {
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0
+};
+
 var widthFix = 0;
 var heightFix = 0;
 
@@ -350,74 +358,76 @@ function getVideoProportion(callback) {
 }
 
 function setPopupPosition() {
-    var width = options.width;
-    var height = options.height;
+    var popupWidth = options.width;
+    var popupHeight = options.height;
+    var popupTop = browserInfo.top;
+    var popupLeft = browserInfo.left;
 
-    var top;
-    var left;
+    var hMargin = options.horizontalMargin;
+    var vMargin = options.verticalMargin;
 
     if (video.format === FORMAT.F4X3) {
-        width = Math.round((4 * height) / 3);
+        popupWidth = Math.round((4 * popupHeight) / 3);
     }
 
-    // Don't fix width/height if using app (https://goo.gl/QDERoA)
+    // Don't fix popupWidth/popupHeight if using app (https://goo.gl/QDERoA)
     if (options.fixPopup && !options.app) {
-        width += widthFix;
-        height += heightFix;
+        popupWidth += widthFix;
+        popupHeight += heightFix;
     }
 
     switch (options.align) {
         case ALIGN.TOP_LEFT:
-            top = options.verticalMargin;
-            left = options.horizontalMargin;
+            popupTop += vMargin;
+            popupLeft += hMargin;
             break;
 
         case ALIGN.TOP_RIGHT:
-            top = options.verticalMargin;
-            left = screen.width - width - options.horizontalMargin;
+            popupTop += vMargin;
+            popupLeft += browserInfo.width - popupWidth - hMargin;
             break;
 
         case ALIGN.BOTTOM_LEFT:
-            top = screen.height - height - options.verticalMargin;
-            left = options.horizontalMargin;
+            popupTop += browserInfo.height - popupHeight - vMargin;
+            popupLeft += hMargin;
             break;
 
         case ALIGN.BOTTOM_RIGHT:
-            top = screen.height - height - options.verticalMargin;
-            left = screen.width - width - options.horizontalMargin;
+            popupTop += browserInfo.height - popupHeight - vMargin;
+            popupLeft += browserInfo.width - popupWidth - hMargin;
             break;
 
         case ALIGN.TOP_CENTER:
-            top = options.verticalMargin;
-            left = (screen.width - width) / 2;
+            popupTop += vMargin;
+            popupLeft += (browserInfo.width - popupWidth) / 2;
             break;
 
         case ALIGN.BOTTOM_CENTER:
-            top = screen.height - height - options.verticalMargin;
-            left = (screen.width - width) / 2;
+            popupTop += browserInfo.height - popupHeight - vMargin;
+            popupLeft += (browserInfo.width - popupWidth) / 2;
             break;
 
         case ALIGN.LEFT_CENTER:
-            top = (screen.height - height) / 2;
-            left = options.horizontalMargin;
+            popupTop += (browserInfo.height - popupHeight) / 2;
+            popupLeft += hMargin;
             break;
 
         case ALIGN.RIGHT_CENTER:
-            top = (screen.height - height) / 2;
-            left = screen.width - width - options.horizontalMargin;
+            popupTop += (browserInfo.height - popupHeight) / 2;
+            popupLeft += browserInfo.width - popupWidth - hMargin;
             break;
 
         case ALIGN.CENTER:
-            top = (screen.height - height) / 2;
-            left = (screen.width - width) / 2;
+            popupTop += (browserInfo.height - popupHeight) / 2;
+            popupLeft += (browserInfo.width - popupWidth) / 2;
             break;
     }
 
     popup.pos = {
-        top: top,
-        left: left,
-        width: width,
-        height: height
+        top: Math.round(popupTop),
+        left: Math.round(popupLeft),
+        width: Math.round(popupWidth),
+        height: Math.round(popupHeight)
     };
 }
 
@@ -509,6 +519,39 @@ function identifyPopupUrl() {
     }
 }
 
+function setBrowserInfo(callback) {
+    chrome.windows.getCurrent({}, function(windowInfo) {
+        browserInfo.width = windowInfo.width;
+        browserInfo.height = windowInfo.height;
+        browserInfo.top = windowInfo.top;
+        browserInfo.left = windowInfo.left;
+
+        /* [BUG] If OS is Windows and browser is maximized, then
+            width = outerWidth + 4 * browserBorder;
+            height = outerHeight + 4 * browserBorder;
+            top = -2 * browserBorder;
+            left = -2 * browserBorder
+
+        Ex.:
+            Expected:
+            {width: 1366, height: 728, top: 0, left: 0}
+
+            Given:
+            {width: 1382, height: 744, top: -8, left: -8}
+        */
+        if (windowInfo.state === 'maximized' && browserInfo.left < 0) {
+            var fix = 2 * browserInfo.left;
+
+            browserInfo.width += fix;
+            browserInfo.height += fix;
+            browserInfo.top = 0;
+            browserInfo.left = 0;
+        }
+
+        callback();
+    });
+}
+
 function setVideoTime(callback) {
     var opt = {
         file: 'js/inject.js'
@@ -541,17 +584,19 @@ function onExtensionClick() {
         historyAdd(pageUrl.toString());
     }
 
-    if (!fromContextMenu() && options.pause) {
-        setVideoTime(function() {
+    setBrowserInfo(function() {
+        if (!fromContextMenu() && options.pause) {
+            setVideoTime(function() {
+                identifyPopupUrl();
+                preparePopup();
+            });
+        }
+
+        else {
             identifyPopupUrl();
             preparePopup();
-        });
-    }
-
-    else {
-        identifyPopupUrl();
-        preparePopup();
-    }
+        }
+    });
 }
 
 function preparePopup() {
@@ -623,6 +668,13 @@ function createNewPopup() {
         if (popup2.url) {
             createSecondPopup();
         }
+
+        // [BUG] Firefox doesn't support top/left for create
+        if (isFirefox) {
+            delete opt.url;
+            delete opt.type;
+            chrome.windows.update(popup.windowId, opt);
+        }
     });
 }
 
@@ -646,7 +698,16 @@ function createSecondPopup() {
         opt.focused = false;
     }
 
-    chrome.windows.create(opt);
+    chrome.windows.create(opt, function(windowInfo) {
+        var secondPopupWindowId = windowInfo.id;
+
+        // [BUG] Firefox doesn't support top/left for create
+        if (isFirefox) {
+            delete opt.url;
+            delete opt.type;
+            chrome.windows.update(secondPopupWindowId, opt);
+        }
+    });
 }
 
 function updateCurrentPopup() {
@@ -656,17 +717,11 @@ function updateCurrentPopup() {
 
     if (!options.forceFullscreen && !options.keepDimensions) {
         var opt = {
-            // top: popup.pos.top, <-- // See below
+            top: popup.pos.top,
             left: popup.pos.left,
             width: popup.pos.width,
             height: popup.pos.height
         };
-
-        // [BUG] If top is set, the popup will be
-        // under the taskbar on Windows and Mac OS
-        if (userOs === OS.LINUX) {
-            opt.top = popup.pos.top;
-        }
 
         if (!isFirefox) {
             opt.focused = true;
