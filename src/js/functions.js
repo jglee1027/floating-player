@@ -30,12 +30,6 @@ function setBrowserAction() {
     });
 }
 
-function showInstructions() {
-    chrome.tabs.create({
-        url: getExtensionUrl('instructions.html')
-    });
-}
-
 function getExtensionUrl(url) {
     return chrome.runtime.getURL(url);
 }
@@ -56,6 +50,23 @@ function htmlEscape(str) {
     return ('' + str).replace(/[&<>"']/g, function(match) {
         return map[match];
     });
+}
+
+function versionCompare(left, right) {
+    var a = left.split('.').map(function(e) { return +e; });
+    var b = right.split('.').map(function(e) { return +e; });
+    var len = Math.max(a.length, b.length);
+
+    for (var i = 0; i < len; i++) {
+        if ((a[i] && !b[i] && a[i] > 0) || (a[i] > b[i])) {
+            return 1;
+        }
+        else if ((b[i] && !a[i] && b[i] > 0) || (a[i] < b[i])) {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
 function historyGet() {
@@ -136,10 +147,4 @@ function setHtml(node, str) {
         html = str;
     }
     node.innerText = html;
-}
-
-function setVars(str, vars) {
-    return str.replace(/\{([a-z_]+)\}/gi, function(match, p1) {
-        return vars[p1];
-    });
 }

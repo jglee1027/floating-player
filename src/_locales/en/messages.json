@@ -156,7 +156,7 @@
         "message": "Remove borders and title bar on Chrome OS (with addon)"
     },
     "always_on_top": {
-        "message": "Keep popup always on top on Chrome OS (with addon)"
+        "message": "Keep popup always on top"
     },
     "helium": {
         "message": "Open video with Helium on macOS"
@@ -188,9 +188,6 @@
     "source_code": {
         "message": "Source code"
     },
-    "instructions": {
-        "message": "Instructions"
-    },
     "history": {
         "message": "History"
     },
@@ -199,18 +196,6 @@
     },
     "cannot_play": {
         "message": "Cannot embed video. Play it on YouTube?"
-    },
-    "addon_not_installed": {
-        "message": "Addon is not installed"
-    },
-    "addon_enabled": {
-        "message": "Addon has been successfully activated"
-    },
-    "addon_disabled": {
-        "message": "Addon has been successfully deactivated"
-    },
-    "permission_not_granted": {
-        "message": "Permission was not granted"
     },
 
 
@@ -222,40 +207,5 @@
     },
     "history_disabled": {
         "message": "History is disabled"
-    },
-
-
-    "instructions_click_icon": {
-        "message": "Open the desired page and click the extension icon on the top right corner of the browser:"
-    },
-    "instructions_right_click": {
-        "message": "Or right click the link of some video:"
-    },
-    "instructions_windows": {
-        "message": "In order to keep the popup on top of other windows, you need to install a third-party application, since Windows doesn't have this feature by default."
-    },
-    "instructions_windows2": {
-        "message": "Download {DeskPins}. Once installed, open the app and click the icon in the system tray. Your cursor will turn into a pin. Then click the popup to make it always on top:"
-    },
-    "instructions_linux": {
-        "message": "Right click the title of the popup, then \"Always on top\":"
-    },
-    "instructions_macos": {
-        "message": "In order to keep the popup on top of other windows, you need to install a third-party application, since macOS doesn't have this feature by default."
-    },
-    "instructions_macos2": {
-        "message": "Download {Helium}. Once installed, go to the options page (see below) and check \"Open video with Helium on macOS\"."
-    },
-    "instructions_chromeos": {
-        "message": "In order to keep the popup on top of other windows, you need to install an add-on, since Chrome OS doesn't have this feature by default."
-    },
-    "addon": {
-        "message": "app for Chrome OS"
-    },
-    "instructions_chromeos2": {
-        "message": "Download the {addon}. Once installed, go to the options page (see below) and check \"Open popup using addon on Chrome OS\"."
-    },
-    "instructions_options": {
-        "message": "You can set the popup width and height besides other settings on the options page. To access it, right click the extension icon:"
     }
 }

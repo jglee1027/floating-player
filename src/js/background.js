@@ -76,7 +76,6 @@ if (localStorage.getItem('ok')) {
 // 1st time
 else if (!localStorage.getItem('installed')) {
     localStorage.setItem('installed', Date.now());
-    showInstructions();
 }
 
 setBrowserAction();

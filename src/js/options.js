@@ -74,9 +74,6 @@ setHtml($defaultConfig, '@default');
 var $sourceCode = $('source-code');
 setHtml($sourceCode, '@source_code');
 
-var $instructions = $('instructions');
-setHtml($instructions, '@instructions');
-
 var $seeHistory = $('see-history');
 setHtml($seeHistory, '@history');
 // End Translation strings
@@ -407,11 +404,6 @@ onClick($sourceCode, function(e) {
     });
 });
 
-onClick($instructions, function(e) {
-    e.preventDefault();
-    showInstructions();
-});
-
 onClick($seeHistory, function(e) {
     e.preventDefault();
     chrome.tabs.create({
@@ -472,115 +464,3 @@ function highlightResolution(width, height) {
     $elem = $(width + 'x' + height);
     $elem && $elem.classList.add(highlightClass);
 }
-
-
-// Secret option to enable the add-on (https://git.io/vALr4) and set
-// the popup always on top and make it borderless
-addEvent(window, 'keyup', function(e) {
-    var F9_KEY = 120;
-
-    if (e.keyCode === F9_KEY) {
-
-        chrome.permissions.request({
-            permissions: ['management']
-        },
-        function(granted) {
-
-            if (granted) {
-
-                var addonId = localStorage.getItem('appid');
-                var addonName = 'Addon for Floating Player (Chrome OS only)';
-
-                // If appid is already set, then disable the extension
-                if (addonId) {
-                    chrome.management.setEnabled(addonId, false, function() {
-
-                        // Extension not found
-                        if (chrome.runtime.lastError) {
-                            console.log(chrome.runtime.lastError.message);
-                        }
-
-                        // Remove permission
-                        chrome.permissions.remove({
-                            permissions: ['management']
-                        });
-
-                        localStorage.removeItem('appid');
-                        setOption('app', false);
-                        setOption('verticalMargin', 0);
-
-                        alert(getText('addon_disabled'));
-                    });
-                }
-
-
-                // If appid is not set, find the extension and enable it
-                else {
-                    chrome.management.getAll(function(result) {
-
-                        // Loop through all installed extensions
-                        for (var i = 0, len = result.length; i < len; i++) {
-                            var extensionName = result[i].name;
-                            var extensionId = result[i].id;
-
-                            if (extensionName === addonName) {
-                                addonId = extensionId;
-                                break;
-                            }
-                        }
-
-                        // Addon is not installed
-                        if (addonId === null) {
-                            alert(getText('addon_not_installed'));
-                        }
-
-                        // Addon is installed
-                        else {
-                            // Save addon id
-                            localStorage.setItem('appid', addonId);
-
-                            // Enable useful options
-                            setOption('app', true);
-                            setOption('borderless', true);
-                            setOption('alwaysOnTop', true);
-
-                            // Put the popup above the taskbar
-                            if (options.align === ALIGN.BOTTOM_LEFT ||
-                                options.align === ALIGN.BOTTOM_RIGHT ||
-                                options.align === ALIGN.BOTTOM_CENTER) {
-
-                                switch (userOs) {
-                                    case OS.WINDOWS_XP:
-                                    case OS.WINDOWS_VISTA:
-                                        setOption('verticalMargin', 30);
-                                        break;
-
-                                    case OS.WINDOWS_7:
-                                    case OS.WINDOWS_8:
-                                    case OS.WINDOWS_8_1:
-                                    case OS.WINDOWS_10:
-                                        setOption('verticalMargin', 40);
-                                        break;
-                                }
-                            }
-
-                            // Enable extension if it's disabled
-                            chrome.management.setEnabled(addonId, true, function() {
-
-                                // Remove permission no longer needed
-                                chrome.permissions.remove({
-                                    permissions: ['management']
-                                });
-
-                                alert(getText('addon_enabled'));
-                            });
-                        }
-                    });
-                }
-            }
-            else {
-                alert(getText('permission_not_granted'));
-            }
-        });
-    }
-});

@@ -127,6 +127,9 @@ var userOsClass;
 
 var isFirefox = !!window.sidebar;
 
+var chromeVersion = (/Chrome\/([0-9.]+)/.exec(navigator.userAgent) || [])[1];
+var supportAlwaysOnTop = versionCompare(chromeVersion, '70') >= 0;
+
 function setUserOS() {
     var regexWindows = /Windows NT ([0-9.]+)/i;
     var matches = navigator.userAgent.match(regexWindows);
@@ -613,6 +616,9 @@ function createNewPopup() {
 
         if (!isFirefox) {
             opt.focused = true;
+            if (supportAlwaysOnTop) {
+                opt.alwaysOnTop = options.alwaysOnTop;
+            }
         }
     }
 
@@ -644,6 +650,9 @@ function createSecondPopup() {
 
     if (!isFirefox) {
         opt.focused = false;
+        if (supportAlwaysOnTop) {
+            opt.alwaysOnTop = options.alwaysOnTop;
+        }
     }
 
     chrome.windows.create(opt);

@@ -156,7 +156,7 @@
         "message": "Remover bordas e barra de título no Chrome OS (com complemento)"
     },
     "always_on_top": {
-        "message": "Manter popup sempre no topo no Chrome OS (com complemento)"
+        "message": "Manter popup sempre no topo"
     },
     "helium": {
         "message": "Abrir vídeo com o Helium no macOS"
@@ -188,9 +188,6 @@
     "source_code": {
         "message": "Código-fonte"
     },
-    "instructions": {
-        "message": "Instruções"
-    },
     "history": {
         "message": "Histórico"
     },
@@ -199,18 +196,6 @@
     },
     "cannot_play": {
         "message": "Não é possível incorporar vídeo. Reproduzir no YouTube?"
-    },
-    "addon_not_installed": {
-        "message": "O complemento não está instalado"
-    },
-    "addon_enabled": {
-        "message": "O complemento foi ativado com sucesso"
-    },
-    "addon_disabled": {
-        "message": "O complemento foi desativado com sucesso"
-    },
-    "permission_not_granted": {
-        "message": "A permissão não foi concedida"
     },
 
 
@@ -222,40 +207,5 @@
     },
     "history_disabled": {
         "message": "O histórico está desativado"
-    },
-
-
-    "instructions_click_icon": {
-        "message": "Abra a página desejada e clique no ícone da extensão no canto superior direito do navegador:"
-    },
-    "instructions_right_click": {
-        "message": "Ou clique com o botão direito do mouse no link de algum vídeo:"
-    },
-    "instructions_windows": {
-        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o Windows não tem esse recurso por padrão."
-    },
-    "instructions_windows2": {
-        "message": "Baixe o {DeskPins}. Depois de instalar, abra o aplicativo e clique no ícone na bandeja do sistema. O seu cursor vai virar um pino. Então clique na popup para fixá-la no topo:"
-    },
-    "instructions_linux": {
-        "message": "Clique com o botão direito do mouse no título da popup e então \"Sempre no topo\":"
-    },
-    "instructions_macos": {
-        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um aplicativo de terceiros, já que o macOS não tem esse recurso por padrão."
-    },
-    "instructions_macos2": {
-        "message": "Baixe o {Helium}. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir vídeo com o Helium no macOS\"."
-    },
-    "instructions_chromeos": {
-        "message": "Para manter a popup em cima das outras janelas, é necessário instalar um complemento, já que o Chrome OS não tem esse recurso por padrão."
-    },
-    "addon": {
-        "message": "app para o Chrome OS"
-    },
-    "instructions_chromeos2": {
-        "message": "Baixe o {addon}. Depois de instalar, vá até a página de opções (veja abaixo) e ative \"Abrir popup usando o complemento no Chrome OS\"."
-    },
-    "instructions_options": {
-        "message": "Você pode definir a largura e a altura da popup, além de outras configurações, na página de opções. Para isso, clique com o botão direito do mouse no ícone da extensão:"
     }
 }

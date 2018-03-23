@@ -23,7 +23,7 @@ body {
     user-select: none
 }
 
-#layout, .card {
+#layout {
     width: 800px;
     margin: 0 auto 40px auto;
     padding: 20px;
@@ -218,24 +218,8 @@ td {
     background-position: center center
 }
 
-.instructions p {
-    margin-bottom: 20px;
-    line-height: 22px;
-    font-size: 17px
-}
-
-.instructions img {
-    max-width: 100%;
-    height: auto
-}
-
-.instructions a {
-    color: #00e;
-    text-decoration: underline
-}
-
 @media only screen and (max-width: 800px) {
-    #layout, .card {
+    #layout {
         width: 100%
     }
 
