@@ -74,6 +74,7 @@ var defaultOptions = {
     heliumVersion: 'helium',
     keepPopup: true,
     keepDimensions: false,
+    spoofUserAgent: false,
     context: true,
     history: false
 };

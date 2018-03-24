@@ -63,6 +63,7 @@ setHtml($$('label[for="helium-pin-tab"]'), '@helium_pin_tab');
 setHtml($$('label[for="helium-version"]'), '@helium_version');
 setHtml($$('label[for="keep-popup"]'), '@keep_popup');
 setHtml($$('label[for="keep-dimensions"]'), '@keep_dimensions');
+setHtml($$('label[for="spoof-user-agent"]'), '@spoof_user_agent');
 setHtml($$('label[for="use-context"]'), '@use_context');
 setHtml($$('label[for="enable-history"]'), '@enable_history');
 
@@ -187,23 +188,20 @@ onChange($noCookie, function() {
 
     var $this = this;
     var isChecked = $this.checked;
+    var permission = {
+        origins: ['*://www.youtube-nocookie.com/*']
+    };
 
     if (isChecked) {
-        chrome.permissions.request({
-            origins: ['*://www.youtube-nocookie.com/*']
-        },
-        function(granted) {
-            if (granted) {
-                setOption('noCookie', true);
-            }
-            else {
-                $this.checked = false;
-                setOption('noCookie', false);
-            }
+        chrome.permissions.request(permission, function(granted) {
+            $this.checked = granted;
+            setOption('noCookie', granted);
         });
     }
     else {
-        setOption('noCookie', false);
+        chrome.permissions.remove(permission, function(removed) {
+            setOption('noCookie', false);
+        });
     }
 });
 
@@ -301,6 +299,7 @@ var $spoofReferrer = $('spoof-referrer');
 $spoofReferrer.checked = options.spoofReferrer;
 onChange($spoofReferrer, function() {
     setOption('spoofReferrer', this.checked);
+    reloadBackground();
 });
 
 var $youtubeTvOnError = $('youtube-tv-on-error');
@@ -367,6 +366,29 @@ var $keepDimensions = $('keep-dimensions');
 $keepDimensions.checked = options.keepDimensions;
 onChange($keepDimensions, function() {
     setOption('keepDimensions', this.checked);
+});
+
+var $spoofUserAgent = $('spoof-user-agent');
+$spoofUserAgent.checked = options.spoofUserAgent;
+onChange($spoofUserAgent, function() {
+
+    var $this = this;
+    var isChecked = $this.checked;
+    var permission = {
+        origins: ['<all_urls>']
+    };
+
+    if (isChecked) {
+        chrome.permissions.request(permission, function(granted) {
+            $this.checked = granted;
+            setOption('spoofUserAgent', granted);
+            reloadBackground();
+        });
+    }
+    else {
+        setOption('spoofUserAgent', false);
+        reloadBackground();
+    }
 });
 
 var $context = $('use-context');

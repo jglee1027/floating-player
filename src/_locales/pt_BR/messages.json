@@ -173,6 +173,9 @@
     "keep_dimensions": {
         "message": "Manter posição e dimensões atuais da popup ao mudar de vídeo"
     },
+    "spoof_user_agent": {
+        "message": "Solicitar versão mobile das páginas web"
+    },
     "use_context": {
         "message": "Usar menu de contexto"
     },

@@ -44,6 +44,10 @@ function getText(key) {
     return chrome.i18n.getMessage(key);
 }
 
+function reloadBackground() {
+    chrome.extension.getBackgroundPage().location.reload();
+}
+
 function htmlEscape(str) {
     var map = {
         '&': '&amp;',

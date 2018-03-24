@@ -113,3 +113,33 @@ if (options.spoofReferrer) {
         ['blocking', 'requestHeaders']
     );
 }
+
+
+if (options.spoofUserAgent) {
+    var mobileUA = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/';
+    mobileUA += 'MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) ';
+    mobileUA += 'Chrome/65.0.3325.181 Mobile Safari/537.36';
+
+    var query = 'floating_player=1';
+
+    chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
+        // Updating popup or creating popup
+        if (details.tabId === popup.tabId || details.url.indexOf(query) > -1) {
+            for (var i = 0, len = details.requestHeaders.length; i < len; i++) {
+                if (details.requestHeaders[i].name === 'User-Agent') {
+                    details.requestHeaders[i].value = mobileUA;
+                    break;
+                }
+            }
+
+            return {
+                requestHeaders: details.requestHeaders
+            };
+        }
+    },
+        {urls: [
+            '<all_urls>'
+        ]},
+        ['blocking', 'requestHeaders']
+    );
+}

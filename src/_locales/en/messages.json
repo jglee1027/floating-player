@@ -173,6 +173,9 @@
     "keep_dimensions": {
         "message": "Keep position and current dimensions of popup when changing video"
     },
+    "spoof_user_agent": {
+        "message": "Request mobile version of web pages"
+    },
     "use_context": {
         "message": "Use context menu"
     },
