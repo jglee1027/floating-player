@@ -49,7 +49,7 @@ var defaultOptions = {
     noCookie: false,
     captions: true,
     annotations: true,
-    related: false,
+    related: true,
     controls: true,
     showInfo: true,
     fullscreenButton: true,
