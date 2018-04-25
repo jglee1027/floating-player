@@ -1,3 +1,6 @@
+3.5 - 2018/04/25
+- Changed extension name to "Floating Player" due to removal from Chrome Web Store
+
 3.4 - 2018/04/23
 - Removed legacy code
 - Set "show related videos" as default option

@@ -18,10 +18,6 @@ function addContextMenu() {
 }
 
 function setBrowserAction() {
-    chrome.browserAction.setTitle({
-        title: 'Floating Player'
-    });
-
     chrome.browserAction.onClicked.addListener(function(tab) {
         pageUrl = new Url(tab.url);
         tabId = tab.id;
