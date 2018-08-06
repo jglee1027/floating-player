@@ -31,11 +31,30 @@
         "activeTab",
         "*://www.youtube.com/*",
         "webRequest",
-        "webRequestBlocking"
+        "webRequestBlocking",
+        "storage"
     ],
 
     "optional_permissions": [
         "*://www.youtube-nocookie.com/*",
         "management"
+    ],
+
+    "content_scripts": [{
+        "all_frames": true,
+        "matches": [ "http://*/*", "https://*/*", "file:///*" ],
+        "exclude_matches": [
+            "https://plus.google.com/hangouts/*",
+            "https://hangouts.google.com/hangouts/*",
+            "https://meet.google.com/*",
+            "https://teamtreehouse.com/*",
+            "http://www.hitbox.tv/*"
+        ],
+        "css": [ "vsc/inject.css" ],
+        "js":  [ "vsc/inject.js" ]
+    }],
+
+    "web_accessible_resources": [
+        "vsc/inject.css", "vsc/shadow.css"
     ]
 }
