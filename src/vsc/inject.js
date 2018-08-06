@@ -117,7 +117,7 @@ chrome.runtime.sendMessage({}, function(response) {
       var shadow = wrapper.createShadowRoot();
       var shadowTemplate = `
         <style>
-          @import "${chrome.runtime.getURL('shadow.css')}";
+          @import "${chrome.runtime.getURL('vsc/shadow.css')}";
         </style>
 
         <div id="controller" style="top:${top}; left:${left}">
