@@ -30,6 +30,7 @@ setHtml($option[14], '@normal');
 setHtml($$('label[for="quality"]'), '@quality');
 setHtml($$('label[for="title"]'), '@title');
 setHtml($$('label[for="volume"]'), '@volume');
+setHtml($$('label[for="native-pip"]'), '@native_pip');
 setHtml($$('label[for="embed"]'), '@embed');
 setHtml($$('label[for="autoplay"]'), '@autoplay');
 setHtml($$('label[for="chat"]'), '@chat');
@@ -149,6 +150,12 @@ $currentVolume.innerText = options.volume;
 onInput($volume, function() {
     setOption('volume', +this.value);
     $currentVolume.innerText = this.value;
+});
+
+var $nativePip = $('native-pip');
+$nativePip.checked = options.nativePip;
+onChange($nativePip, function() {
+    setOption('nativePip', this.checked);
 });
 
 var $embed = $('embed');

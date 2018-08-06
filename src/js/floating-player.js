@@ -41,6 +41,7 @@ var defaultOptions = {
     quality: 'auto',
     title: '%playlist% %title% - YouTube',
     volume: 100,
+    nativePip: true,
     embed: true,
     autoplay: true,
     chat: false,
@@ -529,6 +530,23 @@ function setVideoTime(callback) {
     });
 }
 
+function nativePictureInPicture(callback) {
+    var opt = {
+        file: 'js/native-pip.js'
+    };
+
+    chrome.tabs.executeScript(tabId, opt, function(result) {
+        if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError.message);
+        }
+
+        if (Array.isArray(result)) {
+            var success = result[0];
+            callback(success);
+        }
+    });
+}
+
 function onExtensionClick() {
     getAllOptions();
 
@@ -542,10 +560,22 @@ function onExtensionClick() {
     }
 
     if (!fromContextMenu() && options.pause) {
-        setVideoTime(function() {
-            identifyPopupUrl();
-            preparePopup();
-        });
+        if (options.nativePip) {
+            nativePictureInPicture(function(success) {
+                if (!success) {
+                    setVideoTime(function() {
+                        identifyPopupUrl();
+                        preparePopup();
+                    });
+                }
+            });
+        }
+        else {
+            setVideoTime(function() {
+                identifyPopupUrl();
+                preparePopup();
+            });
+        }
     }
 
     else {

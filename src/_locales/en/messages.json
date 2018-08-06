@@ -74,6 +74,9 @@
     "volume": {
         "message": "Volume for YouTube videos*"
     },
+    "native_pip": {
+        "message": "Use native Picture-in-Picture if possible (Chrome 70+)"
+    },
     "embed": {
         "message": "Embed video if possible"
     },
